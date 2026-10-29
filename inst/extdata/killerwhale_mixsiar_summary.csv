@@ -1,0 +1,8 @@
+name,mean,sd,q2.5,q97.5
+Epsilon.1,1.082,0.802,0.326,3.104
+Epsilon.2,2.585,1.997,0.718,8.284
+p.global.Chinook,0.369,0.110,0.097,0.529
+p.global.Chum,0.108,0.094,0.003,0.352
+p.global.Coho,0.171,0.135,0.008,0.501
+p.global.Sockeye,0.067,0.057,0.002,0.213
+p.global.Steelhead,0.284,0.091,0.075,0.427

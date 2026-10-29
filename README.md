@@ -1,0 +1,61 @@
+# MixSIARPFN
+
+Fit [MixSIAR](https://github.com/brianstock/MixSIAR) stable isotope mixing models in
+about a second, without JAGS. MixSIARPFN reads the same files with the same function
+calls as MixSIAR, but takes the posterior from a *prior-data fitted network*: a
+transformer trained on simulations from MixSIAR's own model, one network per error
+structure.
+
+**Status: development version, not yet released.** The networks are not public yet.
+
+```r
+library(MixSIARPFN)
+mix <- load_mix_data(filename = "consumer.csv", iso_names = c("d13C", "d15N"),
+                     factors = c("Region", "Pack"), fac_random = c(TRUE, TRUE),
+                     fac_nested = c(FALSE, TRUE), cont_effects = NULL)
+source <- load_source_data(filename = "sources.csv", source_factors = "Region",
+                           conc_dep = FALSE, data_type = "means", mix)
+discr <- load_discr_data(filename = "discrimination.csv", mix)
+
+fit <- run_pfn(mix, source, discr)   # in place of write_JAGS_model() + run_model()
+output_pfn(fit, mix, source)         # in place of output_JAGS()
+```
+
+## What it fits
+
+The models MixSIAR fits with isotope data and source summary statistics: up to two
+categorical effects (fixed or random, crossed or nested), one continuous effect,
+concentration dependence, sources given by a factor, and Residual * Process,
+Residual only or Process only error. Up to 8 sources and 4 tracers. Data outside
+what the networks were trained for are refused with a message.
+
+Not yet: raw source data, fatty acid data, more than 4 tracers.
+
+## What is different from MixSIAR
+
+- **Marginal posteriors only.** Each proportion and parameter gets its own posterior
+  distribution, but there are no joint draws: the marginal means of one diet need not
+  sum to exactly 1, and sums, differences or ratios of proportions cannot be computed.
+- **No MCMC**, so no chain lengths, burn-in or convergence diagnostics.
+- **Accuracy.** On simulated data the networks' credible intervals have the right
+  coverage. Compared with MixSIAR on real data they are close for simple models and
+  wider, sometimes noticeably different, for models with many levels: see the
+  vignettes, which put both side by side.
+
+## Installation
+
+```r
+# install.packages("remotes")
+remotes::install_github("andrewcparnell/MixSIARPFN")
+```
+
+The first fit sets up a small Python environment (numpy, pandas, ONNX Runtime)
+through reticulate and downloads the network it needs (about 36 MB); both are cached.
+No Python knowledge is needed.
+
+## Licence and credit
+
+GPL (>= 3). The data loaders follow MixSIAR's, and the example data are MixSIAR's
+killer whale, geese and wolves vignettes: Stock, B. C., Jackson, A. L., Ward, E. J.,
+Parnell, A. C., Phillips, D. L. and Semmens, B. X. (2018). Analyzing mixing systems
+using a new generation of Bayesian tracer mixing models. *PeerJ* 6:e5096.

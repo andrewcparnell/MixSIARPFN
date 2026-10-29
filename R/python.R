@@ -55,3 +55,8 @@ pfn_networks <- function(download = FALSE) {
   attr(out, "cache") <- Sys.getenv("MIXSIARPFN_CACHE")
   out
 }
+
+# TRUE when all three networks are in the cache (vignettes and examples run only then)
+networks_ready <- function() {
+  tryCatch(all(pfn_networks()$cached), error = function(e) FALSE)
+}

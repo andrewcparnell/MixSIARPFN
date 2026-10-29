@@ -4,3 +4,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^.*__pycache__.*$
+^LICENSE\.md$
+^README\.md$

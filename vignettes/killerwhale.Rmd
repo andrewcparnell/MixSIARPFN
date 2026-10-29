@@ -1,0 +1,92 @@
+---
+title: "Killer whale: no effects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Killer whale}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+# The code runs only when the networks are in the cache (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
+                      eval = MixSIARPFN:::networks_ready())
+```
+
+```{r compare-helper, include = FALSE}
+# MixSIARPFN's posterior next to MixSIAR's for the same model and data
+compare_with_mixsiar <- function(fit, vignette) {
+  ours <- summary_table(fit)
+  theirs <- read.csv(system.file("extdata", paste0(vignette, "_mixsiar_summary.csv"),
+                                 package = "MixSIARPFN"))
+  rows <- intersect(theirs$name, rownames(ours))
+  theirs <- theirs[match(rows, theirs$name), ]
+  data.frame(quantity = rows,
+             `MixSIARPFN mean` = round(ours[rows, "Mean"], 3),
+             `MixSIAR mean` = round(theirs$mean, 3),
+             `MixSIARPFN SD` = round(ours[rows, "SD"], 3),
+             `MixSIAR SD` = round(theirs$sd, 3),
+             check.names = FALSE, row.names = NULL)
+}
+```
+
+This follows MixSIAR's killer whale vignette (Semmens et al. 2013 data, as in Stock
+et al. 2018): 12 killer whales, 2 tracers, 5 salmon prey sources, no effects, and
+MixSIAR's uninformative Dirichlet prior. Only the model-fitting call changes:
+`run_pfn()` in place of `write_JAGS_model()` and `run_model()`.
+
+## Load the data
+
+```{r load, eval = TRUE}
+mix <- load_mix_data(
+  filename = system.file("extdata", "killerwhale_consumer.csv", package = "MixSIARPFN"),
+  iso_names = c("d13C", "d15N"), factors = NULL, fac_random = NULL,
+  fac_nested = NULL, cont_effects = NULL)
+source <- load_source_data(
+  filename = system.file("extdata", "killerwhale_sources.csv", package = "MixSIARPFN"),
+  source_factors = NULL, conc_dep = FALSE, data_type = "means", mix)
+discr <- load_discr_data(
+  filename = system.file("extdata", "killerwhale_discrimination.csv", package = "MixSIARPFN"),
+  mix)
+mix
+source
+```
+
+## Fit
+
+Residual * Process error, as in MixSIAR's vignette. The network for this error
+structure is downloaded the first time (about 36 MB) and cached.
+
+```{r fit}
+fit <- run_pfn(mix, source, discr, alpha.prior = 1,
+               resid_err = TRUE, process_err = TRUE)
+fit
+```
+
+## Summaries and plots
+
+`output_pfn()` takes MixSIAR's `output_options` list. Here it prints the summary
+statistics and draws the plots without saving files:
+
+```{r output, fig.width = 7, fig.height = 4.5}
+out <- output_pfn(fit, mix, source,
+                  output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
+```
+
+Each row is a **marginal** posterior. The network does not give joint draws, so the
+marginal means of one diet need not sum to exactly 1, and sums, differences or ratios
+of proportions cannot be computed from the output. `posterior_draws()` gives
+independent draws from each marginal, for plots and per-proportion summaries.
+
+## Compared with MixSIAR
+
+The same model fitted by MixSIAR 3.1.12 (3 chains of 1,000,000 iterations, 23
+minutes; MixSIARPFN takes under a second):
+
+```{r compare}
+knitr::kable(compare_with_mixsiar(fit, "killerwhale"))
+```
+
+
+The posterior means are within 0.08 of MixSIAR's and the SDs are similar.
