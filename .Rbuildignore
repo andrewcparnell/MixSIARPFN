@@ -1,0 +1,6 @@
+^dev$
+^\.git$
+^README\.Rmd$
+^.*\.Rproj$
+^\.Rproj\.user$
+^.*__pycache__.*$

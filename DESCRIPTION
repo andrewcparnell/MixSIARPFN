@@ -1,0 +1,31 @@
+Package: MixSIARPFN
+Title: Fast Bayesian Mixing Models with Prior-Data Fitted Networks
+Version: 0.1.0
+Authors@R:
+    person("Andrew", "Parnell", email = "Andrew.parnell1@ucd.ie", role = c("aut", "cre"))
+Description: Fits the stable isotope mixing models of 'MixSIAR' (Stock et al. 2018,
+    <doi:10.7717/peerj.5096>) from the same input files and with the same function
+    calls, but obtains the marginal posterior distributions of the diet proportions
+    and model parameters from prior-data fitted networks (transformer networks
+    trained on simulations from the 'MixSIAR' model) instead of MCMC. Needs no
+    'JAGS' and returns results in seconds.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Depends: R (>= 4.1)
+Imports:
+    ggplot2 (>= 3.4),
+    reticulate (>= 1.41),
+    rlang,
+    stats,
+    tools,
+    utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr,
+    MixSIAR
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.1.1

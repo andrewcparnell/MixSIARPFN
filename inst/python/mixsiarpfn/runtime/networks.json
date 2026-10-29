@@ -1,0 +1,20 @@
+{
+  "mult": {
+    "file": "general_mult_v1.onnx",
+    "url": "https://zenodo.org/records/PENDING/files/general_mult_v1.onnx?download=1",
+    "sha256": "521512501268abf91f94b019baa434dc7940764c5ad0d2aeab29e034d58e4c49",
+    "size": 35775861
+  },
+  "resid": {
+    "file": "general_resid_v1.onnx",
+    "url": "https://zenodo.org/records/PENDING/files/general_resid_v1.onnx?download=1",
+    "sha256": "ec6de8d883aa0312f8c7e725b37abe365faaf70631f3f9e1d03c642999b32255",
+    "size": 35775863
+  },
+  "process": {
+    "file": "general_process_v1.onnx",
+    "url": "https://zenodo.org/records/PENDING/files/general_process_v1.onnx?download=1",
+    "sha256": "e9c04ef938f3d1c16b6dcf2c3c561f52e5bf9601f301f79a502a75cbae7e7f8d",
+    "size": 35775867
+  }
+}
