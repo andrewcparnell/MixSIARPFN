@@ -6,7 +6,8 @@ calls as MixSIAR, but takes the posterior from a *prior-data fitted network*: a
 transformer trained on simulations from MixSIAR's own model, one network per error
 structure.
 
-**Status: development version, not yet released.** The networks are not public yet.
+**Status: development version.** The networks are on Zenodo:
+[doi:10.5281/zenodo.23770513](https://doi.org/10.5281/zenodo.23770513).
 
 ```r
 library(MixSIARPFN)
@@ -59,3 +60,6 @@ GPL (>= 3). The data loaders follow MixSIAR's, and the example data are MixSIAR'
 killer whale, geese and wolves vignettes: Stock, B. C., Jackson, A. L., Ward, E. J.,
 Parnell, A. C., Phillips, D. L. and Semmens, B. X. (2018). Analyzing mixing systems
 using a new generation of Bayesian tracer mixing models. *PeerJ* 6:e5096.
+
+The networks: Parnell, A. (2026). MixSIARPFN networks, version 1. Zenodo.
+https://doi.org/10.5281/zenodo.23770513
