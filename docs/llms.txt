@@ -1,0 +1,118 @@
+# MixSIARPFN
+
+Fit [MixSIAR](https://github.com/brianstock/MixSIAR) stable isotope
+mixing models in about a second, without JAGS. MixSIARPFN reads the same
+files with the same function calls as MixSIAR, but takes the posterior
+from a *prior-data fitted network*: a transformer trained on simulations
+from MixSIAR’s own model, one network per error structure.
+
+**Status: development version.** The networks are on Zenodo:
+[doi:10.5281/zenodo.23770513](https://doi.org/10.5281/zenodo.23770513).
+
+``` r
+library(MixSIARPFN)
+mix <- load_mix_data(filename = "consumer.csv", iso_names = c("d13C", "d15N"),
+                     factors = c("Region", "Pack"), fac_random = c(TRUE, TRUE),
+                     fac_nested = c(FALSE, TRUE), cont_effects = NULL)
+source <- load_source_data(filename = "sources.csv", source_factors = "Region",
+                           conc_dep = FALSE, data_type = "means", mix)
+discr <- load_discr_data(filename = "discrimination.csv", mix)
+
+fit <- run_pfn(mix, source, discr)   # in place of write_JAGS_model() + run_model()
+output_pfn(fit, mix, source)         # in place of output_JAGS()
+```
+
+## What it fits
+
+The models MixSIAR fits with isotope data and source summary statistics:
+up to two categorical effects (fixed or random, crossed or nested), one
+continuous effect, concentration dependence, sources given by a factor,
+and Residual \* Process, Residual only or Process only error. Up to 8
+sources and 4 tracers. Data outside what the networks were trained for
+are refused with a message.
+
+Not yet: raw source data, fatty acid data, more than 4 tracers.
+
+## What is different from MixSIAR
+
+- **Marginal posteriors only.** Each proportion and parameter gets its
+  own posterior distribution, but there are no joint draws: the marginal
+  means of one diet need not sum to exactly 1, and sums, differences or
+  ratios of proportions cannot be computed.
+- **No MCMC**, so no chain lengths, burn-in or convergence diagnostics.
+- **Accuracy.** On simulated data the networks’ credible intervals have
+  the right coverage. Compared with MixSIAR on real data they are close
+  for simple models and wider, sometimes noticeably different, for
+  models with many levels: see the vignettes, which put both side by
+  side.
+
+## Installation
+
+``` r
+# install.packages("remotes")
+remotes::install_github("andrewcparnell/MixSIARPFN")
+```
+
+The first fit sets up a small Python environment (numpy, pandas, ONNX
+Runtime) through reticulate and downloads the network it needs (about 36
+MB); both are cached. No Python knowledge is needed.
+
+## Licence and credit
+
+GPL (\>= 3). The data loaders follow MixSIAR’s, and the example data are
+MixSIAR’s killer whale, geese and wolves vignettes: Stock, B. C.,
+Jackson, A. L., Ward, E. J., Parnell, A. C., Phillips, D. L. and
+Semmens, B. X. (2018). Analyzing mixing systems using a new generation
+of Bayesian tracer mixing models. *PeerJ* 6:e5096.
+
+The networks: Parnell, A. (2026). MixSIARPFN networks, version 1.
+Zenodo. <https://doi.org/10.5281/zenodo.23770513>
+
+# Package index
+
+## Load data (as MixSIAR)
+
+- [`load_mix_data()`](load_mix_data.md) : Load mixture (consumer) data
+- [`load_source_data()`](load_source_data.md) : Load source data
+- [`load_discr_data()`](load_discr_data.md) : Load discrimination (TDF)
+  data
+- [`plot_data()`](plot_data.md) : Isospace plot of the data, as
+  MixSIAR's plot_data()
+
+## Fit and summarise
+
+- [`run_pfn()`](run_pfn.md) : Fit a MixSIAR model with the prior-data
+  fitted network
+- [`output_pfn()`](output_pfn.md) : Summaries and plots of a fit, like
+  MixSIAR's output_JAGS()
+- [`summary_table()`](summary_table.md) : The summary statistics table
+  of a fit
+- [`posterior_draws()`](posterior_draws.md) : Draws from the marginal
+  posteriors
+- [`pfn_networks()`](pfn_networks.md) : Where the networks are cached,
+  and whether they are there
+
+## Compare with MixSIAR
+
+- [`mixsiar_reference()`](mixsiar_reference.md) : MixSIAR's own fits of
+  the example data
+- [`mixsiar_draws()`](mixsiar_draws.md) : Diet proportion draws from a
+  MixSIAR fit
+- [`compare_mixsiar()`](compare_mixsiar.md) : Compare a fit with
+  MixSIAR's posterior
+- [`plot_compare()`](plot_compare.md) : Plot a fit against MixSIAR's
+  posterior
+
+## Package
+
+- [`MixSIARPFN`](MixSIARPFN-package.md)
+  [`MixSIARPFN-package`](MixSIARPFN-package.md) : MixSIARPFN: MixSIAR
+  models fitted by prior-data fitted networks
+
+# Articles
+
+### Examples from MixSIAR’s vignettes
+
+- [Killer whale: no effects](killerwhale.md):
+- [Geese: a fixed effect and concentration dependence](geese.md):
+- [Wolves: nested random effects, sources by region](wolves.md):

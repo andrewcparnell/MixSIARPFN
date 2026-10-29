@@ -1,0 +1,40 @@
+url: ~
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+
+reference:
+- title: Load data (as MixSIAR)
+  contents:
+  - load_mix_data
+  - load_source_data
+  - load_discr_data
+  - plot_data
+- title: Fit and summarise
+  contents:
+  - run_pfn
+  - output_pfn
+  - summary_table
+  - posterior_draws
+  - pfn_networks
+- title: Compare with MixSIAR
+  contents:
+  - mixsiar_reference
+  - mixsiar_draws
+  - compare_mixsiar
+  - plot_compare
+- title: Package
+  contents:
+  - MixSIARPFN-package
+
+articles:
+- title: Examples from MixSIAR's vignettes
+  navbar: Examples
+  contents:
+  - killerwhale
+  - geese
+  - wolves

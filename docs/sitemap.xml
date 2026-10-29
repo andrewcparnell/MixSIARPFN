@@ -1,0 +1,26 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/geese.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/killerwhale.html</loc></url>
+<url><loc>/articles/wolves.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/MixSIARPFN-package.html</loc></url>
+<url><loc>/reference/compare_mixsiar.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/load_discr_data.html</loc></url>
+<url><loc>/reference/load_mix_data.html</loc></url>
+<url><loc>/reference/load_source_data.html</loc></url>
+<url><loc>/reference/mixsiar_draws.html</loc></url>
+<url><loc>/reference/mixsiar_reference.html</loc></url>
+<url><loc>/reference/output_pfn.html</loc></url>
+<url><loc>/reference/pfn_networks.html</loc></url>
+<url><loc>/reference/plot_compare.html</loc></url>
+<url><loc>/reference/plot_data.html</loc></url>
+<url><loc>/reference/posterior_draws.html</loc></url>
+<url><loc>/reference/run_pfn.html</loc></url>
+<url><loc>/reference/summary_table.html</loc></url>
+</urlset>
+

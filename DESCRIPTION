@@ -10,6 +10,8 @@ Description: Fits the stable isotope mixing models of 'MixSIAR' (Stock et al. 20
     trained on simulations from the 'MixSIAR' model) instead of MCMC. Needs no
     'JAGS' and returns results in seconds.
 License: GPL (>= 3)
+URL: https://github.com/andrewcparnell/MixSIARPFN
+BugReports: https://github.com/andrewcparnell/MixSIARPFN/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1)

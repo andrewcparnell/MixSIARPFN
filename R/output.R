@@ -80,14 +80,15 @@ summary_table <- function(fit) {
 #' @export
 summary.pfn_fit <- function(object, ...) summary_table(object)
 
-# Density of one marginal from its bars (piecewise constant), on a grid for plotting
-bar_density <- function(probs, borders, n = 400) {
+# Density of one marginal for plotting: the probability in each of n even cells from
+# the lowest border to the 99.9% quantile, divided by the cell width. (The bars
+# themselves are very narrow near 0 and 1, which would show as tall spikes.)
+bar_density <- function(probs, borders, n = 120) {
   lo <- borders[1]
-  hi <- borders[length(borders)]
-  upper <- bar_quantile(probs, borders, 0.999)
-  grid <- seq(lo, min(hi, upper * 1.05 + 1e-9), length.out = n)
-  idx <- findInterval(grid, borders, rightmost.closed = TRUE, all.inside = TRUE)
-  data.frame(x = grid, density = probs[idx] / diff(borders)[idx])
+  hi <- min(borders[length(borders)], bar_quantile(probs, borders, 0.999) * 1.05 + 1e-9)
+  edges <- seq(lo, hi, length.out = n + 1)
+  dens <- diff(bar_cdf(probs, borders, edges)) / diff(edges)
+  data.frame(x = (edges[-1] + edges[-length(edges)]) / 2, density = dens)
 }
 
 bar_quantile <- function(probs, borders, q) {
@@ -104,14 +105,18 @@ posterior_plots <- function(fit) {
   for (block in unique(s$block)) {
     rows <- which(s$block == block)
     curves <- do.call(rbind, lapply(rows, function(i) {
-      d <- bar_density(fit$probs[i, ], fit$borders)
-      d$source <- s$source[i]
-      d$level <- s$level[i]
-      d
+      # Kernel density of draws, as plot_compare() (the bars are very narrow near 0
+      # and 1, which would show as tall spikes)
+      k <- stats::density(bar_draws(fit$probs[i, ], fit$borders, 4000),
+                          from = 0, to = 1, n = 256)
+      data.frame(x = k$x, density = k$y, source = s$source[i],
+                 level = if (block == "global") "" else paste(block, s$level[i]))
     }))
     p <- ggplot2::ggplot(curves, ggplot2::aes(x = .data$x, y = .data$density,
                                               colour = .data$source)) +
       ggplot2::geom_line() +
+      ggplot2::scale_x_continuous(limits = c(0, 1), breaks = c(0, 0.5, 1),
+                                  labels = c("0", "0.5", "1")) +
       ggplot2::labs(x = "Proportion of diet", y = "Posterior density", colour = "Source",
                     title = if (block == "global") "Global diet" else block) +
       ggplot2::theme_bw()
@@ -131,6 +136,12 @@ posterior_plots <- function(fit) {
   plots
 }
 
+# Independent draws from one bar distribution
+bar_draws <- function(probs, borders, n) {
+  i <- sample.int(length(probs), n, replace = TRUE, prob = probs)
+  borders[i] + stats::runif(n) * (borders[i + 1] - borders[i])
+}
+
 #' Draws from the marginal posteriors
 #'
 #' Independent draws from each proportion's (and parameter's) marginal posterior.
@@ -145,10 +156,7 @@ posterior_plots <- function(fit) {
 #' @export
 posterior_draws <- function(fit, n = 3000, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
-  one <- function(probs, borders) {
-    i <- sample.int(length(probs), n, replace = TRUE, prob = probs)
-    borders[i] + stats::runif(n) * (borders[i + 1] - borders[i])
-  }
+  one <- function(probs, borders) bar_draws(probs, borders, n)
   s <- fit$summary
   diets <- do.call(rbind, lapply(seq_len(nrow(s)), function(i) {
     data.frame(name = s$name[i], block = s$block[i], level = s$level[i],

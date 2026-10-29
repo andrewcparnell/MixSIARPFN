@@ -16,6 +16,14 @@ per error structure, downloaded on first use (see \code{\link[=pfn_networks]{pfn
 The example data are from MixSIAR (Stock et al. 2018, PeerJ 6:e5096): the killer
 whale, geese and wolves vignettes.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/andrewcparnell/MixSIARPFN}
+  \item Report bugs at \url{https://github.com/andrewcparnell/MixSIARPFN/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Andrew Parnell \email{Andrew.parnell1@ucd.ie}
 

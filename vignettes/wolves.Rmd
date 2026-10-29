@@ -2,41 +2,28 @@
 title: "Wolves: nested random effects, sources by region"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Wolves}
+  %\VignetteIndexEntry{Wolves: nested random effects, sources by region}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
 library(MixSIARPFN)
-# The code runs only when the networks are in the cache (see pfn_networks())
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
-                      eval = MixSIARPFN:::networks_ready())
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+# Inline numbers, only when the code ran
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
 ```
 
-```{r compare-helper, include = FALSE}
-# MixSIARPFN's posterior next to MixSIAR's for the same model and data
-compare_with_mixsiar <- function(fit, vignette) {
-  ours <- summary_table(fit)
-  theirs <- read.csv(system.file("extdata", paste0(vignette, "_mixsiar_summary.csv"),
-                                 package = "MixSIARPFN"))
-  rows <- intersect(theirs$name, rownames(ours))
-  theirs <- theirs[match(rows, theirs$name), ]
-  data.frame(quantity = rows,
-             `MixSIARPFN mean` = round(ours[rows, "Mean"], 3),
-             `MixSIAR mean` = round(theirs$mean, 3),
-             `MixSIARPFN SD` = round(ours[rows, "SD"], 3),
-             `MixSIAR SD` = round(theirs$sd, 3),
-             check.names = FALSE, row.names = NULL)
-}
-```
+This follows MixSIAR's wolves example (Semmens et al. 2009 data, as analysed in Stock
+et al. 2018): 66 wolves from 8 packs in 3 regions, whose diet is a mix of deer,
+marine mammals and salmon, measured with two tracers (δ¹³C and δ¹⁵N). Pack is a random effect nested within the random effect
+Region, and the sources' isotope values were measured separately in each region. The
+model and data are exactly as in MixSIAR's vignette; only the fitting call changes,
+`run_pfn()` in place of `write_JAGS_model()` and `run_model()`.
 
-This follows MixSIAR's wolves vignette (Semmens et al. 2009 data, as in Stock et al.
-2018): 66 wolves in 8 packs within 3 regions, 2 tracers and 3 sources whose isotope
-values differ by region. Pack is a random effect nested within the random effect
-Region, and the sources are given by region.
-
-## Load the data
+## The data
 
 ```{r load, eval = TRUE}
 mix <- load_mix_data(
@@ -53,42 +40,135 @@ mix
 source
 ```
 
-## Fit
+The isospace plot shows the wolves, coloured by region, and each source's mean in
+each region after adding the discrimination factor, with ±1 SD:
 
-Residual * Process error, as in MixSIAR's vignette:
+```{r isospace, eval = TRUE, fig.height = 5}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+## Fitting the model
+
+Residual * Process error and MixSIAR's uninformative prior, as in MixSIAR's
+vignette. The network for this error structure is downloaded the first time it is
+needed (about 36 MB) and cached.
 
 ```{r fit}
-fit <- run_pfn(mix, source, discr, alpha.prior = 1,
-               resid_err = TRUE, process_err = TRUE)
+time <- system.time(
+  fit <- run_pfn(mix, source, discr, alpha.prior = 1,
+                 resid_err = TRUE, process_err = TRUE)
+)
 fit
 ```
 
-## Summaries and plots
+The fit took `r num(time[["elapsed"]], 1)` seconds.
 
-`output_pfn()` takes MixSIAR's `output_options` list. Here it prints the summary
-statistics and draws the plots without saving files:
+## Results
 
-```{r output, fig.width = 7, fig.height = 4.5}
+`output_pfn()` takes MixSIAR's `output_options` list. It prints the summary
+statistics, with MixSIAR's row names, and draws a posterior density plot for the
+global diet, each effect and each parameter (here shown, not saved):
+
+```{r output, results = "hide", fig.show = "hide"}
 out <- output_pfn(fit, mix, source,
                   output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
 ```
 
-Each row is a **marginal** posterior. The network does not give joint draws, so the
-marginal means of one diet need not sum to exactly 1, and sums, differences or ratios
-of proportions cannot be computed from the output. `posterior_draws()` gives
-independent draws from each marginal, for plots and per-proportion summaries.
-
-## Compared with MixSIAR
-
-The same model fitted by MixSIAR 3.1.12 (3 chains of 3,000,000 iterations, about 6
-hours, needed for the Region SD to converge; MixSIARPFN takes under a second):
-
-```{r compare}
-knitr::kable(compare_with_mixsiar(fit, "wolves"))
+```{r summary-table}
+knitr::kable(round(summary_table(fit), 3))
 ```
 
-The global and region diets are close to MixSIAR's. At the pack level the network's
-posteriors are about twice as wide as MixSIAR's, and a few pack means differ by more
-than their posterior SDs (for example Pack 7 Salmon, 0.42 against 0.14). The random
-effect SDs and residual multipliers are also wider. The benchmarks in the
-accompanying paper show how the networks compare with MixSIAR across many datasets.
+```{r result-plots, fig.height = 4}
+out$plots$global
+out$plots$Region
+```
+
+```{r pack-plot, fig.height = 6}
+out$plots$Pack
+```
+
+```{r sd-plots, fig.height = 3, fig.width = 3.5, out.width = "48%", fig.show = "hold"}
+out$plots$Region.SD
+out$plots$Pack.SD
+```
+
+Each of these is a **marginal** posterior. The network gives each proportion's
+posterior on its own, not joint draws, so the marginal means of one diet need not
+sum to exactly 1, and sums, differences or ratios of proportions cannot be computed
+from the output.
+
+## Comparison with MixSIAR
+
+```{r reference}
+ref <- mixsiar_reference("wolves")
+cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
+```
+
+MixSIAR `r if (ok) ref$info$mixsiar` fitted the same model with
+`r if (ok) ref$info$chains` chains of `r if (ok) format(ref$info$chain_length, big.mark = ",")`
+iterations (burn-in `r if (ok) format(ref$info$burn, big.mark = ",")`, thinned by
+`r if (ok) ref$info$thin`), a run of about `r num(ref$info$minutes / 60, 1)` hours that
+was needed for the Region SD to converge (largest Gelman-Rubin diagnostic
+`r num(ref$info$max_psrf, 3)`). MixSIARPFN took `r num(time[["elapsed"]], 1)` seconds.
+
+The table gives both posteriors' means, SDs and 95% intervals, and the Wasserstein-1
+distance between them (W1: how far, on average, one posterior's mass has to move to
+match the other, on the proportion scale; MixSIAR's draws for the SDs and residual
+multipliers were not saved, so those rows have no W1):
+
+```{r compare-table}
+show <- transform(cmp, `MixSIARPFN 95% CI` = sprintf("%.2f to %.2f", pfn_q2.5, pfn_q97.5),
+                  `MixSIAR 95% CI` = sprintf("%.2f to %.2f", mixsiar_q2.5, mixsiar_q97.5),
+                  check.names = FALSE)
+knitr::kable(data.frame(
+  quantity = show$name,
+  `MixSIARPFN mean` = round(show$pfn_mean, 3), `MixSIAR mean` = round(show$mixsiar_mean, 3),
+  `MixSIARPFN SD` = round(show$pfn_sd, 3), `MixSIAR SD` = round(show$mixsiar_sd, 3),
+  show[c("MixSIARPFN 95% CI", "MixSIAR 95% CI")], W1 = round(show$w1, 3),
+  check.names = FALSE))
+```
+
+The posterior densities side by side, for the global diet, the regions and the
+packs:
+
+```{r compare-global, fig.height = 3}
+plot_compare(fit, ref$draws, block = "global")
+```
+
+```{r compare-region, fig.height = 5}
+plot_compare(fit, ref$draws, block = "Region")
+```
+
+```{r compare-pack, fig.height = 8}
+plot_compare(fit, ref$draws, block = "Pack")
+```
+
+And every proportion's posterior mean and SD against MixSIAR's:
+
+```{r compare-means, fig.height = 3.5}
+plot_compare(fit, ref$draws, type = "means")
+```
+
+```{r numbers, include = FALSE}
+diet <- cmp[!is.na(cmp$w1), ]
+stat <- function(b, f) f(diet[diet$block == b, ])
+gap <- function(d) mean(abs(d$pfn_mean - d$mixsiar_mean))
+worst <- diet[which.max(abs(diet$pfn_mean - diet$mixsiar_mean)), ]
+```
+
+**What this shows.** For the global and region diets, MixSIARPFN's posterior means
+differ from MixSIAR's by `r num(stat("global", gap))` and `r num(stat("Region", gap))`
+on average, against MixSIAR posterior SDs of about
+`r num(stat("global", function(d) mean(d$mixsiar_sd)))` and
+`r num(stat("Region", function(d) mean(d$mixsiar_sd)))`, and its posteriors are a
+little wider (median SD ratio `r num(stat("global", function(d) median(d$sd_ratio)))`
+and `r num(stat("Region", function(d) median(d$sd_ratio)))`). The pack diets differ
+more. Most pack means are close (median difference
+`r num(stat("Pack", function(d) median(abs(d$pfn_mean - d$mixsiar_mean))))`), but
+MixSIARPFN's pack posteriors are about twice as wide (median SD ratio
+`r num(stat("Pack", function(d) median(d$sd_ratio)))`) and a few means are far off,
+the largest being `r if (ok) sub("^p\\.", "", worst$name)` (`r num(worst$pfn_mean)`
+against `r num(worst$mixsiar_mean)`). The Region and Pack SDs and the residual
+multipliers are also wider. For a dataset like this, with many small levels,
+MixSIARPFN gives a quick first answer, and a MixSIAR run is the more precise one when
+time allows.

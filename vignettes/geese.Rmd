@@ -2,40 +2,27 @@
 title: "Geese: a fixed effect and concentration dependence"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Geese}
+  %\VignetteIndexEntry{Geese: a fixed effect and concentration dependence}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
 library(MixSIARPFN)
-# The code runs only when the networks are in the cache (see pfn_networks())
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
-                      eval = MixSIARPFN:::networks_ready())
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
 ```
 
-```{r compare-helper, include = FALSE}
-# MixSIARPFN's posterior next to MixSIAR's for the same model and data
-compare_with_mixsiar <- function(fit, vignette) {
-  ours <- summary_table(fit)
-  theirs <- read.csv(system.file("extdata", paste0(vignette, "_mixsiar_summary.csv"),
-                                 package = "MixSIARPFN"))
-  rows <- intersect(theirs$name, rownames(ours))
-  theirs <- theirs[match(rows, theirs$name), ]
-  data.frame(quantity = rows,
-             `MixSIARPFN mean` = round(ours[rows, "Mean"], 3),
-             `MixSIAR mean` = round(theirs$mean, 3),
-             `MixSIARPFN SD` = round(ours[rows, "SD"], 3),
-             `MixSIAR SD` = round(theirs$sd, 3),
-             check.names = FALSE, row.names = NULL)
-}
-```
+This follows MixSIAR's geese example (Inger et al. 2006 data, as analysed in Stock et
+al. 2018): 251 geese in 8 groups, two tracers (δ¹³C and δ¹⁵N) and four food sources
+(grass and three algae: Enteromorpha, *Ulva lactuca* and *Zostera*). Group is a fixed
+effect, the sources' elemental concentrations differ (concentration dependence), and
+the error structure is Residual only. Only the fitting call differs from MixSIAR's
+vignette: `run_pfn()` in place of `write_JAGS_model()` and `run_model()`.
 
-This follows MixSIAR's geese vignette (Inger et al. 2006 data, as in Stock et al.
-2018): 251 geese in 8 groups, 2 tracers, 4 sources, a fixed effect of group,
-concentration dependence and Residual only error.
-
-## Load the data
+## The data
 
 ```{r load, eval = TRUE}
 mix <- load_mix_data(
@@ -52,43 +39,100 @@ mix
 source
 ```
 
-## Fit
+The isospace plot shows the geese, coloured by group, and the source means after
+discrimination, with ±1 SD. With four sources and two tracers the data cannot pin
+down every proportion (that needs at most one more source than tracers), so some of
+the diet is set by the prior and the sources' spread:
 
-As in MixSIAR's vignette, Residual only error (`process_err = FALSE`):
+```{r isospace, eval = TRUE, fig.height = 5}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+## Fitting the model
+
+As in MixSIAR's vignette, Residual only error (`process_err = FALSE`) and the
+uninformative prior:
 
 ```{r fit}
-fit <- run_pfn(mix, source, discr, alpha.prior = 1,
-               resid_err = TRUE, process_err = FALSE)
+time <- system.time(
+  fit <- run_pfn(mix, source, discr, alpha.prior = 1,
+                 resid_err = TRUE, process_err = FALSE)
+)
 fit
 ```
 
-## Summaries and plots
+The fit took `r num(time[["elapsed"]], 1)` seconds.
 
-`output_pfn()` takes MixSIAR's `output_options` list. Here it prints the summary
-statistics and draws the plots without saving files:
+## Results
 
-```{r output, fig.width = 7, fig.height = 4.5}
+```{r output, results = "hide", fig.show = "hide"}
 out <- output_pfn(fit, mix, source,
                   output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
 ```
 
-Each row is a **marginal** posterior. The network does not give joint draws, so the
-marginal means of one diet need not sum to exactly 1, and sums, differences or ratios
-of proportions cannot be computed from the output. `posterior_draws()` gives
-independent draws from each marginal, for plots and per-proportion summaries.
-
-## Compared with MixSIAR
-
-The same model fitted by MixSIAR 3.1.12 (3 chains of 1,000,000 iterations, about 3
-hours; MixSIARPFN takes under a second):
-
-```{r compare}
-knitr::kable(compare_with_mixsiar(fit, "geese"))
+```{r summary-table}
+knitr::kable(round(summary_table(fit), 3))
 ```
 
-Grass, the best-determined source, is close to MixSIAR's in every group, with
-posterior SDs about 1.5 times MixSIAR's. The three algae sources (Enteromorpha,
-U. lactuca and Zostera) are harder to tell apart with two tracers; there the network
-differs more (for example Enteromorpha in group 1, 0.23 against 0.09) and is wider.
-The benchmarks in the accompanying paper show how the networks compare with MixSIAR
-across many datasets.
+With a fixed effect, MixSIAR's global diet is the diet of the first group, so the
+plots below show the eight groups:
+
+```{r group-plot, fig.height = 6}
+out$plots$Group
+```
+
+Each is a **marginal** posterior: the network does not give joint draws, so the
+marginal means of one group's diet need not sum to exactly 1, and sums or ratios of
+proportions cannot be computed from the output.
+
+## Comparison with MixSIAR
+
+```{r reference}
+ref <- mixsiar_reference("geese")
+cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
+```
+
+MixSIAR `r if (ok) ref$info$mixsiar` fitted the same model with
+`r if (ok) ref$info$chains` chains of `r if (ok) format(ref$info$chain_length, big.mark = ",")`
+iterations (burn-in `r if (ok) format(ref$info$burn, big.mark = ",")`), which took about
+`r num(ref$info$minutes / 60, 1)` hours (largest Gelman-Rubin diagnostic
+`r num(ref$info$max_psrf, 3)`). MixSIARPFN took `r num(time[["elapsed"]], 1)` seconds.
+
+Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how far, on average,
+one posterior's mass has to move to match the other, on the proportion scale):
+
+```{r compare-table}
+knitr::kable(data.frame(
+  quantity = cmp$name,
+  `MixSIARPFN mean` = round(cmp$pfn_mean, 3), `MixSIAR mean` = round(cmp$mixsiar_mean, 3),
+  `MixSIARPFN SD` = round(cmp$pfn_sd, 3), `MixSIAR SD` = round(cmp$mixsiar_sd, 3),
+  `MixSIARPFN 95% CI` = sprintf("%.2f to %.2f", cmp$pfn_q2.5, cmp$pfn_q97.5),
+  `MixSIAR 95% CI` = sprintf("%.2f to %.2f", cmp$mixsiar_q2.5, cmp$mixsiar_q97.5),
+  W1 = round(cmp$w1, 3), check.names = FALSE))
+```
+
+```{r compare-group, fig.height = 8}
+plot_compare(fit, ref$draws, block = "Group")
+```
+
+```{r compare-means, fig.height = 3.5}
+plot_compare(fit, ref$draws, type = "means")
+```
+
+```{r numbers, include = FALSE}
+by_source <- split(cmp, cmp$source)
+gap <- function(d) mean(abs(d$pfn_mean - d$mixsiar_mean))
+algae <- cmp[cmp$source != "Grass", ]
+worst <- cmp[which.max(abs(cmp$pfn_mean - cmp$mixsiar_mean)), ]
+```
+
+**What this shows.** Grass, the source the data pin down best, is close in every
+group: MixSIARPFN's means differ from MixSIAR's by `r num(gap(by_source$Grass))` on
+average, though its posteriors are wider (median SD ratio
+`r num(median(by_source$Grass$sd_ratio))`). The three algae trade off against each
+other, since four sources cannot all be determined from two tracers, and there the
+two fits differ more: mean difference
+`r num(gap(algae))`, median SD ratio `r num(median(algae$sd_ratio))`, and the largest
+difference is `r if (ok) sub("^p\\.", "", worst$name)` (`r num(worst$pfn_mean)`
+against `r num(worst$mixsiar_mean)`). For data like these, where sources overlap, MixSIARPFN gives a quick
+first answer and a MixSIAR run the more precise one.

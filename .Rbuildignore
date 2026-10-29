@@ -6,3 +6,6 @@
 ^.*__pycache__.*$
 ^LICENSE\.md$
 ^README\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
