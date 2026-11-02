@@ -5,10 +5,10 @@
 # drawn from the likelihood, "very long" runs. Six model-generated datasets each like
 # geese and wolves are the controls. Run from the package root:
 #
-#   Rscript dev/add_ppc_reference.R [path to MixSIARPFN-build, default ~/simmr-pfn]
+#   Rscript dev/add_ppc_reference.R [path to MixSIARPFN-build, default ~/MixSIARPFN-build]
 
 args <- commandArgs(trailingOnly = TRUE)
-build <- if (length(args) >= 1) args[1] else "~/simmr-pfn"
+build <- if (length(args) >= 1) args[1] else "~/MixSIARPFN-build"
 ppc_dir <- file.path(build, "experiments", "general", "ppc")
 pkgload::load_all(quiet = TRUE)
 x <- "inst/extdata"

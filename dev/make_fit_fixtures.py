@@ -4,7 +4,7 @@ the three vignettes, with the networks in the package's manifest.
 Run from the package root with MixSIARPFN-build's environment, after the networks are
 in the cache (pfn_networks() in R):
 
-    uv run --project ~/simmr-pfn python dev/make_fit_fixtures.py
+    uv run --project ~/MixSIARPFN-build python dev/make_fit_fixtures.py
 """
 import os
 import sys
