@@ -124,6 +124,8 @@ by_source <- split(cmp, cmp$source)
 gap <- function(d) mean(abs(d$pfn_mean - d$mixsiar_mean))
 algae <- cmp[cmp$source != "Grass", ]
 worst <- cmp[which.max(abs(cmp$pfn_mean - cmp$mixsiar_mean)), ]
+pd <- posterior_draws(fit, n = 4000, seed = 1)
+near0 <- function(d, n) mean(d$value[d$name == n] < 0.02)
 ```
 
 **What this shows.** Grass, the source the data pin down best, is close in every
@@ -134,8 +136,12 @@ other, since four sources cannot all be determined from two tracers, and there t
 two fits differ more: mean difference
 `r num(gap(algae))`, median SD ratio `r num(median(algae$sd_ratio))`, and the largest
 difference is `r if (ok) sub("^p\\.", "", worst$name)` (`r num(worst$pfn_mean)`
-against `r num(worst$mixsiar_mean)`). For data like these, where sources overlap, MixSIARPFN gives a quick
-first answer and a MixSIAR run the more precise one.
+against `r num(worst$mixsiar_mean)`). MixSIARPFN also puts more probability near 0 on
+the algae: for group 2's *U. lactuca* proportion, the probability that it is below
+0.02 is `r num(near0(pd, "p.Group 2.U.lactuca"))` against MixSIAR's
+`r num(near0(ref$draws, "p.Group 2.U.lactuca"))`, a tendency of the network for sources
+the data identify poorly. For data like these, where sources overlap, MixSIARPFN gives
+a quick first answer and a MixSIAR run the more precise one.
 
 ## Does MixSIAR's model fit these data?
 

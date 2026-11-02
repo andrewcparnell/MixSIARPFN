@@ -16,6 +16,27 @@ per error structure, downloaded on first use (see \code{\link[=pfn_networks]{pfn
 The example data are from MixSIAR (Stock et al. 2018, PeerJ 6:e5096): the killer
 whale, geese and wolves vignettes.
 }
+\section{Limitations}{
+
+\itemize{
+\item \strong{Marginal posteriors only.} Each proportion and parameter has its own posterior,
+but there are no joint draws: the marginal means of one diet need not sum to
+exactly 1, and sums, differences or ratios of proportions cannot be computed.
+\item \strong{Accuracy.} On data simulated from MixSIAR's model the 95\% intervals are
+calibrated, but somewhat wider than MixSIAR's, and the posteriors a little less
+accurate (CRPS up to about 10\% higher than fully converged MixSIAR).
+\item \strong{Weakly identified sources.} Where the data cannot pin a source down, the
+network tends to put more probability near 0 than MixSIAR does.
+\item \strong{No model checks.} Without joint draws, posterior predictive checks cannot be
+run; where it matters, check the model with a MixSIAR run. The geese and wolves
+vignettes show MixSIAR's model failing such a check, and the two fits differing
+most where it fails.
+\item \strong{Envelope.} Up to 8 sources, 4 tracers, two categorical effects and one
+continuous effect, with source summary statistics only; data outside what the
+networks were trained for are refused.
+}
+}
+
 \seealso{
 Useful links:
 \itemize{
