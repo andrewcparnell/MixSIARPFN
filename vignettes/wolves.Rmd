@@ -165,10 +165,72 @@ little wider (median SD ratio `r num(stat("global", function(d) median(d$sd_rati
 and `r num(stat("Region", function(d) median(d$sd_ratio)))`). The pack diets differ
 more. Most pack means are close (median difference
 `r num(stat("Pack", function(d) median(abs(d$pfn_mean - d$mixsiar_mean))))`), but
-MixSIARPFN's pack posteriors are about twice as wide (median SD ratio
-`r num(stat("Pack", function(d) median(d$sd_ratio)))`) and a few means are far off,
+MixSIARPFN's pack posteriors are wider (median SD ratio
+`r num(stat("Pack", function(d) median(d$sd_ratio)))`) and a few means are further off,
 the largest being `r if (ok) sub("^p\\.", "", worst$name)` (`r num(worst$pfn_mean)`
 against `r num(worst$mixsiar_mean)`). The Region and Pack SDs and the residual
 multipliers are also wider. For a dataset like this, with many small levels,
 MixSIARPFN gives a quick first answer, and a MixSIAR run is the more precise one when
 time allows.
+
+## Does MixSIAR's model fit these data?
+
+The comparison above takes MixSIAR as the reference. That is fair only where
+MixSIAR's model describes the data, which a posterior predictive check can test:
+MixSIAR's fitted model generates new datasets, one per posterior draw, and the real
+data are compared with them pack by pack. MixSIARPFN gives marginal posteriors only,
+so it cannot run this check itself; the results come from a separate MixSIAR run with
+the same model and data, shipped with the package (`mixsiar_reference("wolves")$ppc`).
+For each pack, the plot shows each tracer's mean and SD and the correlation between
+the tracers, on the standardised scale MixSIAR's model uses:
+
+```{r ppc-plot, echo = FALSE, fig.height = 9}
+MixSIARPFN:::plot_ppc(ref$ppc)
+```
+
+```{r ppc-numbers, include = FALSE}
+ppc <- ref$ppc
+st <- ppc$stats[ppc$stats$stat %in% c("mean", "sd", "cor"), ]
+st$outside <- st$ppp < 0.025 | st$ppp > 0.975
+cors <- st[st$stat == "cor" & st$outside, ]
+packs <- diet[diet$block == "Pack", ]
+by_pack <- data.frame(
+  Pack = unique(st$group),
+  outside = as.vector(tapply(st$outside, st$group, sum)[unique(st$group)]),
+  w1 = as.vector(tapply(packs$w1, paste("Pack", packs$level), mean)[unique(st$group)]))
+fails <- by_pack$Pack %in% cors$group
+fits <- !fails & by_pack$Pack != "Pack 7"
+```
+
+`r if (ok) ppc$summary$extreme_95` of the `r if (ok) ppc$summary$group_stats` pack
+statistics fall outside the 95% range of the model's datasets
+(`r if (ok) ppc$summary$extreme_99` outside 99%). For six datasets simulated from
+MixSIAR's own model with the same design the count is
+`r if (ok) min(ppc$controls$extreme_95)` to `r if (ok) max(ppc$controls$extreme_95)`
+(about 2 are expected by chance). The clearest failure is the correlation between
+δ¹³C and δ¹⁵N within packs: `r if (ok) paste(sprintf("%s %.2f", cors$group, cors$obs), collapse = ", ")`,
+where the model's datasets give about 0. The wolves of these packs lie on a line in
+isospace, which is what wolves eating different mixes of the same prey would produce.
+MixSIAR's model has no diet variation between the wolves of a pack, so it can only
+treat that spread as residual error. The checks on the whole dataset (each tracer's
+mean, SD and range, and the total log-likelihood) pass, so MixSIAR's usual output
+would not show this.
+
+Where the model does not fit, MixSIAR's posterior is not a correct answer for
+MixSIARPFN to match, and the two can differ more. Here the two fits differ most in
+the packs that fail the check, and in pack 7, whose four wolves are too few for the
+check to say much (the model's datasets give its correlation anywhere from about -0.95
+to 0.95):
+
+```{r ppc-table, echo = FALSE}
+knitr::kable(data.frame(
+  Pack = by_pack$Pack, `Statistics outside 95% (of 5)` = by_pack$outside,
+  `Mean W1, MixSIARPFN against MixSIAR` = round(by_pack$w1, 3), check.names = FALSE))
+```
+
+The mean W1 is `r num(mean(by_pack$w1[fails]), 3)` for the packs whose tracers are
+strongly correlated, against `r num(mean(by_pack$w1[fits]), 3)` for packs
+`r if (ok) paste(sub("Pack ", "", by_pack$Pack[fits]), collapse = ", ")`. On data
+like these, the differences between MixSIARPFN and MixSIAR say as much about the model
+as about either method: both are fitting a model that leaves out structure the data
+show.

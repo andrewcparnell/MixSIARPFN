@@ -120,9 +120,9 @@ the first time it is needed (about 36 MB) and cached.</p>
 <span><span class="co">#&gt; MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s</span></span>
 <span><span class="co">#&gt; Marginal posteriors (no joint draws). Global diet:</span></span>
 <span><span class="co">#&gt;          source  mean    sd  2.5% 97.5%</span></span>
-<span><span class="co">#&gt;            Deer 0.436 0.201 0.070 0.817</span></span>
-<span><span class="co">#&gt;  Marine Mammals 0.221 0.157 0.015 0.601</span></span>
-<span><span class="co">#&gt;          Salmon 0.331 0.197 0.030 0.757</span></span>
+<span><span class="co">#&gt;            Deer 0.485 0.201 0.097 0.850</span></span>
+<span><span class="co">#&gt;  Marine Mammals 0.206 0.161 0.013 0.632</span></span>
+<span><span class="co">#&gt;          Salmon 0.321 0.199 0.028 0.770</span></span>
 <span><span class="co">#&gt; Use output_pfn() for every proportion and parameter.</span></span></code></pre></div>
 <p>The fit took 0.5 seconds.</p>
 </div>
@@ -138,7 +138,7 @@ parameter (here shown, not saved):</p>
 <span>                  output_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>summary_save <span class="op">=</span> <span class="cn">FALSE</span>, plot_post_save_pdf <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="../reference/summary_table.html">summary_table</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="32%">
 <col width="7%">
@@ -149,7 +149,7 @@ parameter (here shown, not saved):</p>
 <col width="7%">
 <col width="7%">
 <col width="7%">
-<col width="8%">
+<col width="7%">
 </colgroup>
 <thead><tr class="header">
 <th align="left"></th>
@@ -166,483 +166,483 @@ parameter (here shown, not saved):</p>
 <tbody>
 <tr class="odd">
 <td align="left">Epsilon.1</td>
-<td align="right">0.853</td>
-<td align="right">0.643</td>
-<td align="right">0.205</td>
-<td align="right">0.254</td>
-<td align="right">0.471</td>
-<td align="right">0.714</td>
-<td align="right">1.060</td>
-<td align="right">1.870</td>
-<td align="right">2.297</td>
+<td align="right">0.953</td>
+<td align="right">0.560</td>
+<td align="right">0.267</td>
+<td align="right">0.328</td>
+<td align="right">0.584</td>
+<td align="right">0.844</td>
+<td align="right">1.194</td>
+<td align="right">1.922</td>
+<td align="right">2.247</td>
 </tr>
 <tr class="even">
 <td align="left">Epsilon.2</td>
-<td align="right">0.621</td>
-<td align="right">0.415</td>
-<td align="right">0.191</td>
-<td align="right">0.230</td>
-<td align="right">0.384</td>
-<td align="right">0.540</td>
-<td align="right">0.758</td>
-<td align="right">1.248</td>
-<td align="right">1.490</td>
+<td align="right">0.536</td>
+<td align="right">0.302</td>
+<td align="right">0.215</td>
+<td align="right">0.245</td>
+<td align="right">0.361</td>
+<td align="right">0.477</td>
+<td align="right">0.642</td>
+<td align="right">1.002</td>
+<td align="right">1.176</td>
 </tr>
 <tr class="odd">
 <td align="left">Region.SD</td>
-<td align="right">2.005</td>
-<td align="right">2.776</td>
-<td align="right">0.049</td>
-<td align="right">0.095</td>
-<td align="right">0.480</td>
-<td align="right">1.106</td>
-<td align="right">2.277</td>
-<td align="right">7.436</td>
-<td align="right">11.071</td>
+<td align="right">2.086</td>
+<td align="right">2.234</td>
+<td align="right">0.155</td>
+<td align="right">0.277</td>
+<td align="right">0.870</td>
+<td align="right">1.474</td>
+<td align="right">2.441</td>
+<td align="right">5.961</td>
+<td align="right">8.544</td>
 </tr>
 <tr class="even">
 <td align="left">Pack.SD</td>
-<td align="right">1.208</td>
-<td align="right">1.393</td>
-<td align="right">0.232</td>
-<td align="right">0.306</td>
-<td align="right">0.578</td>
-<td align="right">0.863</td>
-<td align="right">1.333</td>
-<td align="right">3.041</td>
-<td align="right">4.418</td>
+<td align="right">1.038</td>
+<td align="right">0.808</td>
+<td align="right">0.370</td>
+<td align="right">0.422</td>
+<td align="right">0.630</td>
+<td align="right">0.852</td>
+<td align="right">1.198</td>
+<td align="right">2.170</td>
+<td align="right">2.772</td>
 </tr>
 <tr class="odd">
 <td align="left">p.global.Deer</td>
-<td align="right">0.436</td>
+<td align="right">0.485</td>
 <td align="right">0.201</td>
-<td align="right">0.070</td>
-<td align="right">0.108</td>
-<td align="right">0.283</td>
-<td align="right">0.433</td>
-<td align="right">0.586</td>
-<td align="right">0.769</td>
-<td align="right">0.817</td>
+<td align="right">0.097</td>
+<td align="right">0.143</td>
+<td align="right">0.338</td>
+<td align="right">0.490</td>
+<td align="right">0.634</td>
+<td align="right">0.806</td>
+<td align="right">0.850</td>
 </tr>
 <tr class="even">
 <td align="left">p.global.Marine Mammals</td>
-<td align="right">0.221</td>
-<td align="right">0.157</td>
-<td align="right">0.015</td>
-<td align="right">0.026</td>
-<td align="right">0.100</td>
-<td align="right">0.189</td>
-<td align="right">0.310</td>
-<td align="right">0.524</td>
-<td align="right">0.601</td>
+<td align="right">0.206</td>
+<td align="right">0.161</td>
+<td align="right">0.013</td>
+<td align="right">0.023</td>
+<td align="right">0.086</td>
+<td align="right">0.166</td>
+<td align="right">0.282</td>
+<td align="right">0.535</td>
+<td align="right">0.632</td>
 </tr>
 <tr class="odd">
 <td align="left">p.global.Salmon</td>
-<td align="right">0.331</td>
-<td align="right">0.197</td>
-<td align="right">0.030</td>
-<td align="right">0.052</td>
-<td align="right">0.175</td>
-<td align="right">0.308</td>
-<td align="right">0.465</td>
-<td align="right">0.691</td>
-<td align="right">0.757</td>
+<td align="right">0.321</td>
+<td align="right">0.199</td>
+<td align="right">0.028</td>
+<td align="right">0.048</td>
+<td align="right">0.164</td>
+<td align="right">0.291</td>
+<td align="right">0.449</td>
+<td align="right">0.697</td>
+<td align="right">0.770</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 1.Deer</td>
-<td align="right">0.634</td>
-<td align="right">0.207</td>
-<td align="right">0.121</td>
-<td align="right">0.213</td>
-<td align="right">0.521</td>
-<td align="right">0.678</td>
-<td align="right">0.785</td>
-<td align="right">0.901</td>
-<td align="right">0.932</td>
+<td align="right">0.747</td>
+<td align="right">0.182</td>
+<td align="right">0.222</td>
+<td align="right">0.365</td>
+<td align="right">0.676</td>
+<td align="right">0.791</td>
+<td align="right">0.870</td>
+<td align="right">0.954</td>
+<td align="right">0.973</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 1.Marine Mammals</td>
-<td align="right">0.116</td>
-<td align="right">0.123</td>
+<td align="right">0.097</td>
+<td align="right">0.109</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.030</td>
-<td align="right">0.084</td>
-<td align="right">0.162</td>
-<td align="right">0.342</td>
-<td align="right">0.440</td>
+<td align="right">0.000</td>
+<td align="right">0.019</td>
+<td align="right">0.068</td>
+<td align="right">0.138</td>
+<td align="right">0.291</td>
+<td align="right">0.379</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 1.Salmon</td>
-<td align="right">0.178</td>
-<td align="right">0.146</td>
+<td align="right">0.183</td>
+<td align="right">0.153</td>
 <td align="right">0.000</td>
 <td align="right">0.003</td>
-<td align="right">0.066</td>
-<td align="right">0.151</td>
-<td align="right">0.254</td>
-<td align="right">0.449</td>
-<td align="right">0.535</td>
+<td align="right">0.071</td>
+<td align="right">0.155</td>
+<td align="right">0.253</td>
+<td align="right">0.475</td>
+<td align="right">0.585</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 2.Deer</td>
-<td align="right">0.424</td>
-<td align="right">0.193</td>
-<td align="right">0.039</td>
-<td align="right">0.096</td>
-<td align="right">0.291</td>
-<td align="right">0.424</td>
-<td align="right">0.557</td>
-<td align="right">0.745</td>
-<td align="right">0.805</td>
+<td align="right">0.475</td>
+<td align="right">0.172</td>
+<td align="right">0.119</td>
+<td align="right">0.182</td>
+<td align="right">0.361</td>
+<td align="right">0.478</td>
+<td align="right">0.592</td>
+<td align="right">0.755</td>
+<td align="right">0.806</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 2.Marine Mammals</td>
-<td align="right">0.150</td>
-<td align="right">0.152</td>
+<td align="right">0.176</td>
+<td align="right">0.141</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.027</td>
-<td align="right">0.105</td>
-<td align="right">0.228</td>
-<td align="right">0.456</td>
-<td align="right">0.539</td>
+<td align="right">0.002</td>
+<td align="right">0.061</td>
+<td align="right">0.154</td>
+<td align="right">0.260</td>
+<td align="right">0.437</td>
+<td align="right">0.508</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 2.Salmon</td>
-<td align="right">0.373</td>
-<td align="right">0.254</td>
-<td align="right">0.006</td>
-<td align="right">0.018</td>
-<td align="right">0.157</td>
-<td align="right">0.351</td>
-<td align="right">0.555</td>
-<td align="right">0.835</td>
-<td align="right">0.920</td>
+<td align="right">0.440</td>
+<td align="right">0.222</td>
+<td align="right">0.014</td>
+<td align="right">0.049</td>
+<td align="right">0.282</td>
+<td align="right">0.447</td>
+<td align="right">0.600</td>
+<td align="right">0.800</td>
+<td align="right">0.859</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 3.Deer</td>
-<td align="right">0.240</td>
-<td align="right">0.211</td>
+<td align="right">0.309</td>
+<td align="right">0.214</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.063</td>
-<td align="right">0.194</td>
-<td align="right">0.361</td>
-<td align="right">0.659</td>
-<td align="right">0.765</td>
+<td align="right">0.006</td>
+<td align="right">0.135</td>
+<td align="right">0.289</td>
+<td align="right">0.455</td>
+<td align="right">0.698</td>
+<td align="right">0.773</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 3.Marine Mammals</td>
-<td align="right">0.230</td>
-<td align="right">0.197</td>
-<td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.072</td>
+<td align="right">0.244</td>
 <td align="right">0.187</td>
-<td align="right">0.339</td>
-<td align="right">0.620</td>
-<td align="right">0.723</td>
+<td align="right">0.000</td>
+<td align="right">0.003</td>
+<td align="right">0.091</td>
+<td align="right">0.215</td>
+<td align="right">0.361</td>
+<td align="right">0.594</td>
+<td align="right">0.671</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 3.Salmon</td>
-<td align="right">0.424</td>
-<td align="right">0.298</td>
-<td align="right">0.006</td>
-<td align="right">0.020</td>
-<td align="right">0.167</td>
-<td align="right">0.376</td>
-<td align="right">0.654</td>
-<td align="right">0.971</td>
-<td align="right">0.996</td>
+<td align="right">0.428</td>
+<td align="right">0.294</td>
+<td align="right">0.002</td>
+<td align="right">0.011</td>
+<td align="right">0.171</td>
+<td align="right">0.401</td>
+<td align="right">0.664</td>
+<td align="right">0.945</td>
+<td align="right">0.985</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 1.Deer</td>
-<td align="right">0.836</td>
-<td align="right">0.071</td>
-<td align="right">0.696</td>
-<td align="right">0.726</td>
-<td align="right">0.798</td>
-<td align="right">0.840</td>
-<td align="right">0.880</td>
-<td align="right">0.939</td>
-<td align="right">0.963</td>
+<td align="right">0.863</td>
+<td align="right">0.044</td>
+<td align="right">0.767</td>
+<td align="right">0.787</td>
+<td align="right">0.838</td>
+<td align="right">0.866</td>
+<td align="right">0.892</td>
+<td align="right">0.927</td>
+<td align="right">0.938</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 1.Marine Mammals</td>
-<td align="right">0.053</td>
+<td align="right">0.048</td>
 <td align="right">0.042</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.016</td>
-<td align="right">0.047</td>
-<td align="right">0.081</td>
-<td align="right">0.129</td>
-<td align="right">0.146</td>
+<td align="right">0.000</td>
+<td align="right">0.010</td>
+<td align="right">0.039</td>
+<td align="right">0.079</td>
+<td align="right">0.123</td>
+<td align="right">0.136</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 1.Salmon</td>
-<td align="right">0.093</td>
+<td align="right">0.091</td>
 <td align="right">0.064</td>
 <td align="right">0.000</td>
 <td align="right">0.001</td>
-<td align="right">0.039</td>
-<td align="right">0.091</td>
-<td align="right">0.139</td>
-<td align="right">0.202</td>
-<td align="right">0.223</td>
+<td align="right">0.031</td>
+<td align="right">0.092</td>
+<td align="right">0.141</td>
+<td align="right">0.195</td>
+<td align="right">0.212</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 2.Deer</td>
-<td align="right">0.714</td>
-<td align="right">0.073</td>
-<td align="right">0.568</td>
-<td align="right">0.602</td>
-<td align="right">0.677</td>
-<td align="right">0.720</td>
-<td align="right">0.759</td>
-<td align="right">0.815</td>
-<td align="right">0.834</td>
+<td align="right">0.735</td>
+<td align="right">0.056</td>
+<td align="right">0.610</td>
+<td align="right">0.637</td>
+<td align="right">0.703</td>
+<td align="right">0.741</td>
+<td align="right">0.774</td>
+<td align="right">0.817</td>
+<td align="right">0.830</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 2.Marine Mammals</td>
-<td align="right">0.111</td>
-<td align="right">0.083</td>
+<td align="right">0.088</td>
+<td align="right">0.081</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.026</td>
-<td align="right">0.114</td>
-<td align="right">0.180</td>
+<td align="right">0.011</td>
+<td align="right">0.062</td>
+<td align="right">0.162</td>
+<td align="right">0.228</td>
 <td align="right">0.244</td>
-<td align="right">0.263</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 2.Salmon</td>
-<td align="right">0.199</td>
-<td align="right">0.113</td>
+<td align="right">0.191</td>
+<td align="right">0.120</td>
 <td align="right">0.000</td>
 <td align="right">0.002</td>
-<td align="right">0.111</td>
-<td align="right">0.222</td>
-<td align="right">0.284</td>
-<td align="right">0.357</td>
-<td align="right">0.380</td>
+<td align="right">0.073</td>
+<td align="right">0.216</td>
+<td align="right">0.291</td>
+<td align="right">0.358</td>
+<td align="right">0.377</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 3.Deer</td>
-<td align="right">0.805</td>
-<td align="right">0.072</td>
-<td align="right">0.663</td>
-<td align="right">0.693</td>
-<td align="right">0.766</td>
-<td align="right">0.808</td>
-<td align="right">0.849</td>
-<td align="right">0.911</td>
-<td align="right">0.935</td>
+<td align="right">0.828</td>
+<td align="right">0.052</td>
+<td align="right">0.718</td>
+<td align="right">0.740</td>
+<td align="right">0.797</td>
+<td align="right">0.831</td>
+<td align="right">0.862</td>
+<td align="right">0.905</td>
+<td align="right">0.919</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 3.Marine Mammals</td>
-<td align="right">0.078</td>
-<td align="right">0.060</td>
+<td align="right">0.065</td>
+<td align="right">0.054</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.023</td>
-<td align="right">0.074</td>
-<td align="right">0.123</td>
-<td align="right">0.182</td>
-<td align="right">0.200</td>
+<td align="right">0.000</td>
+<td align="right">0.014</td>
+<td align="right">0.056</td>
+<td align="right">0.108</td>
+<td align="right">0.160</td>
+<td align="right">0.175</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 3.Salmon</td>
-<td align="right">0.127</td>
-<td align="right">0.084</td>
+<td align="right">0.123</td>
+<td align="right">0.080</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.054</td>
-<td align="right">0.130</td>
-<td align="right">0.190</td>
-<td align="right">0.263</td>
-<td align="right">0.287</td>
+<td align="right">0.002</td>
+<td align="right">0.051</td>
+<td align="right">0.128</td>
+<td align="right">0.185</td>
+<td align="right">0.249</td>
+<td align="right">0.268</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 4.Deer</td>
-<td align="right">0.484</td>
-<td align="right">0.133</td>
-<td align="right">0.051</td>
-<td align="right">0.223</td>
-<td align="right">0.431</td>
-<td align="right">0.507</td>
-<td align="right">0.569</td>
-<td align="right">0.648</td>
-<td align="right">0.673</td>
+<td align="right">0.498</td>
+<td align="right">0.094</td>
+<td align="right">0.305</td>
+<td align="right">0.341</td>
+<td align="right">0.439</td>
+<td align="right">0.502</td>
+<td align="right">0.562</td>
+<td align="right">0.643</td>
+<td align="right">0.668</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 4.Marine Mammals</td>
-<td align="right">0.110</td>
-<td align="right">0.125</td>
+<td align="right">0.115</td>
+<td align="right">0.118</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.005</td>
-<td align="right">0.047</td>
-<td align="right">0.205</td>
-<td align="right">0.355</td>
-<td align="right">0.386</td>
+<td align="right">0.013</td>
+<td align="right">0.067</td>
+<td align="right">0.206</td>
+<td align="right">0.343</td>
+<td align="right">0.369</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 4.Salmon</td>
-<td align="right">0.430</td>
-<td align="right">0.228</td>
-<td align="right">0.001</td>
-<td align="right">0.007</td>
-<td align="right">0.316</td>
-<td align="right">0.453</td>
-<td align="right">0.556</td>
-<td align="right">0.822</td>
-<td align="right">0.987</td>
+<td align="right">0.458</td>
+<td align="right">0.166</td>
+<td align="right">0.011</td>
+<td align="right">0.064</td>
+<td align="right">0.389</td>
+<td align="right">0.482</td>
+<td align="right">0.562</td>
+<td align="right">0.679</td>
+<td align="right">0.721</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 5.Deer</td>
-<td align="right">0.292</td>
-<td align="right">0.144</td>
-<td align="right">0.000</td>
-<td align="right">0.005</td>
-<td align="right">0.204</td>
-<td align="right">0.312</td>
-<td align="right">0.396</td>
-<td align="right">0.500</td>
-<td align="right">0.533</td>
+<td align="right">0.300</td>
+<td align="right">0.116</td>
+<td align="right">0.046</td>
+<td align="right">0.101</td>
+<td align="right">0.225</td>
+<td align="right">0.301</td>
+<td align="right">0.379</td>
+<td align="right">0.489</td>
+<td align="right">0.524</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 5.Marine Mammals</td>
-<td align="right">0.084</td>
-<td align="right">0.126</td>
+<td align="right">0.137</td>
+<td align="right">0.148</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.004</td>
-<td align="right">0.026</td>
-<td align="right">0.104</td>
-<td align="right">0.398</td>
-<td align="right">0.460</td>
+<td align="right">0.017</td>
+<td align="right">0.077</td>
+<td align="right">0.222</td>
+<td align="right">0.447</td>
+<td align="right">0.487</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 5.Salmon</td>
-<td align="right">0.599</td>
-<td align="right">0.256</td>
-<td align="right">0.003</td>
-<td align="right">0.017</td>
-<td align="right">0.502</td>
-<td align="right">0.640</td>
-<td align="right">0.762</td>
-<td align="right">0.978</td>
-<td align="right">0.999</td>
+<td align="right">0.630</td>
+<td align="right">0.188</td>
+<td align="right">0.046</td>
+<td align="right">0.235</td>
+<td align="right">0.551</td>
+<td align="right">0.659</td>
+<td align="right">0.751</td>
+<td align="right">0.876</td>
+<td align="right">0.918</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 6.Deer</td>
-<td align="right">0.726</td>
-<td align="right">0.061</td>
-<td align="right">0.606</td>
-<td align="right">0.632</td>
-<td align="right">0.694</td>
-<td align="right">0.730</td>
-<td align="right">0.764</td>
-<td align="right">0.812</td>
-<td align="right">0.827</td>
+<td align="right">0.734</td>
+<td align="right">0.059</td>
+<td align="right">0.600</td>
+<td align="right">0.630</td>
+<td align="right">0.701</td>
+<td align="right">0.740</td>
+<td align="right">0.774</td>
+<td align="right">0.817</td>
+<td align="right">0.830</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 6.Marine Mammals</td>
-<td align="right">0.137</td>
-<td align="right">0.089</td>
+<td align="right">0.120</td>
+<td align="right">0.082</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.050</td>
-<td align="right">0.154</td>
-<td align="right">0.209</td>
-<td align="right">0.265</td>
-<td align="right">0.281</td>
+<td align="right">0.000</td>
+<td align="right">0.035</td>
+<td align="right">0.135</td>
+<td align="right">0.190</td>
+<td align="right">0.235</td>
+<td align="right">0.247</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 6.Salmon</td>
-<td align="right">0.157</td>
-<td align="right">0.111</td>
+<td align="right">0.158</td>
+<td align="right">0.115</td>
 <td align="right">0.000</td>
-<td align="right">0.002</td>
-<td align="right">0.062</td>
+<td align="right">0.001</td>
+<td align="right">0.053</td>
 <td align="right">0.153</td>
-<td align="right">0.236</td>
-<td align="right">0.343</td>
-<td align="right">0.380</td>
+<td align="right">0.244</td>
+<td align="right">0.352</td>
+<td align="right">0.383</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 7.Deer</td>
-<td align="right">0.262</td>
-<td align="right">0.138</td>
-<td align="right">0.000</td>
-<td align="right">0.006</td>
-<td align="right">0.163</td>
-<td align="right">0.283</td>
-<td align="right">0.368</td>
-<td align="right">0.462</td>
-<td align="right">0.490</td>
+<td align="right">0.338</td>
+<td align="right">0.118</td>
+<td align="right">0.045</td>
+<td align="right">0.107</td>
+<td align="right">0.269</td>
+<td align="right">0.356</td>
+<td align="right">0.423</td>
+<td align="right">0.499</td>
+<td align="right">0.521</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 7.Marine Mammals</td>
-<td align="right">0.368</td>
-<td align="right">0.195</td>
+<td align="right">0.386</td>
+<td align="right">0.185</td>
 <td align="right">0.000</td>
-<td align="right">0.001</td>
-<td align="right">0.238</td>
-<td align="right">0.435</td>
-<td align="right">0.515</td>
-<td align="right">0.597</td>
-<td align="right">0.621</td>
+<td align="right">0.004</td>
+<td align="right">0.280</td>
+<td align="right">0.449</td>
+<td align="right">0.525</td>
+<td align="right">0.596</td>
+<td align="right">0.616</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 7.Salmon</td>
-<td align="right">0.421</td>
-<td align="right">0.299</td>
-<td align="right">0.001</td>
-<td align="right">0.008</td>
-<td align="right">0.137</td>
-<td align="right">0.413</td>
-<td align="right">0.670</td>
-<td align="right">0.927</td>
-<td align="right">0.989</td>
+<td align="right">0.300</td>
+<td align="right">0.261</td>
+<td align="right">0.000</td>
+<td align="right">0.003</td>
+<td align="right">0.077</td>
+<td align="right">0.232</td>
+<td align="right">0.471</td>
+<td align="right">0.821</td>
+<td align="right">0.915</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 8.Deer</td>
-<td align="right">0.163</td>
-<td align="right">0.129</td>
+<td align="right">0.195</td>
+<td align="right">0.143</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.045</td>
-<td align="right">0.150</td>
-<td align="right">0.256</td>
-<td align="right">0.392</td>
-<td align="right">0.433</td>
+<td align="right">0.001</td>
+<td align="right">0.069</td>
+<td align="right">0.180</td>
+<td align="right">0.306</td>
+<td align="right">0.443</td>
+<td align="right">0.475</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 8.Marine Mammals</td>
-<td align="right">0.276</td>
-<td align="right">0.196</td>
+<td align="right">0.298</td>
+<td align="right">0.186</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.076</td>
-<td align="right">0.297</td>
-<td align="right">0.442</td>
-<td align="right">0.567</td>
-<td align="right">0.602</td>
+<td align="right">0.001</td>
+<td align="right">0.130</td>
+<td align="right">0.329</td>
+<td align="right">0.461</td>
+<td align="right">0.554</td>
+<td align="right">0.578</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 8.Salmon</td>
-<td align="right">0.607</td>
-<td align="right">0.299</td>
-<td align="right">0.011</td>
-<td align="right">0.043</td>
-<td align="right">0.392</td>
-<td align="right">0.653</td>
-<td align="right">0.863</td>
-<td align="right">0.999</td>
-<td align="right">1.000</td>
+<td align="right">0.408</td>
+<td align="right">0.305</td>
+<td align="right">0.001</td>
+<td align="right">0.006</td>
+<td align="right">0.136</td>
+<td align="right">0.363</td>
+<td align="right">0.652</td>
+<td align="right">0.965</td>
+<td align="right">0.995</td>
 </tr>
 </tbody>
 </table>
@@ -714,339 +714,339 @@ saved, so those rows have no W1):</p>
 <tbody>
 <tr class="odd">
 <td align="left">Region.SD</td>
-<td align="right">2.005</td>
+<td align="right">2.086</td>
 <td align="right">1.147</td>
-<td align="right">2.776</td>
+<td align="right">2.234</td>
 <td align="right">1.212</td>
-<td align="left">0.05 to 11.07</td>
+<td align="left">0.16 to 8.54</td>
 <td align="left">0.05 to 4.15</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">Pack.SD</td>
-<td align="right">1.208</td>
+<td align="right">1.038</td>
 <td align="right">1.299</td>
-<td align="right">1.393</td>
+<td align="right">0.808</td>
 <td align="right">0.626</td>
-<td align="left">0.23 to 4.42</td>
+<td align="left">0.37 to 2.77</td>
 <td align="left">0.56 to 2.78</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">Epsilon.1</td>
-<td align="right">0.853</td>
+<td align="right">0.953</td>
 <td align="right">1.042</td>
-<td align="right">0.643</td>
+<td align="right">0.560</td>
 <td align="right">0.380</td>
-<td align="left">0.20 to 2.30</td>
+<td align="left">0.27 to 2.25</td>
 <td align="left">0.48 to 1.95</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">Epsilon.2</td>
-<td align="right">0.621</td>
+<td align="right">0.536</td>
 <td align="right">0.465</td>
-<td align="right">0.415</td>
+<td align="right">0.302</td>
 <td align="right">0.189</td>
-<td align="left">0.19 to 1.49</td>
+<td align="left">0.22 to 1.18</td>
 <td align="left">0.21 to 0.93</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">p.global.Deer</td>
-<td align="right">0.436</td>
+<td align="right">0.485</td>
 <td align="right">0.522</td>
 <td align="right">0.201</td>
 <td align="right">0.178</td>
-<td align="left">0.07 to 0.82</td>
+<td align="left">0.10 to 0.85</td>
 <td align="left">0.14 to 0.83</td>
-<td align="right">0.087</td>
+<td align="right">0.040</td>
 </tr>
 <tr class="even">
 <td align="left">p.global.Marine Mammals</td>
-<td align="right">0.221</td>
+<td align="right">0.206</td>
 <td align="right">0.209</td>
-<td align="right">0.157</td>
+<td align="right">0.161</td>
 <td align="right">0.143</td>
-<td align="left">0.01 to 0.60</td>
+<td align="left">0.01 to 0.63</td>
 <td align="left">0.03 to 0.59</td>
-<td align="right">0.019</td>
+<td align="right">0.018</td>
 </tr>
 <tr class="odd">
 <td align="left">p.global.Salmon</td>
-<td align="right">0.331</td>
+<td align="right">0.321</td>
 <td align="right">0.268</td>
-<td align="right">0.197</td>
+<td align="right">0.199</td>
 <td align="right">0.161</td>
-<td align="left">0.03 to 0.76</td>
+<td align="left">0.03 to 0.77</td>
 <td align="left">0.04 to 0.67</td>
-<td align="right">0.065</td>
+<td align="right">0.055</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 1.Deer</td>
-<td align="right">0.634</td>
+<td align="right">0.747</td>
 <td align="right">0.700</td>
-<td align="right">0.207</td>
+<td align="right">0.182</td>
 <td align="right">0.159</td>
-<td align="left">0.12 to 0.93</td>
+<td align="left">0.22 to 0.97</td>
 <td align="left">0.34 to 0.94</td>
-<td align="right">0.066</td>
+<td align="right">0.060</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 1.Marine Mammals</td>
-<td align="right">0.116</td>
+<td align="right">0.097</td>
 <td align="right">0.117</td>
-<td align="right">0.123</td>
+<td align="right">0.109</td>
 <td align="right">0.101</td>
-<td align="left">0.00 to 0.44</td>
+<td align="left">0.00 to 0.38</td>
 <td align="left">0.00 to 0.39</td>
-<td align="right">0.011</td>
+<td align="right">0.024</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 1.Salmon</td>
-<td align="right">0.178</td>
 <td align="right">0.183</td>
-<td align="right">0.146</td>
+<td align="right">0.183</td>
+<td align="right">0.153</td>
 <td align="right">0.140</td>
-<td align="left">0.00 to 0.53</td>
+<td align="left">0.00 to 0.58</td>
 <td align="left">0.00 to 0.52</td>
-<td align="right">0.010</td>
+<td align="right">0.012</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 2.Deer</td>
-<td align="right">0.424</td>
+<td align="right">0.475</td>
 <td align="right">0.551</td>
-<td align="right">0.193</td>
+<td align="right">0.172</td>
 <td align="right">0.159</td>
-<td align="left">0.04 to 0.80</td>
+<td align="left">0.12 to 0.81</td>
 <td align="left">0.23 to 0.87</td>
-<td align="right">0.127</td>
+<td align="right">0.076</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 2.Marine Mammals</td>
-<td align="right">0.150</td>
+<td align="right">0.176</td>
 <td align="right">0.178</td>
-<td align="right">0.152</td>
+<td align="right">0.141</td>
 <td align="right">0.108</td>
-<td align="left">0.00 to 0.54</td>
+<td align="left">0.00 to 0.51</td>
 <td align="left">0.03 to 0.42</td>
-<td align="right">0.049</td>
+<td align="right">0.028</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 2.Salmon</td>
-<td align="right">0.373</td>
+<td align="right">0.440</td>
 <td align="right">0.271</td>
-<td align="right">0.254</td>
+<td align="right">0.222</td>
 <td align="right">0.149</td>
-<td align="left">0.01 to 0.92</td>
+<td align="left">0.01 to 0.86</td>
 <td align="left">0.05 to 0.61</td>
-<td align="right">0.121</td>
+<td align="right">0.172</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 3.Deer</td>
-<td align="right">0.240</td>
+<td align="right">0.309</td>
 <td align="right">0.432</td>
-<td align="right">0.211</td>
+<td align="right">0.214</td>
 <td align="right">0.222</td>
-<td align="left">0.00 to 0.76</td>
+<td align="left">0.00 to 0.77</td>
 <td align="left">0.02 to 0.86</td>
-<td align="right">0.192</td>
+<td align="right">0.122</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Region 3.Marine Mammals</td>
-<td align="right">0.230</td>
+<td align="right">0.244</td>
 <td align="right">0.265</td>
-<td align="right">0.197</td>
+<td align="right">0.187</td>
 <td align="right">0.198</td>
-<td align="left">0.00 to 0.72</td>
+<td align="left">0.00 to 0.67</td>
 <td align="left">0.01 to 0.78</td>
-<td align="right">0.036</td>
+<td align="right">0.022</td>
 </tr>
 <tr class="even">
 <td align="left">p.Region 3.Salmon</td>
-<td align="right">0.424</td>
+<td align="right">0.428</td>
 <td align="right">0.303</td>
-<td align="right">0.298</td>
+<td align="right">0.294</td>
 <td align="right">0.223</td>
-<td align="left">0.01 to 1.00</td>
+<td align="left">0.00 to 0.98</td>
 <td align="left">0.01 to 0.90</td>
-<td align="right">0.124</td>
+<td align="right">0.131</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 1.Deer</td>
-<td align="right">0.836</td>
+<td align="right">0.863</td>
 <td align="right">0.855</td>
-<td align="right">0.071</td>
+<td align="right">0.044</td>
 <td align="right">0.030</td>
-<td align="left">0.70 to 0.96</td>
+<td align="left">0.77 to 0.94</td>
 <td align="left">0.80 to 0.91</td>
-<td align="right">0.030</td>
+<td align="right">0.014</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 1.Marine Mammals</td>
-<td align="right">0.053</td>
+<td align="right">0.048</td>
 <td align="right">0.054</td>
 <td align="right">0.042</td>
 <td align="right">0.038</td>
-<td align="left">0.00 to 0.15</td>
+<td align="left">0.00 to 0.14</td>
 <td align="left">0.00 to 0.13</td>
-<td align="right">0.004</td>
+<td align="right">0.007</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 1.Salmon</td>
-<td align="right">0.093</td>
+<td align="right">0.091</td>
 <td align="right">0.092</td>
 <td align="right">0.064</td>
 <td align="right">0.056</td>
-<td align="left">0.00 to 0.22</td>
+<td align="left">0.00 to 0.21</td>
 <td align="left">0.00 to 0.19</td>
-<td align="right">0.006</td>
+<td align="right">0.007</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 2.Deer</td>
-<td align="right">0.714</td>
+<td align="right">0.735</td>
 <td align="right">0.732</td>
-<td align="right">0.073</td>
+<td align="right">0.056</td>
 <td align="right">0.041</td>
-<td align="left">0.57 to 0.83</td>
+<td align="left">0.61 to 0.83</td>
 <td align="left">0.65 to 0.80</td>
-<td align="right">0.024</td>
+<td align="right">0.011</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 2.Marine Mammals</td>
-<td align="right">0.111</td>
+<td align="right">0.088</td>
 <td align="right">0.099</td>
-<td align="right">0.083</td>
+<td align="right">0.081</td>
 <td align="right">0.074</td>
-<td align="left">0.00 to 0.26</td>
+<td align="left">0.00 to 0.24</td>
 <td align="left">0.00 to 0.22</td>
 <td align="right">0.014</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 2.Salmon</td>
-<td align="right">0.199</td>
+<td align="right">0.191</td>
 <td align="right">0.169</td>
-<td align="right">0.113</td>
+<td align="right">0.120</td>
 <td align="right">0.109</td>
 <td align="left">0.00 to 0.38</td>
 <td align="left">0.00 to 0.34</td>
-<td align="right">0.031</td>
+<td align="right">0.025</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 3.Deer</td>
-<td align="right">0.805</td>
+<td align="right">0.828</td>
 <td align="right">0.831</td>
-<td align="right">0.072</td>
+<td align="right">0.052</td>
 <td align="right">0.037</td>
-<td align="left">0.66 to 0.94</td>
+<td align="left">0.72 to 0.92</td>
 <td align="left">0.75 to 0.90</td>
-<td align="right">0.031</td>
+<td align="right">0.010</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 3.Marine Mammals</td>
-<td align="right">0.078</td>
+<td align="right">0.065</td>
 <td align="right">0.066</td>
-<td align="right">0.060</td>
+<td align="right">0.054</td>
 <td align="right">0.047</td>
-<td align="left">0.00 to 0.20</td>
+<td align="left">0.00 to 0.18</td>
 <td align="left">0.00 to 0.16</td>
-<td align="right">0.014</td>
+<td align="right">0.007</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 3.Salmon</td>
-<td align="right">0.127</td>
+<td align="right">0.123</td>
 <td align="right">0.104</td>
-<td align="right">0.084</td>
+<td align="right">0.080</td>
 <td align="right">0.067</td>
-<td align="left">0.00 to 0.29</td>
+<td align="left">0.00 to 0.27</td>
 <td align="left">0.00 to 0.23</td>
-<td align="right">0.025</td>
+<td align="right">0.021</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 4.Deer</td>
-<td align="right">0.484</td>
+<td align="right">0.498</td>
 <td align="right">0.461</td>
-<td align="right">0.133</td>
+<td align="right">0.094</td>
 <td align="right">0.051</td>
-<td align="left">0.05 to 0.67</td>
+<td align="left">0.30 to 0.67</td>
 <td align="left">0.36 to 0.55</td>
-<td align="right">0.066</td>
+<td align="right">0.047</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 4.Marine Mammals</td>
-<td align="right">0.110</td>
+<td align="right">0.115</td>
 <td align="right">0.067</td>
-<td align="right">0.125</td>
+<td align="right">0.118</td>
 <td align="right">0.052</td>
-<td align="left">0.00 to 0.39</td>
+<td align="left">0.00 to 0.37</td>
 <td align="left">0.00 to 0.19</td>
-<td align="right">0.057</td>
+<td align="right">0.055</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 4.Salmon</td>
-<td align="right">0.430</td>
+<td align="right">0.458</td>
 <td align="right">0.472</td>
-<td align="right">0.228</td>
+<td align="right">0.166</td>
 <td align="right">0.088</td>
-<td align="left">0.00 to 0.99</td>
+<td align="left">0.01 to 0.72</td>
 <td align="left">0.29 to 0.63</td>
-<td align="right">0.105</td>
+<td align="right">0.051</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 5.Deer</td>
+<td align="right">0.300</td>
 <td align="right">0.292</td>
-<td align="right">0.292</td>
-<td align="right">0.144</td>
+<td align="right">0.116</td>
 <td align="right">0.064</td>
-<td align="left">0.00 to 0.53</td>
+<td align="left">0.05 to 0.52</td>
 <td align="left">0.16 to 0.41</td>
-<td align="right">0.065</td>
+<td align="right">0.042</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 5.Marine Mammals</td>
-<td align="right">0.084</td>
+<td align="right">0.137</td>
 <td align="right">0.079</td>
-<td align="right">0.126</td>
+<td align="right">0.148</td>
 <td align="right">0.066</td>
-<td align="left">0.00 to 0.46</td>
+<td align="left">0.00 to 0.49</td>
 <td align="left">0.00 to 0.23</td>
-<td align="right">0.043</td>
+<td align="right">0.062</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 5.Salmon</td>
-<td align="right">0.599</td>
+<td align="right">0.630</td>
 <td align="right">0.629</td>
-<td align="right">0.256</td>
+<td align="right">0.188</td>
 <td align="right">0.111</td>
-<td align="left">0.00 to 1.00</td>
+<td align="left">0.05 to 0.92</td>
 <td align="left">0.39 to 0.82</td>
-<td align="right">0.101</td>
+<td align="right">0.051</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 6.Deer</td>
-<td align="right">0.726</td>
+<td align="right">0.734</td>
 <td align="right">0.751</td>
-<td align="right">0.061</td>
+<td align="right">0.059</td>
 <td align="right">0.030</td>
-<td align="left">0.61 to 0.83</td>
+<td align="left">0.60 to 0.83</td>
 <td align="left">0.69 to 0.80</td>
-<td align="right">0.030</td>
+<td align="right">0.025</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 6.Marine Mammals</td>
-<td align="right">0.137</td>
+<td align="right">0.120</td>
 <td align="right">0.170</td>
-<td align="right">0.089</td>
+<td align="right">0.082</td>
 <td align="right">0.042</td>
-<td align="left">0.00 to 0.28</td>
+<td align="left">0.00 to 0.25</td>
 <td align="left">0.06 to 0.23</td>
-<td align="right">0.048</td>
+<td align="right">0.054</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 6.Salmon</td>
-<td align="right">0.157</td>
+<td align="right">0.158</td>
 <td align="right">0.078</td>
-<td align="right">0.111</td>
+<td align="right">0.115</td>
 <td align="right">0.063</td>
 <td align="left">0.00 to 0.38</td>
 <td align="left">0.00 to 0.24</td>
@@ -1054,63 +1054,63 @@ saved, so those rows have no W1):</p>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 7.Deer</td>
-<td align="right">0.262</td>
+<td align="right">0.338</td>
 <td align="right">0.370</td>
-<td align="right">0.138</td>
+<td align="right">0.118</td>
 <td align="right">0.053</td>
-<td align="left">0.00 to 0.49</td>
+<td align="left">0.05 to 0.52</td>
 <td align="left">0.24 to 0.45</td>
-<td align="right">0.114</td>
+<td align="right">0.056</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 7.Marine Mammals</td>
-<td align="right">0.368</td>
+<td align="right">0.386</td>
 <td align="right">0.490</td>
-<td align="right">0.195</td>
+<td align="right">0.185</td>
 <td align="right">0.080</td>
 <td align="left">0.00 to 0.62</td>
 <td align="left">0.28 to 0.59</td>
-<td align="right">0.127</td>
+<td align="right">0.109</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 7.Salmon</td>
-<td align="right">0.421</td>
+<td align="right">0.300</td>
 <td align="right">0.140</td>
-<td align="right">0.299</td>
+<td align="right">0.261</td>
 <td align="right">0.121</td>
-<td align="left">0.00 to 0.99</td>
+<td align="left">0.00 to 0.91</td>
 <td align="left">0.01 to 0.45</td>
-<td align="right">0.282</td>
+<td align="right">0.162</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 8.Deer</td>
-<td align="right">0.163</td>
+<td align="right">0.195</td>
 <td align="right">0.286</td>
-<td align="right">0.129</td>
+<td align="right">0.143</td>
 <td align="right">0.099</td>
-<td align="left">0.00 to 0.43</td>
+<td align="left">0.00 to 0.48</td>
 <td align="left">0.02 to 0.46</td>
-<td align="right">0.124</td>
+<td align="right">0.094</td>
 </tr>
 <tr class="odd">
 <td align="left">p.Pack 8.Marine Mammals</td>
-<td align="right">0.276</td>
+<td align="right">0.298</td>
 <td align="right">0.374</td>
-<td align="right">0.196</td>
+<td align="right">0.186</td>
 <td align="right">0.129</td>
-<td align="left">0.00 to 0.60</td>
+<td align="left">0.00 to 0.58</td>
 <td align="left">0.00 to 0.54</td>
-<td align="right">0.111</td>
+<td align="right">0.086</td>
 </tr>
 <tr class="even">
 <td align="left">p.Pack 8.Salmon</td>
-<td align="right">0.607</td>
+<td align="right">0.408</td>
 <td align="right">0.339</td>
-<td align="right">0.299</td>
+<td align="right">0.305</td>
 <td align="right">0.219</td>
-<td align="left">0.01 to 1.00</td>
+<td align="left">0.00 to 0.99</td>
 <td align="left">0.02 to 0.96</td>
-<td align="right">0.268</td>
+<td align="right">0.110</td>
 </tr>
 </tbody>
 </table>
@@ -1130,16 +1130,107 @@ regions and the packs:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_compare.html">plot_compare</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">ref</span><span class="op">$</span><span class="va">draws</span>, type <span class="op">=</span> <span class="st">"means"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="wolves_files/figure-html/compare-means-1.png" class="r-plt" alt="" width="100%"></p>
 <p><strong>What this shows.</strong> For the global and region diets,
-MixSIARPFN’s posterior means differ from MixSIAR’s by 0.05 and 0.08 on
+MixSIARPFN’s posterior means differ from MixSIAR’s by 0.03 and 0.06 on
 average, against MixSIAR posterior SDs of about 0.16 and 0.16, and its
-posteriors are a little wider (median SD ratio 1.13 and 1.22). The pack
-diets differ more. Most pack means are close (median difference 0.03),
-but MixSIARPFN’s pack posteriors are about twice as wide (median SD
-ratio 1.93) and a few means are far off, the largest being Pack 7.Salmon
-(0.42 against 0.14). The Region and Pack SDs and the residual
-multipliers are also wider. For a dataset like this, with many small
-levels, MixSIARPFN gives a quick first answer, and a MixSIAR run is the
-more precise one when time allows.</p>
+posteriors are a little wider (median SD ratio 1.13 and 1.10). The pack
+diets differ more. Most pack means are close (median difference 0.02),
+but MixSIARPFN’s pack posteriors are wider (median SD ratio 1.58) and a
+few means are further off, the largest being Region 2.Salmon (0.44
+against 0.27). The Region and Pack SDs and the residual multipliers are
+also wider. For a dataset like this, with many small levels, MixSIARPFN
+gives a quick first answer, and a MixSIAR run is the more precise one
+when time allows.</p>
+</div>
+<div class="section level2">
+<h2 id="does-mixsiars-model-fit-these-data">Does MixSIAR’s model fit these data?<a class="anchor" aria-label="anchor" href="#does-mixsiars-model-fit-these-data"></a>
+</h2>
+<p>The comparison above takes MixSIAR as the reference. That is fair
+only where MixSIAR’s model describes the data, which a posterior
+predictive check can test: MixSIAR’s fitted model generates new
+datasets, one per posterior draw, and the real data are compared with
+them pack by pack. MixSIARPFN gives marginal posteriors only, so it
+cannot run this check itself; the results come from a separate MixSIAR
+run with the same model and data, shipped with the package
+(<code>mixsiar_reference("wolves")$ppc</code>). For each pack, the plot
+shows each tracer’s mean and SD and the correlation between the tracers,
+on the standardised scale MixSIAR’s model uses:</p>
+<p><img src="wolves_files/figure-html/ppc-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<p>5 of the 40 pack statistics fall outside the 95% range of the model’s
+datasets (4 outside 99%). For six datasets simulated from MixSIAR’s own
+model with the same design the count is 0 to 2 (about 2 are expected by
+chance). The clearest failure is the correlation between δ¹³C and δ¹⁵N
+within packs: Pack 4 0.98, Pack 5 1.00, Pack 6 0.83, Pack 8 0.97, where
+the model’s datasets give about 0. The wolves of these packs lie on a
+line in isospace, which is what wolves eating different mixes of the
+same prey would produce. MixSIAR’s model has no diet variation between
+the wolves of a pack, so it can only treat that spread as residual
+error. The checks on the whole dataset (each tracer’s mean, SD and
+range, and the total log-likelihood) pass, so MixSIAR’s usual output
+would not show this.</p>
+<p>Where the model does not fit, MixSIAR’s posterior is not a correct
+answer for MixSIARPFN to match, and the two can differ more. Here the
+two fits differ most in the packs that fail the check, and in pack 7,
+whose four wolves are too few for the check to say much (the model’s
+datasets give its correlation anywhere from about -0.95 to 0.95):</p>
+<table class="table">
+<colgroup>
+<col width="9%">
+<col width="41%">
+<col width="49%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Pack</th>
+<th align="right">Statistics outside 95% (of 5)</th>
+<th align="right">Mean W1, MixSIARPFN against MixSIAR</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Pack 1</td>
+<td align="right">1</td>
+<td align="right">0.009</td>
+</tr>
+<tr class="even">
+<td align="left">Pack 2</td>
+<td align="right">0</td>
+<td align="right">0.017</td>
+</tr>
+<tr class="odd">
+<td align="left">Pack 3</td>
+<td align="right">0</td>
+<td align="right">0.012</td>
+</tr>
+<tr class="even">
+<td align="left">Pack 4</td>
+<td align="right">1</td>
+<td align="right">0.051</td>
+</tr>
+<tr class="odd">
+<td align="left">Pack 5</td>
+<td align="right">1</td>
+<td align="right">0.052</td>
+</tr>
+<tr class="even">
+<td align="left">Pack 6</td>
+<td align="right">1</td>
+<td align="right">0.053</td>
+</tr>
+<tr class="odd">
+<td align="left">Pack 7</td>
+<td align="right">0</td>
+<td align="right">0.109</td>
+</tr>
+<tr class="even">
+<td align="left">Pack 8</td>
+<td align="right">1</td>
+<td align="right">0.097</td>
+</tr>
+</tbody>
+</table>
+<p>The mean W1 is 0.063 for the packs whose tracers are strongly
+correlated, against 0.013 for packs 1, 2, 3. On data like these, the
+differences between MixSIARPFN and MixSIAR say as much about the model
+as about either method: both are fitting a model that leaves out
+structure the data show.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -128,3 +128,23 @@ MixSIAR's by `r num(mean(gaps))` on average (MixSIAR's posterior SDs are about
 `r num(mean(diet$mixsiar_sd))`), and its SDs are about the same (median SD ratio
 `r num(median(diet$sd_ratio))`). The largest difference is for
 `r if (ok) worst$source` (`r num(worst$pfn_mean)` against `r num(worst$mixsiar_mean)`).
+
+## Does MixSIAR's model fit these data?
+
+The comparison takes MixSIAR as the reference, which is fair where MixSIAR's model
+describes the data. A posterior predictive check tests that: MixSIAR's fitted model
+generates new datasets, one per posterior draw, and the real data are compared with
+them. MixSIARPFN gives marginal posteriors only, so it cannot run this check itself;
+the results come from a separate MixSIAR run with the same model and data, shipped with
+the package (`mixsiar_reference("killerwhale")$ppc`). Each tracer's mean and SD and the
+correlation between the tracers, on the standardised scale MixSIAR's model uses:
+
+```{r ppc-plot, echo = FALSE, fig.height = 5}
+MixSIARPFN:::plot_ppc(ref$ppc)
+```
+
+`r if (ok) ref$ppc$summary$extreme_95` of the `r if (ok) ref$ppc$summary$group_stats`
+statistics fall outside the 95% range of the model's datasets: the twelve killer whales
+look like data MixSIAR's model generates, so its posterior is a fair reference here, and
+MixSIARPFN agrees with it closely. The geese and wolves vignettes show what happens when
+the check fails.

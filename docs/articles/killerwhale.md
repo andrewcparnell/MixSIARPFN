@@ -47,18 +47,18 @@ time <- system.time(
                  resid_err = TRUE, process_err = TRUE)
 )
 fit
-#> MixSIARPFN fit (Residual * Process error), 5 sources, in 0.2 s
+#> MixSIARPFN fit (Residual * Process error), 5 sources, in 0.3 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>     source  mean    sd  2.5% 97.5%
-#>    Chinook 0.351 0.119 0.075 0.535
-#>       Chum 0.125 0.100 0.004 0.370
-#>       Coho 0.189 0.138 0.008 0.510
-#>    Sockeye 0.093 0.069 0.003 0.252
-#>  Steelhead 0.207 0.106 0.015 0.393
+#>    Chinook 0.358 0.124 0.073 0.542
+#>       Chum 0.128 0.101 0.004 0.371
+#>       Coho 0.173 0.138 0.006 0.517
+#>    Sockeye 0.086 0.068 0.003 0.247
+#>  Steelhead 0.231 0.105 0.022 0.407
 #> Use output_pfn() for every proportion and parameter.
 ```
 
-The fit took 0.2 seconds.
+The fit took 0.3 seconds.
 
 ## Results
 
@@ -73,13 +73,13 @@ knitr::kable(round(summary_table(fit), 3))
 
 |                    |  Mean |    SD |  2.5% |    5% |   25% |   50% |   75% |   95% | 97.5% |
 |:-------------------|------:|------:|------:|------:|------:|------:|------:|------:|------:|
-| Epsilon.1          | 1.056 | 0.763 | 0.323 | 0.380 | 0.620 | 0.879 | 1.270 | 2.254 | 2.769 |
-| Epsilon.2          | 2.392 | 1.639 | 0.684 | 0.808 | 1.352 | 1.974 | 2.922 | 5.321 | 6.576 |
-| p.global.Chinook   | 0.351 | 0.119 | 0.075 | 0.119 | 0.280 | 0.371 | 0.437 | 0.513 | 0.535 |
-| p.global.Chum      | 0.125 | 0.100 | 0.004 | 0.009 | 0.047 | 0.102 | 0.181 | 0.322 | 0.370 |
-| p.global.Coho      | 0.189 | 0.138 | 0.008 | 0.016 | 0.078 | 0.161 | 0.274 | 0.455 | 0.510 |
-| p.global.Sockeye   | 0.093 | 0.069 | 0.003 | 0.007 | 0.037 | 0.080 | 0.137 | 0.224 | 0.252 |
-| p.global.Steelhead | 0.207 | 0.106 | 0.015 | 0.029 | 0.124 | 0.215 | 0.290 | 0.370 | 0.393 |
+| Epsilon.1          | 1.062 | 0.764 | 0.317 | 0.374 | 0.616 | 0.882 | 1.282 | 2.296 | 2.840 |
+| Epsilon.2          | 2.418 | 1.687 | 0.675 | 0.801 | 1.356 | 1.982 | 2.935 | 5.490 | 6.842 |
+| p.global.Chinook   | 0.358 | 0.124 | 0.073 | 0.117 | 0.278 | 0.383 | 0.453 | 0.523 | 0.542 |
+| p.global.Chum      | 0.128 | 0.101 | 0.004 | 0.009 | 0.048 | 0.106 | 0.186 | 0.325 | 0.371 |
+| p.global.Coho      | 0.173 | 0.138 | 0.006 | 0.013 | 0.065 | 0.137 | 0.247 | 0.457 | 0.517 |
+| p.global.Sockeye   | 0.086 | 0.068 | 0.003 | 0.005 | 0.031 | 0.071 | 0.127 | 0.219 | 0.247 |
+| p.global.Steelhead | 0.231 | 0.105 | 0.022 | 0.042 | 0.154 | 0.242 | 0.312 | 0.386 | 0.407 |
 
 ``` r
 out$plots$global
@@ -107,7 +107,7 @@ cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
 
 MixSIAR 3.1.12 fitted the same model with 3 chains of 1,000,000
 iterations (burn-in 500,000), which took about 23 minutes (largest
-Gelman-Rubin diagnostic 1.005). MixSIARPFN took 0.2 seconds.
+Gelman-Rubin diagnostic 1.005). MixSIARPFN took 0.3 seconds.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how far,
 on average, one posterior’s mass has to move to match the other, on the
@@ -126,13 +126,13 @@ knitr::kable(data.frame(
 
 | quantity | MixSIARPFN mean | MixSIAR mean | MixSIARPFN SD | MixSIAR SD | MixSIARPFN 95% CI | MixSIAR 95% CI | W1 |
 |:---|---:|---:|---:|---:|:---|:---|---:|
-| Epsilon.1 | 1.056 | 1.082 | 0.763 | 0.802 | 0.32 to 2.77 | 0.33 to 3.10 | NA |
-| Epsilon.2 | 2.392 | 2.585 | 1.639 | 1.997 | 0.68 to 6.58 | 0.72 to 8.28 | NA |
-| p.global.Chinook | 0.351 | 0.369 | 0.119 | 0.111 | 0.08 to 0.54 | 0.09 to 0.52 | 0.019 |
-| p.global.Chum | 0.125 | 0.106 | 0.100 | 0.092 | 0.00 to 0.37 | 0.00 to 0.32 | 0.020 |
-| p.global.Coho | 0.189 | 0.172 | 0.138 | 0.136 | 0.01 to 0.51 | 0.01 to 0.51 | 0.018 |
-| p.global.Sockeye | 0.093 | 0.067 | 0.069 | 0.056 | 0.00 to 0.25 | 0.00 to 0.20 | 0.026 |
-| p.global.Steelhead | 0.207 | 0.286 | 0.106 | 0.089 | 0.01 to 0.39 | 0.08 to 0.43 | 0.079 |
+| Epsilon.1 | 1.062 | 1.082 | 0.764 | 0.802 | 0.32 to 2.84 | 0.33 to 3.10 | NA |
+| Epsilon.2 | 2.418 | 2.585 | 1.687 | 1.997 | 0.67 to 6.84 | 0.72 to 8.28 | NA |
+| p.global.Chinook | 0.358 | 0.369 | 0.124 | 0.111 | 0.07 to 0.54 | 0.09 to 0.52 | 0.014 |
+| p.global.Chum | 0.128 | 0.106 | 0.101 | 0.092 | 0.00 to 0.37 | 0.00 to 0.32 | 0.022 |
+| p.global.Coho | 0.173 | 0.172 | 0.138 | 0.136 | 0.01 to 0.52 | 0.01 to 0.51 | 0.007 |
+| p.global.Sockeye | 0.086 | 0.067 | 0.068 | 0.056 | 0.00 to 0.25 | 0.00 to 0.20 | 0.019 |
+| p.global.Steelhead | 0.231 | 0.286 | 0.105 | 0.089 | 0.02 to 0.41 | 0.08 to 0.43 | 0.056 |
 
 ``` r
 plot_compare(fit, ref$draws, block = "global")
@@ -147,6 +147,26 @@ plot_compare(fit, ref$draws, type = "means")
 ![](killerwhale_files/figure-html/compare-means-1.png)
 
 **What this shows.** The two posteriors are close. MixSIARPFN’s means
-differ from MixSIAR’s by 0.03 on average (MixSIAR’s posterior SDs are
-about 0.10), and its SDs are about the same (median SD ratio 1.08). The
-largest difference is for Steelhead (0.21 against 0.29).
+differ from MixSIAR’s by 0.02 on average (MixSIAR’s posterior SDs are
+about 0.10), and its SDs are about the same (median SD ratio 1.12). The
+largest difference is for Steelhead (0.23 against 0.29).
+
+## Does MixSIAR’s model fit these data?
+
+The comparison takes MixSIAR as the reference, which is fair where
+MixSIAR’s model describes the data. A posterior predictive check tests
+that: MixSIAR’s fitted model generates new datasets, one per posterior
+draw, and the real data are compared with them. MixSIARPFN gives
+marginal posteriors only, so it cannot run this check itself; the
+results come from a separate MixSIAR run with the same model and data,
+shipped with the package (`mixsiar_reference("killerwhale")$ppc`). Each
+tracer’s mean and SD and the correlation between the tracers, on the
+standardised scale MixSIAR’s model uses:
+
+![](killerwhale_files/figure-html/ppc-plot-1.png)
+
+0 of the 5 statistics fall outside the 95% range of the model’s
+datasets: the twelve killer whales look like data MixSIAR’s model
+generates, so its posterior is a fair reference here, and MixSIARPFN
+agrees with it closely. The geese and wolves vignettes show what happens
+when the check fails.

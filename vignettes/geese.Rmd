@@ -136,3 +136,65 @@ two fits differ more: mean difference
 difference is `r if (ok) sub("^p\\.", "", worst$name)` (`r num(worst$pfn_mean)`
 against `r num(worst$mixsiar_mean)`). For data like these, where sources overlap, MixSIARPFN gives a quick
 first answer and a MixSIAR run the more precise one.
+
+## Does MixSIAR's model fit these data?
+
+The comparison above takes MixSIAR as the reference. That is fair only where
+MixSIAR's model describes the data, which a posterior predictive check can test:
+MixSIAR's fitted model generates new datasets, one per posterior draw, and the real
+data are compared with them group by group. MixSIARPFN gives marginal posteriors only,
+so it cannot run this check itself; the results come from a separate MixSIAR run with
+the same model and data, shipped with the package (`mixsiar_reference("geese")$ppc`).
+For each group, the plot shows each tracer's mean and SD and the correlation between
+the tracers, on the standardised scale MixSIAR's model uses:
+
+```{r ppc-plot, echo = FALSE, fig.height = 9}
+MixSIARPFN:::plot_ppc(ref$ppc)
+```
+
+```{r ppc-numbers, include = FALSE}
+ppc <- ref$ppc
+st <- ppc$stats[ppc$stats$stat %in% c("mean", "sd", "cor"), ]
+st$outside <- st$ppp < 0.025 | st$ppp > 0.975
+sds <- st[st$stat == "sd" & st$outside, ]
+tight <- unique(sds$group[sds$ppp > 0.975])     # replicates at least as large: data tighter
+wide <- unique(sds$group[sds$ppp < 0.025])
+cors <- st[st$stat == "cor", ]
+grp <- cmp[cmp$block == "Group", ]
+by_group <- data.frame(
+  Group = unique(st$group),
+  outside = as.vector(tapply(st$outside, st$group, sum)[unique(st$group)]),
+  w1 = as.vector(tapply(grp$w1, paste("Group", grp$level), mean)[unique(st$group)]))
+ingroups <- function(g) paste(sub("Group ", "", g), collapse = ", ")
+```
+
+`r if (ok) ppc$summary$extreme_95` of the `r if (ok) ppc$summary$group_stats` group
+statistics fall outside the 95% range of the model's datasets
+(`r if (ok) ppc$summary$extreme_99` outside 99%). For six datasets simulated from
+MixSIAR's own model with the same design the count is
+`r if (ok) min(ppc$controls$extreme_95)` to `r if (ok) max(ppc$controls$extreme_95)`
+(about 2 are expected by chance). With Residual only error, MixSIAR's model has one
+residual covariance for all eight groups, but the groups differ: groups
+`r if (ok) ingroups(tight)` are much tighter than the model allows, group
+`r if (ok) ingroups(wide)` much wider, and the correlation between δ¹³C and δ¹⁵N runs
+from `r num(min(cors$obs))` to `r num(max(cors$obs))` across groups, where the model's
+datasets give about `r num(mean(cors$rep_mean))` in every group. The checks on the
+whole dataset (each tracer's mean, SD and range, and the total log-likelihood) pass,
+so MixSIAR's usual output would not show this.
+
+Where the model does not fit, MixSIAR's posterior is not a correct answer for
+MixSIARPFN to match, and the two can differ more. The difference between the two fits
+by group:
+
+```{r ppc-table, echo = FALSE}
+knitr::kable(data.frame(
+  Group = by_group$Group, `Statistics outside 95% (of 5)` = by_group$outside,
+  `Mean W1, MixSIARPFN against MixSIAR` = round(by_group$w1, 3), check.names = FALSE))
+```
+
+The groups that are tighter than the model allows are where the fits differ most
+(mean W1 `r num(mean(by_group$w1[by_group$Group %in% tight]), 3)`, against
+`r num(mean(by_group$w1[!by_group$Group %in% tight]), 3)` for the other groups). On
+data like these, the differences between MixSIARPFN and MixSIAR say as much about the
+model as about either method: both are fitting a model that leaves out structure the
+data show.

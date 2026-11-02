@@ -58,9 +58,9 @@ fit
 #> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>          source  mean    sd  2.5% 97.5%
-#>            Deer 0.436 0.201 0.070 0.817
-#>  Marine Mammals 0.221 0.157 0.015 0.601
-#>          Salmon 0.331 0.197 0.030 0.757
+#>            Deer 0.485 0.201 0.097 0.850
+#>  Marine Mammals 0.206 0.161 0.013 0.632
+#>          Salmon 0.321 0.199 0.028 0.770
 #> Use output_pfn() for every proportion and parameter.
 ```
 
@@ -82,48 +82,48 @@ out <- output_pfn(fit, mix, source,
 knitr::kable(round(summary_table(fit), 3))
 ```
 
-|                           |  Mean |    SD |  2.5% |    5% |   25% |   50% |   75% |   95% |  97.5% |
-|:--------------------------|------:|------:|------:|------:|------:|------:|------:|------:|-------:|
-| Epsilon.1                 | 0.853 | 0.643 | 0.205 | 0.254 | 0.471 | 0.714 | 1.060 | 1.870 |  2.297 |
-| Epsilon.2                 | 0.621 | 0.415 | 0.191 | 0.230 | 0.384 | 0.540 | 0.758 | 1.248 |  1.490 |
-| Region.SD                 | 2.005 | 2.776 | 0.049 | 0.095 | 0.480 | 1.106 | 2.277 | 7.436 | 11.071 |
-| Pack.SD                   | 1.208 | 1.393 | 0.232 | 0.306 | 0.578 | 0.863 | 1.333 | 3.041 |  4.418 |
-| p.global.Deer             | 0.436 | 0.201 | 0.070 | 0.108 | 0.283 | 0.433 | 0.586 | 0.769 |  0.817 |
-| p.global.Marine Mammals   | 0.221 | 0.157 | 0.015 | 0.026 | 0.100 | 0.189 | 0.310 | 0.524 |  0.601 |
-| p.global.Salmon           | 0.331 | 0.197 | 0.030 | 0.052 | 0.175 | 0.308 | 0.465 | 0.691 |  0.757 |
-| p.Region 1.Deer           | 0.634 | 0.207 | 0.121 | 0.213 | 0.521 | 0.678 | 0.785 | 0.901 |  0.932 |
-| p.Region 1.Marine Mammals | 0.116 | 0.123 | 0.000 | 0.001 | 0.030 | 0.084 | 0.162 | 0.342 |  0.440 |
-| p.Region 1.Salmon         | 0.178 | 0.146 | 0.000 | 0.003 | 0.066 | 0.151 | 0.254 | 0.449 |  0.535 |
-| p.Region 2.Deer           | 0.424 | 0.193 | 0.039 | 0.096 | 0.291 | 0.424 | 0.557 | 0.745 |  0.805 |
-| p.Region 2.Marine Mammals | 0.150 | 0.152 | 0.000 | 0.000 | 0.027 | 0.105 | 0.228 | 0.456 |  0.539 |
-| p.Region 2.Salmon         | 0.373 | 0.254 | 0.006 | 0.018 | 0.157 | 0.351 | 0.555 | 0.835 |  0.920 |
-| p.Region 3.Deer           | 0.240 | 0.211 | 0.000 | 0.000 | 0.063 | 0.194 | 0.361 | 0.659 |  0.765 |
-| p.Region 3.Marine Mammals | 0.230 | 0.197 | 0.000 | 0.002 | 0.072 | 0.187 | 0.339 | 0.620 |  0.723 |
-| p.Region 3.Salmon         | 0.424 | 0.298 | 0.006 | 0.020 | 0.167 | 0.376 | 0.654 | 0.971 |  0.996 |
-| p.Pack 1.Deer             | 0.836 | 0.071 | 0.696 | 0.726 | 0.798 | 0.840 | 0.880 | 0.939 |  0.963 |
-| p.Pack 1.Marine Mammals   | 0.053 | 0.042 | 0.000 | 0.001 | 0.016 | 0.047 | 0.081 | 0.129 |  0.146 |
-| p.Pack 1.Salmon           | 0.093 | 0.064 | 0.000 | 0.001 | 0.039 | 0.091 | 0.139 | 0.202 |  0.223 |
-| p.Pack 2.Deer             | 0.714 | 0.073 | 0.568 | 0.602 | 0.677 | 0.720 | 0.759 | 0.815 |  0.834 |
-| p.Pack 2.Marine Mammals   | 0.111 | 0.083 | 0.000 | 0.000 | 0.026 | 0.114 | 0.180 | 0.244 |  0.263 |
-| p.Pack 2.Salmon           | 0.199 | 0.113 | 0.000 | 0.002 | 0.111 | 0.222 | 0.284 | 0.357 |  0.380 |
-| p.Pack 3.Deer             | 0.805 | 0.072 | 0.663 | 0.693 | 0.766 | 0.808 | 0.849 | 0.911 |  0.935 |
-| p.Pack 3.Marine Mammals   | 0.078 | 0.060 | 0.000 | 0.001 | 0.023 | 0.074 | 0.123 | 0.182 |  0.200 |
-| p.Pack 3.Salmon           | 0.127 | 0.084 | 0.000 | 0.001 | 0.054 | 0.130 | 0.190 | 0.263 |  0.287 |
-| p.Pack 4.Deer             | 0.484 | 0.133 | 0.051 | 0.223 | 0.431 | 0.507 | 0.569 | 0.648 |  0.673 |
-| p.Pack 4.Marine Mammals   | 0.110 | 0.125 | 0.000 | 0.000 | 0.005 | 0.047 | 0.205 | 0.355 |  0.386 |
-| p.Pack 4.Salmon           | 0.430 | 0.228 | 0.001 | 0.007 | 0.316 | 0.453 | 0.556 | 0.822 |  0.987 |
-| p.Pack 5.Deer             | 0.292 | 0.144 | 0.000 | 0.005 | 0.204 | 0.312 | 0.396 | 0.500 |  0.533 |
-| p.Pack 5.Marine Mammals   | 0.084 | 0.126 | 0.000 | 0.000 | 0.004 | 0.026 | 0.104 | 0.398 |  0.460 |
-| p.Pack 5.Salmon           | 0.599 | 0.256 | 0.003 | 0.017 | 0.502 | 0.640 | 0.762 | 0.978 |  0.999 |
-| p.Pack 6.Deer             | 0.726 | 0.061 | 0.606 | 0.632 | 0.694 | 0.730 | 0.764 | 0.812 |  0.827 |
-| p.Pack 6.Marine Mammals   | 0.137 | 0.089 | 0.000 | 0.001 | 0.050 | 0.154 | 0.209 | 0.265 |  0.281 |
-| p.Pack 6.Salmon           | 0.157 | 0.111 | 0.000 | 0.002 | 0.062 | 0.153 | 0.236 | 0.343 |  0.380 |
-| p.Pack 7.Deer             | 0.262 | 0.138 | 0.000 | 0.006 | 0.163 | 0.283 | 0.368 | 0.462 |  0.490 |
-| p.Pack 7.Marine Mammals   | 0.368 | 0.195 | 0.000 | 0.001 | 0.238 | 0.435 | 0.515 | 0.597 |  0.621 |
-| p.Pack 7.Salmon           | 0.421 | 0.299 | 0.001 | 0.008 | 0.137 | 0.413 | 0.670 | 0.927 |  0.989 |
-| p.Pack 8.Deer             | 0.163 | 0.129 | 0.000 | 0.000 | 0.045 | 0.150 | 0.256 | 0.392 |  0.433 |
-| p.Pack 8.Marine Mammals   | 0.276 | 0.196 | 0.000 | 0.000 | 0.076 | 0.297 | 0.442 | 0.567 |  0.602 |
-| p.Pack 8.Salmon           | 0.607 | 0.299 | 0.011 | 0.043 | 0.392 | 0.653 | 0.863 | 0.999 |  1.000 |
+|                           |  Mean |    SD |  2.5% |    5% |   25% |   50% |   75% |   95% | 97.5% |
+|:--------------------------|------:|------:|------:|------:|------:|------:|------:|------:|------:|
+| Epsilon.1                 | 0.953 | 0.560 | 0.267 | 0.328 | 0.584 | 0.844 | 1.194 | 1.922 | 2.247 |
+| Epsilon.2                 | 0.536 | 0.302 | 0.215 | 0.245 | 0.361 | 0.477 | 0.642 | 1.002 | 1.176 |
+| Region.SD                 | 2.086 | 2.234 | 0.155 | 0.277 | 0.870 | 1.474 | 2.441 | 5.961 | 8.544 |
+| Pack.SD                   | 1.038 | 0.808 | 0.370 | 0.422 | 0.630 | 0.852 | 1.198 | 2.170 | 2.772 |
+| p.global.Deer             | 0.485 | 0.201 | 0.097 | 0.143 | 0.338 | 0.490 | 0.634 | 0.806 | 0.850 |
+| p.global.Marine Mammals   | 0.206 | 0.161 | 0.013 | 0.023 | 0.086 | 0.166 | 0.282 | 0.535 | 0.632 |
+| p.global.Salmon           | 0.321 | 0.199 | 0.028 | 0.048 | 0.164 | 0.291 | 0.449 | 0.697 | 0.770 |
+| p.Region 1.Deer           | 0.747 | 0.182 | 0.222 | 0.365 | 0.676 | 0.791 | 0.870 | 0.954 | 0.973 |
+| p.Region 1.Marine Mammals | 0.097 | 0.109 | 0.000 | 0.000 | 0.019 | 0.068 | 0.138 | 0.291 | 0.379 |
+| p.Region 1.Salmon         | 0.183 | 0.153 | 0.000 | 0.003 | 0.071 | 0.155 | 0.253 | 0.475 | 0.585 |
+| p.Region 2.Deer           | 0.475 | 0.172 | 0.119 | 0.182 | 0.361 | 0.478 | 0.592 | 0.755 | 0.806 |
+| p.Region 2.Marine Mammals | 0.176 | 0.141 | 0.000 | 0.002 | 0.061 | 0.154 | 0.260 | 0.437 | 0.508 |
+| p.Region 2.Salmon         | 0.440 | 0.222 | 0.014 | 0.049 | 0.282 | 0.447 | 0.600 | 0.800 | 0.859 |
+| p.Region 3.Deer           | 0.309 | 0.214 | 0.000 | 0.006 | 0.135 | 0.289 | 0.455 | 0.698 | 0.773 |
+| p.Region 3.Marine Mammals | 0.244 | 0.187 | 0.000 | 0.003 | 0.091 | 0.215 | 0.361 | 0.594 | 0.671 |
+| p.Region 3.Salmon         | 0.428 | 0.294 | 0.002 | 0.011 | 0.171 | 0.401 | 0.664 | 0.945 | 0.985 |
+| p.Pack 1.Deer             | 0.863 | 0.044 | 0.767 | 0.787 | 0.838 | 0.866 | 0.892 | 0.927 | 0.938 |
+| p.Pack 1.Marine Mammals   | 0.048 | 0.042 | 0.000 | 0.000 | 0.010 | 0.039 | 0.079 | 0.123 | 0.136 |
+| p.Pack 1.Salmon           | 0.091 | 0.064 | 0.000 | 0.001 | 0.031 | 0.092 | 0.141 | 0.195 | 0.212 |
+| p.Pack 2.Deer             | 0.735 | 0.056 | 0.610 | 0.637 | 0.703 | 0.741 | 0.774 | 0.817 | 0.830 |
+| p.Pack 2.Marine Mammals   | 0.088 | 0.081 | 0.000 | 0.000 | 0.011 | 0.062 | 0.162 | 0.228 | 0.244 |
+| p.Pack 2.Salmon           | 0.191 | 0.120 | 0.000 | 0.002 | 0.073 | 0.216 | 0.291 | 0.358 | 0.377 |
+| p.Pack 3.Deer             | 0.828 | 0.052 | 0.718 | 0.740 | 0.797 | 0.831 | 0.862 | 0.905 | 0.919 |
+| p.Pack 3.Marine Mammals   | 0.065 | 0.054 | 0.000 | 0.000 | 0.014 | 0.056 | 0.108 | 0.160 | 0.175 |
+| p.Pack 3.Salmon           | 0.123 | 0.080 | 0.000 | 0.002 | 0.051 | 0.128 | 0.185 | 0.249 | 0.268 |
+| p.Pack 4.Deer             | 0.498 | 0.094 | 0.305 | 0.341 | 0.439 | 0.502 | 0.562 | 0.643 | 0.668 |
+| p.Pack 4.Marine Mammals   | 0.115 | 0.118 | 0.000 | 0.000 | 0.013 | 0.067 | 0.206 | 0.343 | 0.369 |
+| p.Pack 4.Salmon           | 0.458 | 0.166 | 0.011 | 0.064 | 0.389 | 0.482 | 0.562 | 0.679 | 0.721 |
+| p.Pack 5.Deer             | 0.300 | 0.116 | 0.046 | 0.101 | 0.225 | 0.301 | 0.379 | 0.489 | 0.524 |
+| p.Pack 5.Marine Mammals   | 0.137 | 0.148 | 0.000 | 0.000 | 0.017 | 0.077 | 0.222 | 0.447 | 0.487 |
+| p.Pack 5.Salmon           | 0.630 | 0.188 | 0.046 | 0.235 | 0.551 | 0.659 | 0.751 | 0.876 | 0.918 |
+| p.Pack 6.Deer             | 0.734 | 0.059 | 0.600 | 0.630 | 0.701 | 0.740 | 0.774 | 0.817 | 0.830 |
+| p.Pack 6.Marine Mammals   | 0.120 | 0.082 | 0.000 | 0.000 | 0.035 | 0.135 | 0.190 | 0.235 | 0.247 |
+| p.Pack 6.Salmon           | 0.158 | 0.115 | 0.000 | 0.001 | 0.053 | 0.153 | 0.244 | 0.352 | 0.383 |
+| p.Pack 7.Deer             | 0.338 | 0.118 | 0.045 | 0.107 | 0.269 | 0.356 | 0.423 | 0.499 | 0.521 |
+| p.Pack 7.Marine Mammals   | 0.386 | 0.185 | 0.000 | 0.004 | 0.280 | 0.449 | 0.525 | 0.596 | 0.616 |
+| p.Pack 7.Salmon           | 0.300 | 0.261 | 0.000 | 0.003 | 0.077 | 0.232 | 0.471 | 0.821 | 0.915 |
+| p.Pack 8.Deer             | 0.195 | 0.143 | 0.000 | 0.001 | 0.069 | 0.180 | 0.306 | 0.443 | 0.475 |
+| p.Pack 8.Marine Mammals   | 0.298 | 0.186 | 0.000 | 0.001 | 0.130 | 0.329 | 0.461 | 0.554 | 0.578 |
+| p.Pack 8.Salmon           | 0.408 | 0.305 | 0.001 | 0.006 | 0.136 | 0.363 | 0.652 | 0.965 | 0.995 |
 
 ``` r
 out$plots$global
@@ -187,46 +187,46 @@ knitr::kable(data.frame(
 
 | quantity | MixSIARPFN mean | MixSIAR mean | MixSIARPFN SD | MixSIAR SD | MixSIARPFN 95% CI | MixSIAR 95% CI | W1 |
 |:---|---:|---:|---:|---:|:---|:---|---:|
-| Region.SD | 2.005 | 1.147 | 2.776 | 1.212 | 0.05 to 11.07 | 0.05 to 4.15 | NA |
-| Pack.SD | 1.208 | 1.299 | 1.393 | 0.626 | 0.23 to 4.42 | 0.56 to 2.78 | NA |
-| Epsilon.1 | 0.853 | 1.042 | 0.643 | 0.380 | 0.20 to 2.30 | 0.48 to 1.95 | NA |
-| Epsilon.2 | 0.621 | 0.465 | 0.415 | 0.189 | 0.19 to 1.49 | 0.21 to 0.93 | NA |
-| p.global.Deer | 0.436 | 0.522 | 0.201 | 0.178 | 0.07 to 0.82 | 0.14 to 0.83 | 0.087 |
-| p.global.Marine Mammals | 0.221 | 0.209 | 0.157 | 0.143 | 0.01 to 0.60 | 0.03 to 0.59 | 0.019 |
-| p.global.Salmon | 0.331 | 0.268 | 0.197 | 0.161 | 0.03 to 0.76 | 0.04 to 0.67 | 0.065 |
-| p.Region 1.Deer | 0.634 | 0.700 | 0.207 | 0.159 | 0.12 to 0.93 | 0.34 to 0.94 | 0.066 |
-| p.Region 1.Marine Mammals | 0.116 | 0.117 | 0.123 | 0.101 | 0.00 to 0.44 | 0.00 to 0.39 | 0.011 |
-| p.Region 1.Salmon | 0.178 | 0.183 | 0.146 | 0.140 | 0.00 to 0.53 | 0.00 to 0.52 | 0.010 |
-| p.Region 2.Deer | 0.424 | 0.551 | 0.193 | 0.159 | 0.04 to 0.80 | 0.23 to 0.87 | 0.127 |
-| p.Region 2.Marine Mammals | 0.150 | 0.178 | 0.152 | 0.108 | 0.00 to 0.54 | 0.03 to 0.42 | 0.049 |
-| p.Region 2.Salmon | 0.373 | 0.271 | 0.254 | 0.149 | 0.01 to 0.92 | 0.05 to 0.61 | 0.121 |
-| p.Region 3.Deer | 0.240 | 0.432 | 0.211 | 0.222 | 0.00 to 0.76 | 0.02 to 0.86 | 0.192 |
-| p.Region 3.Marine Mammals | 0.230 | 0.265 | 0.197 | 0.198 | 0.00 to 0.72 | 0.01 to 0.78 | 0.036 |
-| p.Region 3.Salmon | 0.424 | 0.303 | 0.298 | 0.223 | 0.01 to 1.00 | 0.01 to 0.90 | 0.124 |
-| p.Pack 1.Deer | 0.836 | 0.855 | 0.071 | 0.030 | 0.70 to 0.96 | 0.80 to 0.91 | 0.030 |
-| p.Pack 1.Marine Mammals | 0.053 | 0.054 | 0.042 | 0.038 | 0.00 to 0.15 | 0.00 to 0.13 | 0.004 |
-| p.Pack 1.Salmon | 0.093 | 0.092 | 0.064 | 0.056 | 0.00 to 0.22 | 0.00 to 0.19 | 0.006 |
-| p.Pack 2.Deer | 0.714 | 0.732 | 0.073 | 0.041 | 0.57 to 0.83 | 0.65 to 0.80 | 0.024 |
-| p.Pack 2.Marine Mammals | 0.111 | 0.099 | 0.083 | 0.074 | 0.00 to 0.26 | 0.00 to 0.22 | 0.014 |
-| p.Pack 2.Salmon | 0.199 | 0.169 | 0.113 | 0.109 | 0.00 to 0.38 | 0.00 to 0.34 | 0.031 |
-| p.Pack 3.Deer | 0.805 | 0.831 | 0.072 | 0.037 | 0.66 to 0.94 | 0.75 to 0.90 | 0.031 |
-| p.Pack 3.Marine Mammals | 0.078 | 0.066 | 0.060 | 0.047 | 0.00 to 0.20 | 0.00 to 0.16 | 0.014 |
-| p.Pack 3.Salmon | 0.127 | 0.104 | 0.084 | 0.067 | 0.00 to 0.29 | 0.00 to 0.23 | 0.025 |
-| p.Pack 4.Deer | 0.484 | 0.461 | 0.133 | 0.051 | 0.05 to 0.67 | 0.36 to 0.55 | 0.066 |
-| p.Pack 4.Marine Mammals | 0.110 | 0.067 | 0.125 | 0.052 | 0.00 to 0.39 | 0.00 to 0.19 | 0.057 |
-| p.Pack 4.Salmon | 0.430 | 0.472 | 0.228 | 0.088 | 0.00 to 0.99 | 0.29 to 0.63 | 0.105 |
-| p.Pack 5.Deer | 0.292 | 0.292 | 0.144 | 0.064 | 0.00 to 0.53 | 0.16 to 0.41 | 0.065 |
-| p.Pack 5.Marine Mammals | 0.084 | 0.079 | 0.126 | 0.066 | 0.00 to 0.46 | 0.00 to 0.23 | 0.043 |
-| p.Pack 5.Salmon | 0.599 | 0.629 | 0.256 | 0.111 | 0.00 to 1.00 | 0.39 to 0.82 | 0.101 |
-| p.Pack 6.Deer | 0.726 | 0.751 | 0.061 | 0.030 | 0.61 to 0.83 | 0.69 to 0.80 | 0.030 |
-| p.Pack 6.Marine Mammals | 0.137 | 0.170 | 0.089 | 0.042 | 0.00 to 0.28 | 0.06 to 0.23 | 0.048 |
-| p.Pack 6.Salmon | 0.157 | 0.078 | 0.111 | 0.063 | 0.00 to 0.38 | 0.00 to 0.24 | 0.080 |
-| p.Pack 7.Deer | 0.262 | 0.370 | 0.138 | 0.053 | 0.00 to 0.49 | 0.24 to 0.45 | 0.114 |
-| p.Pack 7.Marine Mammals | 0.368 | 0.490 | 0.195 | 0.080 | 0.00 to 0.62 | 0.28 to 0.59 | 0.127 |
-| p.Pack 7.Salmon | 0.421 | 0.140 | 0.299 | 0.121 | 0.00 to 0.99 | 0.01 to 0.45 | 0.282 |
-| p.Pack 8.Deer | 0.163 | 0.286 | 0.129 | 0.099 | 0.00 to 0.43 | 0.02 to 0.46 | 0.124 |
-| p.Pack 8.Marine Mammals | 0.276 | 0.374 | 0.196 | 0.129 | 0.00 to 0.60 | 0.00 to 0.54 | 0.111 |
-| p.Pack 8.Salmon | 0.607 | 0.339 | 0.299 | 0.219 | 0.01 to 1.00 | 0.02 to 0.96 | 0.268 |
+| Region.SD | 2.086 | 1.147 | 2.234 | 1.212 | 0.16 to 8.54 | 0.05 to 4.15 | NA |
+| Pack.SD | 1.038 | 1.299 | 0.808 | 0.626 | 0.37 to 2.77 | 0.56 to 2.78 | NA |
+| Epsilon.1 | 0.953 | 1.042 | 0.560 | 0.380 | 0.27 to 2.25 | 0.48 to 1.95 | NA |
+| Epsilon.2 | 0.536 | 0.465 | 0.302 | 0.189 | 0.22 to 1.18 | 0.21 to 0.93 | NA |
+| p.global.Deer | 0.485 | 0.522 | 0.201 | 0.178 | 0.10 to 0.85 | 0.14 to 0.83 | 0.040 |
+| p.global.Marine Mammals | 0.206 | 0.209 | 0.161 | 0.143 | 0.01 to 0.63 | 0.03 to 0.59 | 0.018 |
+| p.global.Salmon | 0.321 | 0.268 | 0.199 | 0.161 | 0.03 to 0.77 | 0.04 to 0.67 | 0.055 |
+| p.Region 1.Deer | 0.747 | 0.700 | 0.182 | 0.159 | 0.22 to 0.97 | 0.34 to 0.94 | 0.060 |
+| p.Region 1.Marine Mammals | 0.097 | 0.117 | 0.109 | 0.101 | 0.00 to 0.38 | 0.00 to 0.39 | 0.024 |
+| p.Region 1.Salmon | 0.183 | 0.183 | 0.153 | 0.140 | 0.00 to 0.58 | 0.00 to 0.52 | 0.012 |
+| p.Region 2.Deer | 0.475 | 0.551 | 0.172 | 0.159 | 0.12 to 0.81 | 0.23 to 0.87 | 0.076 |
+| p.Region 2.Marine Mammals | 0.176 | 0.178 | 0.141 | 0.108 | 0.00 to 0.51 | 0.03 to 0.42 | 0.028 |
+| p.Region 2.Salmon | 0.440 | 0.271 | 0.222 | 0.149 | 0.01 to 0.86 | 0.05 to 0.61 | 0.172 |
+| p.Region 3.Deer | 0.309 | 0.432 | 0.214 | 0.222 | 0.00 to 0.77 | 0.02 to 0.86 | 0.122 |
+| p.Region 3.Marine Mammals | 0.244 | 0.265 | 0.187 | 0.198 | 0.00 to 0.67 | 0.01 to 0.78 | 0.022 |
+| p.Region 3.Salmon | 0.428 | 0.303 | 0.294 | 0.223 | 0.00 to 0.98 | 0.01 to 0.90 | 0.131 |
+| p.Pack 1.Deer | 0.863 | 0.855 | 0.044 | 0.030 | 0.77 to 0.94 | 0.80 to 0.91 | 0.014 |
+| p.Pack 1.Marine Mammals | 0.048 | 0.054 | 0.042 | 0.038 | 0.00 to 0.14 | 0.00 to 0.13 | 0.007 |
+| p.Pack 1.Salmon | 0.091 | 0.092 | 0.064 | 0.056 | 0.00 to 0.21 | 0.00 to 0.19 | 0.007 |
+| p.Pack 2.Deer | 0.735 | 0.732 | 0.056 | 0.041 | 0.61 to 0.83 | 0.65 to 0.80 | 0.011 |
+| p.Pack 2.Marine Mammals | 0.088 | 0.099 | 0.081 | 0.074 | 0.00 to 0.24 | 0.00 to 0.22 | 0.014 |
+| p.Pack 2.Salmon | 0.191 | 0.169 | 0.120 | 0.109 | 0.00 to 0.38 | 0.00 to 0.34 | 0.025 |
+| p.Pack 3.Deer | 0.828 | 0.831 | 0.052 | 0.037 | 0.72 to 0.92 | 0.75 to 0.90 | 0.010 |
+| p.Pack 3.Marine Mammals | 0.065 | 0.066 | 0.054 | 0.047 | 0.00 to 0.18 | 0.00 to 0.16 | 0.007 |
+| p.Pack 3.Salmon | 0.123 | 0.104 | 0.080 | 0.067 | 0.00 to 0.27 | 0.00 to 0.23 | 0.021 |
+| p.Pack 4.Deer | 0.498 | 0.461 | 0.094 | 0.051 | 0.30 to 0.67 | 0.36 to 0.55 | 0.047 |
+| p.Pack 4.Marine Mammals | 0.115 | 0.067 | 0.118 | 0.052 | 0.00 to 0.37 | 0.00 to 0.19 | 0.055 |
+| p.Pack 4.Salmon | 0.458 | 0.472 | 0.166 | 0.088 | 0.01 to 0.72 | 0.29 to 0.63 | 0.051 |
+| p.Pack 5.Deer | 0.300 | 0.292 | 0.116 | 0.064 | 0.05 to 0.52 | 0.16 to 0.41 | 0.042 |
+| p.Pack 5.Marine Mammals | 0.137 | 0.079 | 0.148 | 0.066 | 0.00 to 0.49 | 0.00 to 0.23 | 0.062 |
+| p.Pack 5.Salmon | 0.630 | 0.629 | 0.188 | 0.111 | 0.05 to 0.92 | 0.39 to 0.82 | 0.051 |
+| p.Pack 6.Deer | 0.734 | 0.751 | 0.059 | 0.030 | 0.60 to 0.83 | 0.69 to 0.80 | 0.025 |
+| p.Pack 6.Marine Mammals | 0.120 | 0.170 | 0.082 | 0.042 | 0.00 to 0.25 | 0.06 to 0.23 | 0.054 |
+| p.Pack 6.Salmon | 0.158 | 0.078 | 0.115 | 0.063 | 0.00 to 0.38 | 0.00 to 0.24 | 0.080 |
+| p.Pack 7.Deer | 0.338 | 0.370 | 0.118 | 0.053 | 0.05 to 0.52 | 0.24 to 0.45 | 0.056 |
+| p.Pack 7.Marine Mammals | 0.386 | 0.490 | 0.185 | 0.080 | 0.00 to 0.62 | 0.28 to 0.59 | 0.109 |
+| p.Pack 7.Salmon | 0.300 | 0.140 | 0.261 | 0.121 | 0.00 to 0.91 | 0.01 to 0.45 | 0.162 |
+| p.Pack 8.Deer | 0.195 | 0.286 | 0.143 | 0.099 | 0.00 to 0.48 | 0.02 to 0.46 | 0.094 |
+| p.Pack 8.Marine Mammals | 0.298 | 0.374 | 0.186 | 0.129 | 0.00 to 0.58 | 0.00 to 0.54 | 0.086 |
+| p.Pack 8.Salmon | 0.408 | 0.339 | 0.305 | 0.219 | 0.00 to 0.99 | 0.02 to 0.96 | 0.110 |
 
 The posterior densities side by side, for the global diet, the regions
 and the packs:
@@ -258,13 +258,64 @@ plot_compare(fit, ref$draws, type = "means")
 ![](wolves_files/figure-html/compare-means-1.png)
 
 **What this shows.** For the global and region diets, MixSIARPFN’s
-posterior means differ from MixSIAR’s by 0.05 and 0.08 on average,
+posterior means differ from MixSIAR’s by 0.03 and 0.06 on average,
 against MixSIAR posterior SDs of about 0.16 and 0.16, and its posteriors
-are a little wider (median SD ratio 1.13 and 1.22). The pack diets
-differ more. Most pack means are close (median difference 0.03), but
-MixSIARPFN’s pack posteriors are about twice as wide (median SD ratio
-1.93) and a few means are far off, the largest being Pack 7.Salmon (0.42
-against 0.14). The Region and Pack SDs and the residual multipliers are
-also wider. For a dataset like this, with many small levels, MixSIARPFN
-gives a quick first answer, and a MixSIAR run is the more precise one
-when time allows.
+are a little wider (median SD ratio 1.13 and 1.10). The pack diets
+differ more. Most pack means are close (median difference 0.02), but
+MixSIARPFN’s pack posteriors are wider (median SD ratio 1.58) and a few
+means are further off, the largest being Region 2.Salmon (0.44 against
+0.27). The Region and Pack SDs and the residual multipliers are also
+wider. For a dataset like this, with many small levels, MixSIARPFN gives
+a quick first answer, and a MixSIAR run is the more precise one when
+time allows.
+
+## Does MixSIAR’s model fit these data?
+
+The comparison above takes MixSIAR as the reference. That is fair only
+where MixSIAR’s model describes the data, which a posterior predictive
+check can test: MixSIAR’s fitted model generates new datasets, one per
+posterior draw, and the real data are compared with them pack by pack.
+MixSIARPFN gives marginal posteriors only, so it cannot run this check
+itself; the results come from a separate MixSIAR run with the same model
+and data, shipped with the package (`mixsiar_reference("wolves")$ppc`).
+For each pack, the plot shows each tracer’s mean and SD and the
+correlation between the tracers, on the standardised scale MixSIAR’s
+model uses:
+
+![](wolves_files/figure-html/ppc-plot-1.png)
+
+5 of the 40 pack statistics fall outside the 95% range of the model’s
+datasets (4 outside 99%). For six datasets simulated from MixSIAR’s own
+model with the same design the count is 0 to 2 (about 2 are expected by
+chance). The clearest failure is the correlation between δ¹³C and δ¹⁵N
+within packs: Pack 4 0.98, Pack 5 1.00, Pack 6 0.83, Pack 8 0.97, where
+the model’s datasets give about 0. The wolves of these packs lie on a
+line in isospace, which is what wolves eating different mixes of the
+same prey would produce. MixSIAR’s model has no diet variation between
+the wolves of a pack, so it can only treat that spread as residual
+error. The checks on the whole dataset (each tracer’s mean, SD and
+range, and the total log-likelihood) pass, so MixSIAR’s usual output
+would not show this.
+
+Where the model does not fit, MixSIAR’s posterior is not a correct
+answer for MixSIARPFN to match, and the two can differ more. Here the
+two fits differ most in the packs that fail the check, and in pack 7,
+whose four wolves are too few for the check to say much (the model’s
+datasets give its correlation anywhere from about -0.95 to 0.95):
+
+| Pack   | Statistics outside 95% (of 5) | Mean W1, MixSIARPFN against MixSIAR |
+|:-------|------------------------------:|------------------------------------:|
+| Pack 1 |                             1 |                               0.009 |
+| Pack 2 |                             0 |                               0.017 |
+| Pack 3 |                             0 |                               0.012 |
+| Pack 4 |                             1 |                               0.051 |
+| Pack 5 |                             1 |                               0.052 |
+| Pack 6 |                             1 |                               0.053 |
+| Pack 7 |                             0 |                               0.109 |
+| Pack 8 |                             1 |                               0.097 |
+
+The mean W1 is 0.063 for the packs whose tracers are strongly
+correlated, against 0.013 for packs 1, 2, 3. On data like these, the
+differences between MixSIARPFN and MixSIAR say as much about the model
+as about either method: both are fitting a model that leaves out
+structure the data show.

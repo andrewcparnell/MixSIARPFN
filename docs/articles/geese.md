@@ -57,10 +57,10 @@ fit
 #> MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>        source  mean    sd  2.5% 97.5%
-#>  Enteromorpha 0.228 0.156 0.011 0.574
-#>         Grass 0.127 0.034 0.068 0.200
-#>     U.lactuca 0.209 0.144 0.009 0.526
-#>       Zostera 0.519 0.159 0.125 0.761
+#>  Enteromorpha 0.176 0.119 0.008 0.440
+#>         Grass 0.112 0.026 0.066 0.166
+#>     U.lactuca 0.111 0.086 0.004 0.316
+#>       Zostera 0.595 0.106 0.356 0.763
 #> Use output_pfn() for every proportion and parameter.
 ```
 
@@ -79,42 +79,42 @@ knitr::kable(round(summary_table(fit), 3))
 
 |                        |  Mean |    SD |  2.5% |    5% |   25% |   50% |   75% |   95% | 97.5% |
 |:-----------------------|------:|------:|------:|------:|------:|------:|------:|------:|------:|
-| p.global.Enteromorpha  | 0.228 | 0.156 | 0.011 | 0.021 | 0.100 | 0.204 | 0.333 | 0.519 | 0.574 |
-| p.global.Grass         | 0.127 | 0.034 | 0.068 | 0.076 | 0.103 | 0.124 | 0.148 | 0.186 | 0.200 |
-| p.global.U.lactuca     | 0.209 | 0.144 | 0.009 | 0.019 | 0.091 | 0.187 | 0.305 | 0.476 | 0.526 |
-| p.global.Zostera       | 0.519 | 0.159 | 0.125 | 0.212 | 0.430 | 0.545 | 0.634 | 0.732 | 0.761 |
-| p.Group 1.Enteromorpha | 0.229 | 0.155 | 0.011 | 0.022 | 0.102 | 0.206 | 0.333 | 0.518 | 0.572 |
-| p.Group 1.Grass        | 0.125 | 0.034 | 0.066 | 0.074 | 0.101 | 0.122 | 0.146 | 0.184 | 0.198 |
-| p.Group 1.U.lactuca    | 0.210 | 0.143 | 0.010 | 0.019 | 0.092 | 0.188 | 0.306 | 0.476 | 0.526 |
-| p.Group 1.Zostera      | 0.528 | 0.159 | 0.131 | 0.220 | 0.440 | 0.556 | 0.643 | 0.740 | 0.768 |
-| p.Group 2.Enteromorpha | 0.396 | 0.289 | 0.004 | 0.010 | 0.101 | 0.388 | 0.675 | 0.819 | 0.847 |
-| p.Group 2.Grass        | 0.179 | 0.044 | 0.089 | 0.105 | 0.150 | 0.180 | 0.208 | 0.250 | 0.264 |
-| p.Group 2.U.lactuca    | 0.254 | 0.216 | 0.002 | 0.005 | 0.051 | 0.198 | 0.445 | 0.629 | 0.665 |
-| p.Group 2.Zostera      | 0.107 | 0.078 | 0.011 | 0.017 | 0.049 | 0.089 | 0.146 | 0.258 | 0.301 |
-| p.Group 3.Enteromorpha | 0.242 | 0.204 | 0.003 | 0.006 | 0.055 | 0.185 | 0.420 | 0.602 | 0.636 |
-| p.Group 3.Grass        | 0.409 | 0.045 | 0.319 | 0.335 | 0.380 | 0.410 | 0.439 | 0.482 | 0.496 |
-| p.Group 3.U.lactuca    | 0.260 | 0.175 | 0.004 | 0.010 | 0.089 | 0.270 | 0.415 | 0.521 | 0.547 |
-| p.Group 3.Zostera      | 0.077 | 0.054 | 0.007 | 0.011 | 0.036 | 0.067 | 0.107 | 0.181 | 0.208 |
-| p.Group 4.Enteromorpha | 0.321 | 0.216 | 0.009 | 0.018 | 0.125 | 0.308 | 0.498 | 0.681 | 0.725 |
-| p.Group 4.Grass        | 0.117 | 0.042 | 0.040 | 0.051 | 0.088 | 0.116 | 0.145 | 0.188 | 0.203 |
-| p.Group 4.U.lactuca    | 0.194 | 0.156 | 0.004 | 0.009 | 0.058 | 0.160 | 0.305 | 0.489 | 0.536 |
-| p.Group 4.Zostera      | 0.419 | 0.174 | 0.057 | 0.104 | 0.299 | 0.431 | 0.546 | 0.687 | 0.728 |
-| p.Group 5.Enteromorpha | 0.475 | 0.321 | 0.005 | 0.011 | 0.134 | 0.527 | 0.780 | 0.893 | 0.914 |
-| p.Group 5.Grass        | 0.119 | 0.041 | 0.041 | 0.053 | 0.091 | 0.118 | 0.146 | 0.187 | 0.201 |
-| p.Group 5.U.lactuca    | 0.262 | 0.236 | 0.001 | 0.004 | 0.042 | 0.190 | 0.473 | 0.674 | 0.711 |
-| p.Group 5.Zostera      | 0.095 | 0.069 | 0.009 | 0.014 | 0.043 | 0.079 | 0.130 | 0.229 | 0.267 |
-| p.Group 6.Enteromorpha | 0.290 | 0.225 | 0.004 | 0.008 | 0.073 | 0.251 | 0.501 | 0.654 | 0.685 |
-| p.Group 6.Grass        | 0.369 | 0.051 | 0.267 | 0.285 | 0.336 | 0.369 | 0.403 | 0.451 | 0.467 |
-| p.Group 6.U.lactuca    | 0.269 | 0.184 | 0.004 | 0.010 | 0.091 | 0.269 | 0.432 | 0.552 | 0.581 |
-| p.Group 6.Zostera      | 0.096 | 0.070 | 0.008 | 0.014 | 0.044 | 0.081 | 0.133 | 0.231 | 0.267 |
-| p.Group 7.Enteromorpha | 0.108 | 0.078 | 0.006 | 0.011 | 0.045 | 0.092 | 0.156 | 0.255 | 0.288 |
-| p.Group 7.Grass        | 0.742 | 0.049 | 0.641 | 0.659 | 0.711 | 0.744 | 0.776 | 0.818 | 0.832 |
-| p.Group 7.U.lactuca    | 0.097 | 0.066 | 0.007 | 0.011 | 0.044 | 0.086 | 0.138 | 0.219 | 0.246 |
-| p.Group 7.Zostera      | 0.064 | 0.040 | 0.008 | 0.012 | 0.033 | 0.057 | 0.087 | 0.138 | 0.157 |
-| p.Group 8.Enteromorpha | 0.065 | 0.052 | 0.005 | 0.008 | 0.026 | 0.052 | 0.091 | 0.167 | 0.196 |
-| p.Group 8.Grass        | 0.828 | 0.048 | 0.728 | 0.746 | 0.798 | 0.831 | 0.861 | 0.902 | 0.915 |
-| p.Group 8.U.lactuca    | 0.054 | 0.041 | 0.005 | 0.007 | 0.023 | 0.043 | 0.074 | 0.135 | 0.158 |
-| p.Group 8.Zostera      | 0.048 | 0.032 | 0.006 | 0.008 | 0.023 | 0.041 | 0.065 | 0.109 | 0.126 |
+| p.global.Enteromorpha  | 0.176 | 0.119 | 0.008 | 0.016 | 0.079 | 0.159 | 0.254 | 0.396 | 0.440 |
+| p.global.Grass         | 0.112 | 0.026 | 0.066 | 0.072 | 0.094 | 0.110 | 0.128 | 0.156 | 0.166 |
+| p.global.U.lactuca     | 0.111 | 0.086 | 0.004 | 0.007 | 0.041 | 0.093 | 0.162 | 0.277 | 0.316 |
+| p.global.Zostera       | 0.595 | 0.106 | 0.356 | 0.412 | 0.537 | 0.606 | 0.668 | 0.742 | 0.763 |
+| p.Group 1.Enteromorpha | 0.177 | 0.119 | 0.008 | 0.016 | 0.081 | 0.160 | 0.255 | 0.396 | 0.441 |
+| p.Group 1.Grass        | 0.110 | 0.026 | 0.064 | 0.071 | 0.092 | 0.109 | 0.126 | 0.154 | 0.164 |
+| p.Group 1.U.lactuca    | 0.112 | 0.087 | 0.004 | 0.008 | 0.042 | 0.094 | 0.164 | 0.279 | 0.318 |
+| p.Group 1.Zostera      | 0.598 | 0.109 | 0.353 | 0.412 | 0.540 | 0.610 | 0.673 | 0.746 | 0.768 |
+| p.Group 2.Enteromorpha | 0.405 | 0.297 | 0.004 | 0.010 | 0.099 | 0.405 | 0.705 | 0.819 | 0.839 |
+| p.Group 2.Grass        | 0.162 | 0.033 | 0.098 | 0.109 | 0.139 | 0.161 | 0.184 | 0.217 | 0.229 |
+| p.Group 2.U.lactuca    | 0.233 | 0.219 | 0.002 | 0.005 | 0.040 | 0.151 | 0.411 | 0.639 | 0.673 |
+| p.Group 2.Zostera      | 0.113 | 0.061 | 0.022 | 0.030 | 0.068 | 0.105 | 0.149 | 0.227 | 0.255 |
+| p.Group 3.Enteromorpha | 0.289 | 0.224 | 0.007 | 0.014 | 0.083 | 0.232 | 0.512 | 0.652 | 0.676 |
+| p.Group 3.Grass        | 0.380 | 0.037 | 0.310 | 0.321 | 0.355 | 0.380 | 0.405 | 0.443 | 0.456 |
+| p.Group 3.U.lactuca    | 0.254 | 0.195 | 0.004 | 0.008 | 0.064 | 0.218 | 0.450 | 0.551 | 0.573 |
+| p.Group 3.Zostera      | 0.060 | 0.039 | 0.009 | 0.013 | 0.031 | 0.052 | 0.081 | 0.136 | 0.157 |
+| p.Group 4.Enteromorpha | 0.238 | 0.177 | 0.005 | 0.011 | 0.077 | 0.213 | 0.374 | 0.550 | 0.596 |
+| p.Group 4.Grass        | 0.103 | 0.037 | 0.030 | 0.041 | 0.077 | 0.103 | 0.128 | 0.164 | 0.177 |
+| p.Group 4.U.lactuca    | 0.134 | 0.120 | 0.002 | 0.004 | 0.033 | 0.100 | 0.211 | 0.371 | 0.418 |
+| p.Group 4.Zostera      | 0.510 | 0.110 | 0.295 | 0.331 | 0.437 | 0.510 | 0.584 | 0.688 | 0.722 |
+| p.Group 5.Enteromorpha | 0.442 | 0.324 | 0.004 | 0.009 | 0.104 | 0.453 | 0.773 | 0.875 | 0.893 |
+| p.Group 5.Grass        | 0.110 | 0.031 | 0.052 | 0.061 | 0.089 | 0.109 | 0.130 | 0.163 | 0.174 |
+| p.Group 5.U.lactuca    | 0.232 | 0.238 | 0.001 | 0.003 | 0.030 | 0.125 | 0.414 | 0.691 | 0.728 |
+| p.Group 5.Zostera      | 0.097 | 0.056 | 0.017 | 0.024 | 0.055 | 0.088 | 0.129 | 0.202 | 0.228 |
+| p.Group 6.Enteromorpha | 0.295 | 0.230 | 0.007 | 0.013 | 0.080 | 0.240 | 0.518 | 0.671 | 0.698 |
+| p.Group 6.Grass        | 0.344 | 0.042 | 0.266 | 0.278 | 0.316 | 0.342 | 0.371 | 0.414 | 0.429 |
+| p.Group 6.U.lactuca    | 0.245 | 0.197 | 0.004 | 0.008 | 0.058 | 0.196 | 0.438 | 0.564 | 0.589 |
+| p.Group 6.Zostera      | 0.083 | 0.052 | 0.012 | 0.017 | 0.044 | 0.073 | 0.112 | 0.183 | 0.208 |
+| p.Group 7.Enteromorpha | 0.106 | 0.087 | 0.003 | 0.006 | 0.033 | 0.083 | 0.162 | 0.275 | 0.307 |
+| p.Group 7.Grass        | 0.748 | 0.045 | 0.657 | 0.673 | 0.719 | 0.749 | 0.778 | 0.819 | 0.833 |
+| p.Group 7.U.lactuca    | 0.075 | 0.067 | 0.002 | 0.003 | 0.021 | 0.056 | 0.116 | 0.209 | 0.236 |
+| p.Group 7.Zostera      | 0.066 | 0.036 | 0.011 | 0.016 | 0.039 | 0.062 | 0.089 | 0.131 | 0.146 |
+| p.Group 8.Enteromorpha | 0.052 | 0.048 | 0.002 | 0.003 | 0.016 | 0.037 | 0.073 | 0.151 | 0.179 |
+| p.Group 8.Grass        | 0.854 | 0.035 | 0.780 | 0.794 | 0.831 | 0.855 | 0.878 | 0.909 | 0.919 |
+| p.Group 8.U.lactuca    | 0.035 | 0.035 | 0.001 | 0.002 | 0.010 | 0.024 | 0.050 | 0.106 | 0.128 |
+| p.Group 8.Zostera      | 0.054 | 0.029 | 0.009 | 0.012 | 0.031 | 0.050 | 0.072 | 0.107 | 0.118 |
 
 With a fixed effect, MixSIAR’s global diet is the diet of the first
 group, so the plots below show the eight groups:
@@ -156,38 +156,38 @@ knitr::kable(data.frame(
 
 | quantity | MixSIARPFN mean | MixSIAR mean | MixSIARPFN SD | MixSIAR SD | MixSIARPFN 95% CI | MixSIAR 95% CI | W1 |
 |:---|---:|---:|---:|---:|:---|:---|---:|
-| p.Group 1.Enteromorpha | 0.229 | 0.092 | 0.155 | 0.082 | 0.01 to 0.57 | 0.00 to 0.29 | 0.137 |
-| p.Group 1.Grass | 0.125 | 0.122 | 0.034 | 0.021 | 0.07 to 0.20 | 0.08 to 0.17 | 0.010 |
-| p.Group 1.U.lactuca | 0.210 | 0.209 | 0.143 | 0.073 | 0.01 to 0.53 | 0.07 to 0.35 | 0.061 |
-| p.Group 1.Zostera | 0.528 | 0.577 | 0.159 | 0.069 | 0.13 to 0.77 | 0.44 to 0.71 | 0.070 |
-| p.Group 2.Enteromorpha | 0.396 | 0.198 | 0.289 | 0.224 | 0.00 to 0.85 | 0.00 to 0.74 | 0.198 |
-| p.Group 2.Grass | 0.179 | 0.200 | 0.044 | 0.030 | 0.09 to 0.26 | 0.13 to 0.24 | 0.024 |
-| p.Group 2.U.lactuca | 0.254 | 0.442 | 0.216 | 0.173 | 0.00 to 0.67 | 0.04 to 0.64 | 0.191 |
-| p.Group 2.Zostera | 0.107 | 0.160 | 0.078 | 0.044 | 0.01 to 0.30 | 0.07 to 0.24 | 0.061 |
-| p.Group 3.Enteromorpha | 0.242 | 0.109 | 0.204 | 0.137 | 0.00 to 0.64 | 0.00 to 0.53 | 0.134 |
-| p.Group 3.Grass | 0.409 | 0.430 | 0.045 | 0.027 | 0.32 to 0.50 | 0.36 to 0.47 | 0.025 |
-| p.Group 3.U.lactuca | 0.260 | 0.399 | 0.175 | 0.107 | 0.00 to 0.55 | 0.08 to 0.52 | 0.143 |
-| p.Group 3.Zostera | 0.077 | 0.063 | 0.054 | 0.024 | 0.01 to 0.21 | 0.02 to 0.11 | 0.023 |
-| p.Group 4.Enteromorpha | 0.321 | 0.136 | 0.216 | 0.143 | 0.01 to 0.73 | 0.00 to 0.48 | 0.186 |
-| p.Group 4.Grass | 0.117 | 0.133 | 0.042 | 0.028 | 0.04 to 0.20 | 0.08 to 0.19 | 0.018 |
-| p.Group 4.U.lactuca | 0.194 | 0.234 | 0.156 | 0.111 | 0.00 to 0.54 | 0.02 to 0.43 | 0.063 |
-| p.Group 4.Zostera | 0.419 | 0.498 | 0.174 | 0.088 | 0.06 to 0.73 | 0.34 to 0.68 | 0.090 |
-| p.Group 5.Enteromorpha | 0.475 | 0.205 | 0.321 | 0.246 | 0.00 to 0.91 | 0.00 to 0.80 | 0.269 |
-| p.Group 5.Grass | 0.119 | 0.153 | 0.041 | 0.029 | 0.04 to 0.20 | 0.09 to 0.19 | 0.036 |
-| p.Group 5.U.lactuca | 0.262 | 0.505 | 0.236 | 0.197 | 0.00 to 0.71 | 0.03 to 0.71 | 0.244 |
-| p.Group 5.Zostera | 0.095 | 0.137 | 0.069 | 0.040 | 0.01 to 0.27 | 0.06 to 0.22 | 0.049 |
-| p.Group 6.Enteromorpha | 0.290 | 0.129 | 0.225 | 0.155 | 0.00 to 0.69 | 0.00 to 0.56 | 0.161 |
-| p.Group 6.Grass | 0.369 | 0.388 | 0.051 | 0.032 | 0.27 to 0.47 | 0.31 to 0.44 | 0.024 |
-| p.Group 6.U.lactuca | 0.269 | 0.399 | 0.184 | 0.125 | 0.00 to 0.58 | 0.06 to 0.55 | 0.134 |
-| p.Group 6.Zostera | 0.096 | 0.085 | 0.070 | 0.034 | 0.01 to 0.27 | 0.03 to 0.15 | 0.026 |
-| p.Group 7.Enteromorpha | 0.108 | 0.058 | 0.078 | 0.056 | 0.01 to 0.29 | 0.00 to 0.20 | 0.050 |
-| p.Group 7.Grass | 0.742 | 0.769 | 0.049 | 0.030 | 0.64 to 0.83 | 0.71 to 0.83 | 0.028 |
-| p.Group 7.U.lactuca | 0.097 | 0.108 | 0.066 | 0.051 | 0.01 to 0.25 | 0.02 to 0.20 | 0.019 |
-| p.Group 7.Zostera | 0.064 | 0.064 | 0.040 | 0.028 | 0.01 to 0.16 | 0.02 to 0.13 | 0.009 |
-| p.Group 8.Enteromorpha | 0.065 | 0.024 | 0.052 | 0.023 | 0.00 to 0.20 | 0.00 to 0.08 | 0.042 |
-| p.Group 8.Grass | 0.828 | 0.875 | 0.048 | 0.023 | 0.73 to 0.91 | 0.83 to 0.92 | 0.047 |
-| p.Group 8.U.lactuca | 0.054 | 0.033 | 0.041 | 0.022 | 0.00 to 0.16 | 0.00 to 0.09 | 0.020 |
-| p.Group 8.Zostera | 0.048 | 0.068 | 0.032 | 0.021 | 0.01 to 0.13 | 0.03 to 0.11 | 0.023 |
+| p.Group 1.Enteromorpha | 0.177 | 0.092 | 0.119 | 0.082 | 0.01 to 0.44 | 0.00 to 0.29 | 0.084 |
+| p.Group 1.Grass | 0.110 | 0.122 | 0.026 | 0.021 | 0.06 to 0.16 | 0.08 to 0.17 | 0.012 |
+| p.Group 1.U.lactuca | 0.112 | 0.209 | 0.087 | 0.073 | 0.00 to 0.32 | 0.07 to 0.35 | 0.096 |
+| p.Group 1.Zostera | 0.598 | 0.577 | 0.109 | 0.069 | 0.35 to 0.77 | 0.44 to 0.71 | 0.038 |
+| p.Group 2.Enteromorpha | 0.405 | 0.198 | 0.297 | 0.224 | 0.00 to 0.84 | 0.00 to 0.74 | 0.207 |
+| p.Group 2.Grass | 0.162 | 0.200 | 0.033 | 0.030 | 0.10 to 0.23 | 0.13 to 0.24 | 0.039 |
+| p.Group 2.U.lactuca | 0.233 | 0.442 | 0.219 | 0.173 | 0.00 to 0.67 | 0.04 to 0.64 | 0.213 |
+| p.Group 2.Zostera | 0.113 | 0.160 | 0.061 | 0.044 | 0.02 to 0.25 | 0.07 to 0.24 | 0.048 |
+| p.Group 3.Enteromorpha | 0.289 | 0.109 | 0.224 | 0.137 | 0.01 to 0.68 | 0.00 to 0.53 | 0.180 |
+| p.Group 3.Grass | 0.380 | 0.430 | 0.037 | 0.027 | 0.31 to 0.46 | 0.36 to 0.47 | 0.050 |
+| p.Group 3.U.lactuca | 0.254 | 0.399 | 0.195 | 0.107 | 0.00 to 0.57 | 0.08 to 0.52 | 0.157 |
+| p.Group 3.Zostera | 0.060 | 0.063 | 0.039 | 0.024 | 0.01 to 0.16 | 0.02 to 0.11 | 0.013 |
+| p.Group 4.Enteromorpha | 0.238 | 0.136 | 0.177 | 0.143 | 0.01 to 0.60 | 0.00 to 0.48 | 0.102 |
+| p.Group 4.Grass | 0.103 | 0.133 | 0.037 | 0.028 | 0.03 to 0.18 | 0.08 to 0.19 | 0.030 |
+| p.Group 4.U.lactuca | 0.134 | 0.234 | 0.120 | 0.111 | 0.00 to 0.42 | 0.02 to 0.43 | 0.100 |
+| p.Group 4.Zostera | 0.510 | 0.498 | 0.110 | 0.088 | 0.30 to 0.72 | 0.34 to 0.68 | 0.023 |
+| p.Group 5.Enteromorpha | 0.442 | 0.205 | 0.324 | 0.246 | 0.00 to 0.89 | 0.00 to 0.80 | 0.237 |
+| p.Group 5.Grass | 0.110 | 0.153 | 0.031 | 0.029 | 0.05 to 0.17 | 0.09 to 0.19 | 0.043 |
+| p.Group 5.U.lactuca | 0.232 | 0.505 | 0.238 | 0.197 | 0.00 to 0.73 | 0.03 to 0.71 | 0.275 |
+| p.Group 5.Zostera | 0.097 | 0.137 | 0.056 | 0.040 | 0.02 to 0.23 | 0.06 to 0.22 | 0.041 |
+| p.Group 6.Enteromorpha | 0.295 | 0.129 | 0.230 | 0.155 | 0.01 to 0.70 | 0.00 to 0.56 | 0.166 |
+| p.Group 6.Grass | 0.344 | 0.388 | 0.042 | 0.032 | 0.27 to 0.43 | 0.31 to 0.44 | 0.044 |
+| p.Group 6.U.lactuca | 0.245 | 0.399 | 0.197 | 0.125 | 0.00 to 0.59 | 0.06 to 0.55 | 0.160 |
+| p.Group 6.Zostera | 0.083 | 0.085 | 0.052 | 0.034 | 0.01 to 0.21 | 0.03 to 0.15 | 0.015 |
+| p.Group 7.Enteromorpha | 0.106 | 0.058 | 0.087 | 0.056 | 0.00 to 0.31 | 0.00 to 0.20 | 0.047 |
+| p.Group 7.Grass | 0.748 | 0.769 | 0.045 | 0.030 | 0.66 to 0.83 | 0.71 to 0.83 | 0.022 |
+| p.Group 7.U.lactuca | 0.075 | 0.108 | 0.067 | 0.051 | 0.00 to 0.24 | 0.02 to 0.20 | 0.037 |
+| p.Group 7.Zostera | 0.066 | 0.064 | 0.036 | 0.028 | 0.01 to 0.15 | 0.02 to 0.13 | 0.006 |
+| p.Group 8.Enteromorpha | 0.052 | 0.024 | 0.048 | 0.023 | 0.00 to 0.18 | 0.00 to 0.08 | 0.028 |
+| p.Group 8.Grass | 0.854 | 0.875 | 0.035 | 0.023 | 0.78 to 0.92 | 0.83 to 0.92 | 0.021 |
+| p.Group 8.U.lactuca | 0.035 | 0.033 | 0.035 | 0.022 | 0.00 to 0.13 | 0.00 to 0.09 | 0.008 |
+| p.Group 8.Zostera | 0.054 | 0.068 | 0.029 | 0.021 | 0.01 to 0.12 | 0.03 to 0.11 | 0.016 |
 
 ``` r
 plot_compare(fit, ref$draws, block = "Group")
@@ -202,11 +202,58 @@ plot_compare(fit, ref$draws, type = "means")
 ![](geese_files/figure-html/compare-means-1.png)
 
 **What this shows.** Grass, the source the data pin down best, is close
-in every group: MixSIARPFN’s means differ from MixSIAR’s by 0.02 on
-average, though its posteriors are wider (median SD ratio 1.59). The
+in every group: MixSIARPFN’s means differ from MixSIAR’s by 0.03 on
+average, though its posteriors are wider (median SD ratio 1.31). The
 three algae trade off against each other, since four sources cannot all
 be determined from two tracers, and there the two fits differ more: mean
-difference 0.09, median SD ratio 1.53, and the largest difference is
-Group 5.Enteromorpha (0.47 against 0.21). For data like these, where
+difference 0.09, median SD ratio 1.40, and the largest difference is
+Group 5.U.lactuca (0.23 against 0.50). For data like these, where
 sources overlap, MixSIARPFN gives a quick first answer and a MixSIAR run
 the more precise one.
+
+## Does MixSIAR’s model fit these data?
+
+The comparison above takes MixSIAR as the reference. That is fair only
+where MixSIAR’s model describes the data, which a posterior predictive
+check can test: MixSIAR’s fitted model generates new datasets, one per
+posterior draw, and the real data are compared with them group by group.
+MixSIARPFN gives marginal posteriors only, so it cannot run this check
+itself; the results come from a separate MixSIAR run with the same model
+and data, shipped with the package (`mixsiar_reference("geese")$ppc`).
+For each group, the plot shows each tracer’s mean and SD and the
+correlation between the tracers, on the standardised scale MixSIAR’s
+model uses:
+
+![](geese_files/figure-html/ppc-plot-1.png)
+
+11 of the 40 group statistics fall outside the 95% range of the model’s
+datasets (7 outside 99%). For six datasets simulated from MixSIAR’s own
+model with the same design the count is 0 to 2 (about 2 are expected by
+chance). With Residual only error, MixSIAR’s model has one residual
+covariance for all eight groups, but the groups differ: groups 2, 3, 5,
+6 are much tighter than the model allows, group 7 much wider, and the
+correlation between δ¹³C and δ¹⁵N runs from -0.58 to 0.60 across groups,
+where the model’s datasets give about 0.23 in every group. The checks on
+the whole dataset (each tracer’s mean, SD and range, and the total
+log-likelihood) pass, so MixSIAR’s usual output would not show this.
+
+Where the model does not fit, MixSIAR’s posterior is not a correct
+answer for MixSIARPFN to match, and the two can differ more. The
+difference between the two fits by group:
+
+| Group   | Statistics outside 95% (of 5) | Mean W1, MixSIARPFN against MixSIAR |
+|:--------|------------------------------:|------------------------------------:|
+| Group 1 |                             1 |                               0.058 |
+| Group 2 |                             2 |                               0.127 |
+| Group 3 |                             1 |                               0.100 |
+| Group 4 |                             0 |                               0.064 |
+| Group 5 |                             2 |                               0.149 |
+| Group 6 |                             2 |                               0.096 |
+| Group 7 |                             2 |                               0.028 |
+| Group 8 |                             1 |                               0.019 |
+
+The groups that are tighter than the model allows are where the fits
+differ most (mean W1 0.118, against 0.042 for the other groups). On data
+like these, the differences between MixSIARPFN and MixSIAR say as much
+about the model as about either method: both are fitting a model that
+leaves out structure the data show.

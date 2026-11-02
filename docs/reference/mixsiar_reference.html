@@ -73,7 +73,20 @@ settings (chain length, burn-in, run time, largest Gelman-Rubin diagnostic).</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with <code>draws</code> (data frame: <code>name</code>, <code>value</code>; names as in MixSIAR's
 summary, e.g. <code>p.Pack 1.Deer</code>), <code>summary</code> (data frame: <code>name</code>, <code>mean</code>, <code>sd</code>,
-<code>q2.5</code>, <code>q97.5</code>) and <code>info</code> (list).</p>
+<code>q2.5</code>, <code>q97.5</code>), <code>info</code> (list) and <code>ppc</code> (list: <code>stats</code>, one row per checked
+statistic with the observed value, the replicated mean and 95% interval and the
+posterior predictive p-value <code>ppp</code>; <code>summary</code> and <code>controls</code>, how many group
+statistics fall outside 95% and 99% of their replicates; <code>grouping</code>, the factor
+checked).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Also a posterior predictive check of each MixSIAR fit: MixSIAR's own model, rerun
+with replicated consumers drawn from its likelihood, compared with the data group by
+group (each tracer's mean and SD, and the correlation between tracers), on the
+standardised tracer scale MixSIAR's JAGS model uses. The same check on six datasets
+simulated from the model itself, like geese and like wolves, shows what a good fit
+looks like.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
