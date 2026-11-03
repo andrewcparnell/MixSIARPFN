@@ -6,9 +6,6 @@ files with the same function calls as MixSIAR, but takes the posterior
 from a *prior-data fitted network*: a transformer trained on simulations
 from MixSIAR’s own model, one network per error structure.
 
-**Status: development version.** The networks are on Zenodo:
-[doi:10.5281/zenodo.23770513](https://doi.org/10.5281/zenodo.23770513).
-
 ``` r
 library(MixSIARPFN)
 mix <- load_mix_data(filename = "consumer.csv", iso_names = c("d13C", "d15N"),
@@ -33,6 +30,29 @@ are refused with a message.
 
 Not yet: raw source data, fatty acid data, more than 4 tracers.
 
+## How well it does
+
+Tested against MixSIAR on simulated data with known diets (50 datasets
+each like MixSIAR’s geese and wolves examples) and on MixSIAR’s three
+example datasets:
+
+- **Calibrated.** On simulated data, MixSIARPFN’s 95% intervals contain
+  the true diet proportion 95 to 97% of the time.
+- **Close to MixSIAR, a little less precise.** On realistic wolves-like
+  data its accuracy (CRPS) is within 3% of fully converged MixSIAR runs.
+  On geese-like data, and wolves-like data with diets drawn from
+  MixSIAR’s prior, it is 9 to 11% behind. Its intervals are 6 to 13%
+  wider.
+- **Weakly identified sources.** Where the data cannot pin a source
+  down, MixSIARPFN tends to put more probability near 0 than MixSIAR
+  does.
+- **On MixSIAR’s examples** it agrees closely for killer whale. For
+  geese and wolves the two differ more, mostly in groups where MixSIAR’s
+  own model does not fit the data: a posterior predictive check of
+  MixSIAR’s fits shows group spreads and tracer correlations the model
+  cannot produce. The vignettes show both fits side by side and the
+  check.
+
 ## What is different from MixSIAR
 
 - **Marginal posteriors only.** Each proportion and parameter gets its
@@ -40,11 +60,9 @@ Not yet: raw source data, fatty acid data, more than 4 tracers.
   means of one diet need not sum to exactly 1, and sums, differences or
   ratios of proportions cannot be computed.
 - **No MCMC**, so no chain lengths, burn-in or convergence diagnostics.
-- **Accuracy.** On simulated data the networks’ credible intervals have
-  the right coverage. Compared with MixSIAR on real data they are close
-  for simple models and wider, sometimes noticeably different, for
-  models with many levels: see the vignettes, which put both side by
-  side.
+- **No model checks.** Without joint draws, MixSIARPFN cannot run
+  posterior predictive checks; for an important analysis, check the
+  model with a MixSIAR run.
 
 ## Installation
 
@@ -54,7 +72,7 @@ remotes::install_github("andrewcparnell/MixSIARPFN")
 ```
 
 The first fit sets up a small Python environment (numpy, pandas, ONNX
-Runtime) through reticulate and downloads the network it needs (about 36
+Runtime) through reticulate and downloads the network it needs (about 70
 MB); both are cached. No Python knowledge is needed.
 
 ## Licence and credit
@@ -65,5 +83,7 @@ Jackson, A. L., Ward, E. J., Parnell, A. C., Phillips, D. L. and
 Semmens, B. X. (2018). Analyzing mixing systems using a new generation
 of Bayesian tracer mixing models. *PeerJ* 6:e5096.
 
-The networks: Parnell, A. (2026). MixSIARPFN networks, version 1.
-Zenodo. <https://doi.org/10.5281/zenodo.23770513>
+The networks: Parnell, A. (2026). MixSIARPFN networks, version 2.
+Zenodo. <https://doi.org/10.5281/zenodo.PENDING>
+
+`citation("MixSIARPFN")` gives both references.

@@ -101,8 +101,7 @@ tracers the data cannot pin down every proportion (that needs at most
 one more source than tracers), so some of the diet is set by the prior
 and the sources’ spread:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_data.html">plot_data</a></span><span class="op">(</span>mix <span class="op">=</span> <span class="va">mix</span>, source <span class="op">=</span> <span class="va">source</span>, discr <span class="op">=</span> <span class="va">discr</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `height` was translated to `width`.</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_data.html">plot_data</a></span><span class="op">(</span>mix <span class="op">=</span> <span class="va">mix</span>, source <span class="op">=</span> <span class="va">source</span>, discr <span class="op">=</span> <span class="va">discr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="geese_files/figure-html/isospace-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
@@ -116,7 +115,7 @@ and the sources’ spread:</p>
 <span>                 resid_err <span class="op">=</span> <span class="cn">TRUE</span>, process_err <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">fit</span></span>
-<span><span class="co">#&gt; MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s</span></span>
+<span><span class="co">#&gt; MixSIARPFN fit (Residual only error), 4 sources, in 0.6 s</span></span>
 <span><span class="co">#&gt; Marginal posteriors (no joint draws). Global diet:</span></span>
 <span><span class="co">#&gt;        source  mean    sd  2.5% 97.5%</span></span>
 <span><span class="co">#&gt;  Enteromorpha 0.176 0.119 0.008 0.440</span></span>
@@ -124,7 +123,7 @@ and the sources’ spread:</p>
 <span><span class="co">#&gt;     U.lactuca 0.111 0.086 0.004 0.316</span></span>
 <span><span class="co">#&gt;       Zostera 0.595 0.106 0.356 0.763</span></span>
 <span><span class="co">#&gt; Use output_pfn() for every proportion and parameter.</span></span></code></pre></div>
-<p>The fit took 0.8 seconds.</p>
+<p>The fit took 0.6 seconds.</p>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
@@ -612,7 +611,7 @@ the output.</p>
 <span><span class="va">cmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compare_mixsiar.html">compare_mixsiar</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">ref</span><span class="op">$</span><span class="va">draws</span>, <span class="va">ref</span><span class="op">$</span><span class="va">summary</span><span class="op">)</span></span></code></pre></div>
 <p>MixSIAR 3.1.12 fitted the same model with 3 chains of 1,000,000
 iterations (burn-in 500,000), which took about 2.9 hours (largest
-Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.8 seconds.</p>
+Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.6 seconds.</p>
 <p>Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how
 far, on average, one posterior’s mass has to move to match the other, on
 the proportion scale):</p>
@@ -980,9 +979,12 @@ by 0.03 on average, though its posteriors are wider (median SD ratio
 1.31). The three algae trade off against each other, since four sources
 cannot all be determined from two tracers, and there the two fits differ
 more: mean difference 0.09, median SD ratio 1.40, and the largest
-difference is Group 5.U.lactuca (0.23 against 0.50). For data like
-these, where sources overlap, MixSIARPFN gives a quick first answer and
-a MixSIAR run the more precise one.</p>
+difference is Group 5.U.lactuca (0.23 against 0.50). MixSIARPFN also
+puts more probability near 0 on the algae: for group 2’s <em>U.
+lactuca</em> proportion, the probability that it is below 0.02 is 0.16
+against MixSIAR’s 0.01, a tendency of the network for sources the data
+identify poorly. For data like these, where sources overlap, MixSIARPFN
+gives a quick first answer and a MixSIAR run the more precise one.</p>
 </div>
 <div class="section level2">
 <h2 id="does-mixsiars-model-fit-these-data">Does MixSIAR’s model fit these data?<a class="anchor" aria-label="anchor" href="#does-mixsiars-model-fit-these-data"></a>

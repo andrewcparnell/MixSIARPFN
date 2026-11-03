@@ -101,8 +101,7 @@ MixSIAR’s vignette; only the fitting call changes,
 source’s mean in each region after adding the discrimination factor,
 with ±1 SD:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_data.html">plot_data</a></span><span class="op">(</span>mix <span class="op">=</span> <span class="va">mix</span>, source <span class="op">=</span> <span class="va">source</span>, discr <span class="op">=</span> <span class="va">discr</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `height` was translated to `width`.</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_data.html">plot_data</a></span><span class="op">(</span>mix <span class="op">=</span> <span class="va">mix</span>, source <span class="op">=</span> <span class="va">source</span>, discr <span class="op">=</span> <span class="va">discr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="wolves_files/figure-html/isospace-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
@@ -117,14 +116,14 @@ the first time it is needed (about 36 MB) and cached.</p>
 <span>                 resid_err <span class="op">=</span> <span class="cn">TRUE</span>, process_err <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">fit</span></span>
-<span><span class="co">#&gt; MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s</span></span>
+<span><span class="co">#&gt; MixSIARPFN fit (Residual * Process error), 3 sources, in 0.4 s</span></span>
 <span><span class="co">#&gt; Marginal posteriors (no joint draws). Global diet:</span></span>
 <span><span class="co">#&gt;          source  mean    sd  2.5% 97.5%</span></span>
 <span><span class="co">#&gt;            Deer 0.485 0.201 0.097 0.850</span></span>
 <span><span class="co">#&gt;  Marine Mammals 0.206 0.161 0.013 0.632</span></span>
 <span><span class="co">#&gt;          Salmon 0.321 0.199 0.028 0.770</span></span>
 <span><span class="co">#&gt; Use output_pfn() for every proportion and parameter.</span></span></code></pre></div>
-<p>The fit took 0.5 seconds.</p>
+<p>The fit took 0.4 seconds.</p>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
@@ -674,7 +673,7 @@ output.</p>
 <p>MixSIAR 3.1.12 fitted the same model with 3 chains of 3,000,000
 iterations (burn-in 1,500,000, thinned by 500), a run of about 6.3 hours
 that was needed for the Region SD to converge (largest Gelman-Rubin
-diagnostic 1.012). MixSIARPFN took 0.5 seconds.</p>
+diagnostic 1.012). MixSIARPFN took 0.4 seconds.</p>
 <p>The table gives both posteriors’ means, SDs and 95% intervals, and
 the Wasserstein-1 distance between them (W1: how far, on average, one
 posterior’s mass has to move to match the other, on the proportion

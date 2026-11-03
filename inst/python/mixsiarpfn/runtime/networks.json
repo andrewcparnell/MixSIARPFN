@@ -12,9 +12,9 @@
     "size": 70447059
   },
   "process": {
-    "file": "general_process_v1.onnx",
-    "url": "https://zenodo.org/records/23770513/files/general_process_v1.onnx?download=1",
-    "sha256": "e9c04ef938f3d1c16b6dcf2c3c561f52e5bf9601f301f79a502a75cbae7e7f8d",
-    "size": 35775867
+    "file": "general_process_v2.onnx",
+    "url": "https://zenodo.org/records/PENDING/files/general_process_v2.onnx?download=1",
+    "sha256": "fddac2dd03dd85df86d8b9298d25e7547a69f6821fcca9c27ed0d7a17036c858",
+    "size": 70265036
   }
 }

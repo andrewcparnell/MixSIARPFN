@@ -58,7 +58,6 @@
 <div class="page-header"><h1 id="mixsiarpfn">MixSIARPFN<a class="anchor" aria-label="anchor" href="#mixsiarpfn"></a>
 </h1></div>
 <p>Fit <a href="https://github.com/brianstock/MixSIAR" class="external-link">MixSIAR</a> stable isotope mixing models in about a second, without JAGS. MixSIARPFN reads the same files with the same function calls as MixSIAR, but takes the posterior from a <em>prior-data fitted network</em>: a transformer trained on simulations from MixSIAR’s own model, one network per error structure.</p>
-<p><strong>Status: development version.</strong> The networks are on Zenodo: <a href="https://doi.org/10.5281/zenodo.23770513" class="external-link">doi:10.5281/zenodo.23770513</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/andrewcparnell/MixSIARPFN" class="external-link">MixSIARPFN</a></span><span class="op">)</span></span>
 <span><span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_mix_data.html">load_mix_data</a></span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"consumer.csv"</span>, iso_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>, <span class="st">"d15N"</span><span class="op">)</span>,</span>
@@ -77,6 +76,21 @@
 <p>Not yet: raw source data, fatty acid data, more than 4 tracers.</p>
 </div>
 <div class="section level2">
+<h2 id="how-well-it-does">How well it does<a class="anchor" aria-label="anchor" href="#how-well-it-does"></a>
+</h2>
+<p>Tested against MixSIAR on simulated data with known diets (50 datasets each like MixSIAR’s geese and wolves examples) and on MixSIAR’s three example datasets:</p>
+<ul>
+<li>
+<strong>Calibrated.</strong> On simulated data, MixSIARPFN’s 95% intervals contain the true diet proportion 95 to 97% of the time.</li>
+<li>
+<strong>Close to MixSIAR, a little less precise.</strong> On realistic wolves-like data its accuracy (CRPS) is within 3% of fully converged MixSIAR runs. On geese-like data, and wolves-like data with diets drawn from MixSIAR’s prior, it is 9 to 11% behind. Its intervals are 6 to 13% wider.</li>
+<li>
+<strong>Weakly identified sources.</strong> Where the data cannot pin a source down, MixSIARPFN tends to put more probability near 0 than MixSIAR does.</li>
+<li>
+<strong>On MixSIAR’s examples</strong> it agrees closely for killer whale. For geese and wolves the two differ more, mostly in groups where MixSIAR’s own model does not fit the data: a posterior predictive check of MixSIAR’s fits shows group spreads and tracer correlations the model cannot produce. The vignettes show both fits side by side and the check.</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="what-is-different-from-mixsiar">What is different from MixSIAR<a class="anchor" aria-label="anchor" href="#what-is-different-from-mixsiar"></a>
 </h2>
 <ul>
@@ -85,7 +99,7 @@
 <li>
 <strong>No MCMC</strong>, so no chain lengths, burn-in or convergence diagnostics.</li>
 <li>
-<strong>Accuracy.</strong> On simulated data the networks’ credible intervals have the right coverage. Compared with MixSIAR on real data they are close for simple models and wider, sometimes noticeably different, for models with many levels: see the vignettes, which put both side by side.</li>
+<strong>No model checks.</strong> Without joint draws, MixSIARPFN cannot run posterior predictive checks; for an important analysis, check the model with a MixSIAR run.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -94,13 +108,14 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"andrewcparnell/MixSIARPFN"</span><span class="op">)</span></span></code></pre></div>
-<p>The first fit sets up a small Python environment (numpy, pandas, ONNX Runtime) through reticulate and downloads the network it needs (about 36 MB); both are cached. No Python knowledge is needed.</p>
+<p>The first fit sets up a small Python environment (numpy, pandas, ONNX Runtime) through reticulate and downloads the network it needs (about 70 MB); both are cached. No Python knowledge is needed.</p>
 </div>
 <div class="section level2">
 <h2 id="licence-and-credit">Licence and credit<a class="anchor" aria-label="anchor" href="#licence-and-credit"></a>
 </h2>
 <p>GPL (&gt;= 3). The data loaders follow MixSIAR’s, and the example data are MixSIAR’s killer whale, geese and wolves vignettes: Stock, B. C., Jackson, A. L., Ward, E. J., Parnell, A. C., Phillips, D. L. and Semmens, B. X. (2018). Analyzing mixing systems using a new generation of Bayesian tracer mixing models. <em>PeerJ</em> 6:e5096.</p>
-<p>The networks: Parnell, A. (2026). MixSIARPFN networks, version 1. Zenodo. <a href="https://doi.org/10.5281/zenodo.23770513" class="external-link uri">https://doi.org/10.5281/zenodo.23770513</a></p>
+<p>The networks: Parnell, A. (2026). MixSIARPFN networks, version 2. Zenodo. <!-- ZENODO_V2 --><a href="https://doi.org/10.5281/zenodo.PENDING" class="external-link uri">https://doi.org/10.5281/zenodo.PENDING</a></p>
+<p><code>citation("MixSIARPFN")</code> gives both references.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

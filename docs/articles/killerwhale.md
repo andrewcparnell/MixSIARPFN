@@ -29,7 +29,6 @@ source
 
 ``` r
 plot_data(mix = mix, source = source, discr = discr)
-#> `height` was translated to `width`.
 ```
 
 ![](killerwhale_files/figure-html/isospace-1.png)
@@ -47,7 +46,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = TRUE)
 )
 fit
-#> MixSIARPFN fit (Residual * Process error), 5 sources, in 0.3 s
+#> MixSIARPFN fit (Residual * Process error), 5 sources, in 0.2 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>     source  mean    sd  2.5% 97.5%
 #>    Chinook 0.358 0.124 0.073 0.542
@@ -58,7 +57,7 @@ fit
 #> Use output_pfn() for every proportion and parameter.
 ```
 
-The fit took 0.3 seconds.
+The fit took 0.2 seconds.
 
 ## Results
 
@@ -107,7 +106,7 @@ cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
 
 MixSIAR 3.1.12 fitted the same model with 3 chains of 1,000,000
 iterations (burn-in 500,000), which took about 23 minutes (largest
-Gelman-Rubin diagnostic 1.005). MixSIARPFN took 0.3 seconds.
+Gelman-Rubin diagnostic 1.005). MixSIARPFN took 0.2 seconds.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how far,
 on average, one posterior’s mass has to move to match the other, on the

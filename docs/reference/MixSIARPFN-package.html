@@ -63,6 +63,26 @@ per error structure, downloaded on first use (see <code><a href="pfn_networks.ht
 whale, geese and wolves vignettes.</p>
     </div>
     <div class="section level2">
+    <h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a></h2>
+
+
+<ul><li><p><strong>Marginal posteriors only.</strong> Each proportion and parameter has its own posterior,
+but there are no joint draws: the marginal means of one diet need not sum to
+exactly 1, and sums, differences or ratios of proportions cannot be computed.</p></li>
+<li><p><strong>Accuracy.</strong> On data simulated from MixSIAR's model the 95% intervals are
+calibrated, but somewhat wider than MixSIAR's, and the posteriors a little less
+accurate (CRPS up to about 10% higher than fully converged MixSIAR).</p></li>
+<li><p><strong>Weakly identified sources.</strong> Where the data cannot pin a source down, the
+network tends to put more probability near 0 than MixSIAR does.</p></li>
+<li><p><strong>No model checks.</strong> Without joint draws, posterior predictive checks cannot be
+run; where it matters, check the model with a MixSIAR run. The geese and wolves
+vignettes show MixSIAR's model failing such a check, and the two fits differing
+most where it fails.</p></li>
+<li><p><strong>Envelope.</strong> Up to 8 sources, 4 tracers, two categorical effects and one
+continuous effect, with source summary statistics only; data outside what the
+networks were trained for are refused.</p></li>
+</ul></div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Useful links:</p><ul><li><p><a href="https://github.com/andrewcparnell/MixSIARPFN" class="external-link">https://github.com/andrewcparnell/MixSIARPFN</a></p></li>
 <li><p>Report bugs at <a href="https://github.com/andrewcparnell/MixSIARPFN/issues" class="external-link">https://github.com/andrewcparnell/MixSIARPFN/issues</a></p></li>

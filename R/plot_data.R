@@ -64,9 +64,9 @@ plot_data <- function(filename = "isospace_plot", plot_save_pdf = FALSE,
       ggplot2::geom_errorbar(data = sd, ggplot2::aes(x = .data$x, ymin = .data$y - .data$sy,
                                                      ymax = .data$y + .data$sy),
                              width = 0, colour = "grey30") +
-      ggplot2::geom_errorbarh(data = sd, ggplot2::aes(y = .data$y, xmin = .data$x - .data$sx,
-                                                      xmax = .data$x + .data$sx),
-                              height = 0, colour = "grey30") +
+      ggplot2::geom_errorbar(data = sd, ggplot2::aes(y = .data$y, xmin = .data$x - .data$sx,
+                                                     xmax = .data$x + .data$sx),
+                             width = 0, orientation = "y", colour = "grey30") +
       ggplot2::geom_point(data = sd, ggplot2::aes(x = .data$x, y = .data$y), shape = 15,
                           size = 2.5) +
       ggplot2::geom_text(data = sd, ggplot2::aes(x = .data$x, y = .data$y, label = .data$Source),

@@ -38,7 +38,6 @@ with ±1 SD:
 
 ``` r
 plot_data(mix = mix, source = source, discr = discr)
-#> `height` was translated to `width`.
 ```
 
 ![](wolves_files/figure-html/isospace-1.png)
@@ -55,7 +54,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = TRUE)
 )
 fit
-#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s
+#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.4 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>          source  mean    sd  2.5% 97.5%
 #>            Deer 0.485 0.201 0.097 0.850
@@ -64,7 +63,7 @@ fit
 #> Use output_pfn() for every proportion and parameter.
 ```
 
-The fit took 0.5 seconds.
+The fit took 0.4 seconds.
 
 ## Results
 
@@ -165,7 +164,7 @@ cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
 MixSIAR 3.1.12 fitted the same model with 3 chains of 3,000,000
 iterations (burn-in 1,500,000, thinned by 500), a run of about 6.3 hours
 that was needed for the Region SD to converge (largest Gelman-Rubin
-diagnostic 1.012). MixSIARPFN took 0.5 seconds.
+diagnostic 1.012). MixSIARPFN took 0.4 seconds.
 
 The table gives both posteriors’ means, SDs and 95% intervals, and the
 Wasserstein-1 distance between them (W1: how far, on average, one

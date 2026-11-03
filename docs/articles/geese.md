@@ -38,7 +38,6 @@ and the sources’ spread:
 
 ``` r
 plot_data(mix = mix, source = source, discr = discr)
-#> `height` was translated to `width`.
 ```
 
 ![](geese_files/figure-html/isospace-1.png)
@@ -54,7 +53,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = FALSE)
 )
 fit
-#> MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s
+#> MixSIARPFN fit (Residual only error), 4 sources, in 0.6 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>        source  mean    sd  2.5% 97.5%
 #>  Enteromorpha 0.176 0.119 0.008 0.440
@@ -64,7 +63,7 @@ fit
 #> Use output_pfn() for every proportion and parameter.
 ```
 
-The fit took 0.8 seconds.
+The fit took 0.6 seconds.
 
 ## Results
 
@@ -138,7 +137,7 @@ cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
 
 MixSIAR 3.1.12 fitted the same model with 3 chains of 1,000,000
 iterations (burn-in 500,000), which took about 2.9 hours (largest
-Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.8 seconds.
+Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.6 seconds.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how far,
 on average, one posterior’s mass has to move to match the other, on the
@@ -207,9 +206,12 @@ average, though its posteriors are wider (median SD ratio 1.31). The
 three algae trade off against each other, since four sources cannot all
 be determined from two tracers, and there the two fits differ more: mean
 difference 0.09, median SD ratio 1.40, and the largest difference is
-Group 5.U.lactuca (0.23 against 0.50). For data like these, where
-sources overlap, MixSIARPFN gives a quick first answer and a MixSIAR run
-the more precise one.
+Group 5.U.lactuca (0.23 against 0.50). MixSIARPFN also puts more
+probability near 0 on the algae: for group 2’s *U. lactuca* proportion,
+the probability that it is below 0.02 is 0.16 against MixSIAR’s 0.01, a
+tendency of the network for sources the data identify poorly. For data
+like these, where sources overlap, MixSIARPFN gives a quick first answer
+and a MixSIAR run the more precise one.
 
 ## Does MixSIAR’s model fit these data?
 
