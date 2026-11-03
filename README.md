@@ -76,6 +76,6 @@ Parnell, A. C., Phillips, D. L. and Semmens, B. X. (2018). Analyzing mixing syst
 using a new generation of Bayesian tracer mixing models. *PeerJ* 6:e5096.
 
 The networks: Parnell, A. (2026). MixSIARPFN networks, version 2. Zenodo.
-<!-- ZENODO_V2 -->https://doi.org/10.5281/zenodo.PENDING
+<https://doi.org/10.5281/zenodo.23899709>
 
 `citation("MixSIARPFN")` gives both references.

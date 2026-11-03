@@ -115,7 +115,7 @@ and the sources’ spread:</p>
 <span>                 resid_err <span class="op">=</span> <span class="cn">TRUE</span>, process_err <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">fit</span></span>
-<span><span class="co">#&gt; MixSIARPFN fit (Residual only error), 4 sources, in 0.6 s</span></span>
+<span><span class="co">#&gt; MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s</span></span>
 <span><span class="co">#&gt; Marginal posteriors (no joint draws). Global diet:</span></span>
 <span><span class="co">#&gt;        source  mean    sd  2.5% 97.5%</span></span>
 <span><span class="co">#&gt;  Enteromorpha 0.176 0.119 0.008 0.440</span></span>
@@ -123,7 +123,7 @@ and the sources’ spread:</p>
 <span><span class="co">#&gt;     U.lactuca 0.111 0.086 0.004 0.316</span></span>
 <span><span class="co">#&gt;       Zostera 0.595 0.106 0.356 0.763</span></span>
 <span><span class="co">#&gt; Use output_pfn() for every proportion and parameter.</span></span></code></pre></div>
-<p>The fit took 0.6 seconds.</p>
+<p>The fit took 0.8 seconds.</p>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
@@ -611,7 +611,7 @@ the output.</p>
 <span><span class="va">cmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compare_mixsiar.html">compare_mixsiar</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">ref</span><span class="op">$</span><span class="va">draws</span>, <span class="va">ref</span><span class="op">$</span><span class="va">summary</span><span class="op">)</span></span></code></pre></div>
 <p>MixSIAR 3.1.12 fitted the same model with 3 chains of 1,000,000
 iterations (burn-in 500,000), which took about 2.9 hours (largest
-Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.6 seconds.</p>
+Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.8 seconds.</p>
 <p>Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how
 far, on average, one posterior’s mass has to move to match the other, on
 the proportion scale):</p>

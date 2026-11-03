@@ -1,5 +1,5 @@
 # The networks' DOI is the Zenodo record of the version in the package's manifest.
-networks_doi <- "10.5281/zenodo.PENDING"
+networks_doi <- "10.5281/zenodo.23899709"
 
 bibentry(
   bibtype = "Manual",

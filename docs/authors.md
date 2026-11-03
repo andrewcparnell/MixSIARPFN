@@ -22,14 +22,14 @@ https://github.com/andrewcparnell/MixSIARPFN
     }
 
 Parnell, A. (2026). MixSIARPFN networks, version 2. Zenodo.
-https://doi.org/10.5281/zenodo.PENDING
+https://doi.org/10.5281/zenodo.23899709
 
     @Misc{,
       title = {{MixSIARPFN} networks, version 2},
       author = {Andrew Parnell},
       year = {2026},
       publisher = {Zenodo},
-      doi = {10.5281/zenodo.PENDING},
+      doi = {10.5281/zenodo.23899709},
     }
 
 Stock, B. C., Jackson, A. L., Ward, E. J., Parnell, A. C., Phillips, D.
