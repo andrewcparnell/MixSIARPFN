@@ -32,17 +32,16 @@ Not yet: raw source data, fatty acid data, more than 4 tracers.
 
 ## How well it does
 
-Tested against MixSIAR on simulated data with known diets (50 datasets
-each like MixSIAR’s geese and wolves examples) and on MixSIAR’s three
-example datasets:
+Tested against MixSIAR on 450 simulated datasets with known diets (150
+each like MixSIAR’s geese example, its wolves example with diets from
+MixSIAR’s prior, and its wolves example with realistic diets) and on
+MixSIAR’s three example datasets:
 
 - **Calibrated.** On simulated data, MixSIARPFN’s 95% intervals contain
-  the true diet proportion 95 to 97% of the time.
-- **Close to MixSIAR, a little less precise.** On realistic wolves-like
-  data its accuracy (CRPS) is within 3% of fully converged MixSIAR runs.
-  On geese-like data, and wolves-like data with diets drawn from
-  MixSIAR’s prior, it is 9 to 11% behind. Its intervals are 6 to 13%
-  wider.
+  the true diet proportion 95 to 98% of the time.
+- **Close to MixSIAR, a little less precise.** Its accuracy (CRPS) is 4
+  to 5% behind fully converged MixSIAR runs (geese-like 5.3%,
+  wolves-like 3.6% and 5.4%), and its intervals are 5 to 11% wider.
 - **Weakly identified sources.** Where the data cannot pin a source
   down, MixSIARPFN tends to put more probability near 0 than MixSIAR
   does.
@@ -52,6 +51,10 @@ example datasets:
   MixSIAR’s fits shows group spreads and tracer correlations the model
   cannot produce. The vignettes show both fits side by side and the
   check.
+
+The article *How MixSIARPFN works and how well it does*
+([`vignette("performance", package = "MixSIARPFN")`](articles/performance.md))
+describes the network and gives the full simulation study, with plots.
 
 ## What is different from MixSIAR
 

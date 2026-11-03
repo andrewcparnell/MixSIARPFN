@@ -53,7 +53,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = FALSE)
 )
 fit
-#> MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s
+#> MixSIARPFN fit (Residual only error), 4 sources, in 0.9 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>        source  mean    sd  2.5% 97.5%
 #>  Enteromorpha 0.176 0.119 0.008 0.440
@@ -63,7 +63,7 @@ fit
 #> Use output_pfn() for every proportion and parameter.
 ```
 
-The fit took 0.8 seconds.
+The fit took 0.9 seconds.
 
 ## Results
 
@@ -137,7 +137,7 @@ cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
 
 MixSIAR 3.1.12 fitted the same model with 3 chains of 1,000,000
 iterations (burn-in 500,000), which took about 2.9 hours (largest
-Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.8 seconds.
+Gelman-Rubin diagnostic 1.004). MixSIARPFN took 0.9 seconds.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance (W1: how far,
 on average, one posterior’s mass has to move to match the other, on the

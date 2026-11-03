@@ -38,3 +38,7 @@ articles:
   - killerwhale
   - geese
   - wolves
+- title: Method and accuracy
+  navbar: Method
+  contents:
+  - performance

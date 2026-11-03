@@ -1,0 +1,359 @@
+---
+title: "How MixSIARPFN works and how well it does"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How MixSIARPFN works and how well it does}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", echo = FALSE, message = FALSE,
+                      warning = FALSE, fig.width = 7, fig.height = 4.2, out.width = "100%")
+library(ggplot2)
+ss <- readRDS(system.file("extdata", "simstudy.rds", package = "MixSIARPFN"))
+sc <- ss$scores
+set_lab <- c(geese = "Geese-like", wolves = "Wolves-like,\ndiets from the prior",
+             wolves_realistic = "Realistic\nwolves-like")
+set_lab1 <- gsub("\n", " ", set_lab)
+cols <- c(MixSIAR = "grey35", MixSIARPFN = "#D55E00")
+theme_set(theme_minimal(base_size = 11) +
+            theme(panel.grid.minor = element_blank(), strip.text = element_text(face = "bold"),
+                  legend.position = "top"))
+pct <- function(x, d = 1) sprintf(paste0("%+.", d, "f%%"), 100 * x)
+
+# Compare on the datasets where MixSIAR's long run converged (largest PSRF at most 1.1)
+ok <- unique(sc[sc$method == "MixSIAR long" & sc$converged, c("set", "dataset")])
+cmp <- merge(sc, ok)
+per_ds <- aggregate(cbind(crps, width) ~ set + dataset + method, cmp, mean)
+wide <- reshape(per_ds, idvar = c("set", "dataset"), timevar = "method", direction = "wide")
+
+# CRPS of a network version relative to MixSIAR long, with a bootstrap 95% interval
+gap <- function(s, v, ref = "MixSIAR long", B = 4000) {
+  w <- wide[wide$set == s, ]
+  p <- w[[paste0("crps.MixSIARPFN ", v)]]
+  m <- w[[paste0("crps.", ref)]]
+  keep <- !is.na(p) & !is.na(m)
+  p <- p[keep]; m <- m[keep]
+  set.seed(1)
+  bs <- replicate(B, {i <- sample.int(length(p), replace = TRUE); mean(p[i]) / mean(m[i]) - 1})
+  data.frame(set = s, version = v, n = length(p), gap = mean(p) / mean(m) - 1,
+             lo = unname(quantile(bs, 0.025)), hi = unname(quantile(bs, 0.975)),
+             width = mean(w[[paste0("width.MixSIARPFN ", v)]][keep]) /
+               mean(w[[paste0("width.", ref)]][keep]) - 1)
+}
+gaps <- do.call(rbind, lapply(names(set_lab), function(s)
+  do.call(rbind, lapply(c("v1", "v2", "q3"), function(v) gap(s, v)))))
+g2 <- gaps[gaps$version == "v2", ]
+rownames(g2) <- g2$set
+n_all <- sapply(names(set_lab), function(s) length(unique(sc$dataset[sc$set == s])))
+g1 <- gaps[gaps$version == "v1", ]
+med_min <- with(ss$mixsiar_seconds[ss$mixsiar_seconds$length %in% c("normal", "long"), ],
+                range(tapply(seconds, paste(set, length), median)) / 60)
+ratio <- wide$`crps.MixSIARPFN v2` / wide$`crps.MixSIAR long`
+```
+
+MixSIARPFN replaces MixSIAR's MCMC with a neural network that has learned, from
+millions of simulated datasets, what MixSIAR's posterior looks like. This article
+explains what that network is and how it was trained, and then tests it. On
+`r sum(n_all)` simulated datasets with known true diets, MixSIARPFN is compared with
+fully converged MixSIAR runs on the same data.
+
+**In short:**
+
+- MixSIARPFN's accuracy (CRPS) is `r pct(g2["geese", "gap"])` against MixSIAR on
+  geese-like data, `r pct(g2["wolves", "gap"])` on wolves-like data with diets from
+  MixSIAR's prior and `r pct(g2["wolves_realistic", "gap"])` on realistic wolves-like
+  data, about 4–5% behind.
+- Its 95% intervals are calibrated, but `r round(100 * min(g2$width))`–
+  `r round(100 * max(g2$width))`% wider than MixSIAR's.
+- A fit takes under a second; MixSIAR's runs here took a median of
+  `r round(med_min[1])` to `r round(med_min[2])` minutes.
+
+## What the network is
+
+### The idea
+
+MixSIAR defines a full Bayesian model: priors on the diet proportions, the
+random-effect SDs and the error terms, and a likelihood for the consumers' tracer
+values given the sources. Anything we can write down as a prior and a likelihood we
+can also *simulate from*: draw parameters from the prior, then draw a dataset from
+the likelihood. A **prior-data fitted network** (PFN; Müller et al. 2022) is trained
+on millions of such pairs. It is shown the dataset and asked for the parameters that
+made it. Trained this way, with a proper scoring rule, its best possible answer is
+the Bayesian posterior itself. It learns to do Bayesian inference for MixSIAR's model
+in general, rather than fitting one dataset.
+
+At use, the network reads your data once and returns the posterior, with no chains
+to run. Two consequences:
+
+- **Marginal posteriors only.** The network answers one question at a time ("what is
+  the posterior of Pack 3's proportion of deer?"), so each proportion gets its own
+  posterior. There are no joint draws.
+- **It is an approximation.** How close it gets to the true posterior depends on how
+  well it was trained. That is what the rest of this article measures.
+
+### Its structure
+
+The network is a transformer in the style of TabPFN (Hollmann et al. 2025), with about
+17 million parameters. It sees each dataset as a table:
+
+- **Columns** are the tracers (and any continuous covariate).
+- **Rows** are of three kinds:
+  - **consumers:** one row per consumer, holding its tracer values;
+  - **sources:** one row per source (per source-factor level), holding seven numbers
+    per tracer: the mean corrected by the discrimination factor, the source SD, the
+    standard error, the discrimination SD, the sample size, the concentration and the
+    Dirichlet prior α;
+  - **queries:** one row per quantity wanted, such as a global proportion, a level's
+    proportion, an effect's SD or `resid.prop`. Each carries a tag saying which.
+- **Factor levels** get an embedding drawn at random from a pool, so the network
+  treats levels as exchangeable, as MixSIAR's model does. At use, the answer is
+  averaged over 8 random draws.
+
+The body is 8 identical layers. In each, the tracer cells of every row exchange
+information, then consumers and sources exchange information with each other while
+queries read from them, then a small feed-forward network updates every cell. Each
+cell is 384 numbers wide. Because rows have no positions, the answer does not depend
+on the order of consumers or sources.
+
+The output is a **bar distribution** for each query: a histogram over 1,000 bars
+spanning [0, 1] for proportions (finer near 0 and 1), and over [0, 20] for SDs and
+`resid.prop`. It can take any shape, including the skewed and bimodal posteriors
+mixing models often give.
+
+### Training
+
+There are three networks, one for each error structure (Residual * Process, Residual
+only, Process only). Each was trained for 450,000 steps on two NVIDIA L40S GPUs (about
+two days), with a fresh batch of simulated datasets at every step, so it never sees
+the same dataset twice. The simulations cover everything MixSIARPFN supports:
+
+- 2 to 8 sources and 1 to 4 tracers;
+- up to two categorical effects (fixed or random, crossed or nested) and one
+  continuous effect;
+- sources given by a factor, and concentration dependence;
+- 1 to 1,000 consumers.
+
+Data outside this range are refused with a message. The networks are on Zenodo
+([doi:10.5281/zenodo.23899709](https://doi.org/10.5281/zenodo.23899709)) and are
+downloaded on first use.
+
+## How it was tested
+
+The test uses datasets where the true diet is known:
+
+1. **The datasets.** Each set copies a MixSIAR example's design exactly (its sources,
+   discrimination factors, concentrations, groups and consumers per group) and
+   simulates new consumers from MixSIAR's model. Of 200,000 simulations, the ones
+   whose spread of consumers looks most like the real data are kept. There are three
+   sets of `r n_all[1]` datasets each:
+   - **geese-like:** a fixed effect of group, concentration dependence, Residual only
+     error;
+   - **wolves-like, diets from the prior:** random region and pack effects, pack nested
+     in region, sources by region, Residual * Process error. MixSIAR's prior on the
+     random-effect SDs (uniform on 0 to 20) makes many packs' diets almost entirely
+     one source;
+   - **realistic wolves-like:** the same design with SDs between 0.2 and 2, so diets
+     vary between packs as they do in real data.
+2. **The fits.** MixSIAR fitted every dataset at its "normal" and "long" run lengths,
+   three chains each. A run counts as converged when its largest Gelman–Rubin
+   diagnostic is at most 1.1. MixSIARPFN fitted the same files.
+3. **The comparison.** On the datasets where MixSIAR's long run converged, every diet
+   proportion (global and per group) is scored against its true value:
+   - **CRPS** (continuous ranked probability score): the main measure. It rewards a
+     posterior that is both centred on the truth and tight around it. Lower is
+     better, and it is in the units of the proportion;
+   - **95% coverage:** how often the 95% interval contains the truth;
+   - **width** of the 95% interval;
+   - **RMSE** of the posterior mean.
+
+A converged MixSIAR run is, up to Monte Carlo error, the exact posterior. So it is the
+best any method can do with these data, and the gap to it is the network's
+approximation error.
+
+## Results
+
+### Accuracy against MixSIAR
+
+```{r gap-plot, fig.height = 3.4}
+gp <- gaps
+gp$version <- factor(gp$version, c("v1", "q3", "v2"),
+                     c("v1 (first release)", "q3 (trained further on common designs)",
+                       "v2 (released)"))
+gp$set <- factor(set_lab1[gp$set], rev(set_lab1))
+ggplot(gp, aes(100 * gap, set, colour = version)) +
+  annotate("rect", xmin = -Inf, xmax = 5, ymin = -Inf, ymax = Inf, fill = "grey95") +
+  geom_vline(xintercept = 0, colour = "grey50") +
+  geom_pointrange(aes(xmin = 100 * lo, xmax = 100 * hi),
+                  position = position_dodge(width = 0.6), size = 0.4, linewidth = 0.6) +
+  scale_colour_manual(values = c("grey75", "grey40", "#D55E00"), name = NULL) +
+  guides(colour = guide_legend(nrow = 2, reverse = TRUE)) +
+  labs(x = "CRPS relative to converged MixSIAR (%)", y = NULL) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+Each point is MixSIARPFN's mean CRPS relative to MixSIAR's on the same datasets, with
+a bootstrap 95% interval over datasets. 0 means as accurate as MixSIAR; the shaded
+band is within 5%. The released networks (v2) are `r pct(min(g2$gap))` to
+`r pct(max(g2$gap))` behind. The first release (v1) was
+`r pct(min(g1$gap), 0)` to `r pct(max(g1$gap), 0)` behind. Training further on
+the most common designs (q3) did not help, so v2 stays.
+
+```{r summary-table}
+summ <- function(s, method) {
+  d <- cmp[cmp$set == s & cmp$method == method, ]
+  data.frame(coverage = mean(d$covered), width = mean(d$width),
+             rmse = sqrt(mean((d$mean - d$truth)^2)), crps = mean(d$crps))
+}
+tab <- do.call(rbind, lapply(names(set_lab), function(s) {
+  r <- rbind(cbind(method = "MixSIARPFN", summ(s, "MixSIARPFN v2")),
+             cbind(method = "MixSIAR long", summ(s, "MixSIAR long")))
+  cbind(set = c(set_lab1[[s]], ""), datasets = c(g2[s, "n"], ""), r)
+}))
+knitr::kable(tab, digits = c(0, 0, 0, 3, 3, 3, 4), row.names = FALSE,
+             col.names = c("Data", "Datasets", "Method", "95% coverage", "Width", "RMSE", "CRPS"),
+             caption = "Over every diet proportion, on the datasets where MixSIAR's long run converged.")
+```
+
+MixSIARPFN's intervals contain the truth at least as often as they should; it is
+calibrated but a little cautious. Its posterior means are nearly as close to the truth
+as MixSIAR's (RMSE), so much of the CRPS gap comes from its wider intervals.
+
+### Dataset by dataset
+
+```{r scatter, fig.height = 3.3}
+sp <- wide[!is.na(wide$`crps.MixSIAR long`), ]
+sp$set <- factor(set_lab[sp$set], set_lab)
+better <- tapply(sp$`crps.MixSIARPFN v2` < sp$`crps.MixSIAR long`, sp$set, mean)
+ggplot(sp, aes(`crps.MixSIAR long`, `crps.MixSIARPFN v2`)) +
+  geom_abline(colour = "grey60") +
+  geom_point(colour = "#D55E00", alpha = 0.6, size = 1.6) +
+  scale_x_log10() + scale_y_log10() +
+  facet_wrap(~ set) + coord_equal() +
+  labs(x = "MixSIAR long: mean CRPS", y = "MixSIARPFN: mean CRPS")
+```
+
+Each point is one dataset (its mean CRPS over all proportions). Points above the line
+are datasets where MixSIAR did better. The two track each other closely, and
+MixSIARPFN is better on `r round(100 * min(better))`–`r round(100 * max(better))`% of
+datasets. On half the datasets its CRPS is within `r round(100 * (median(ratio, na.rm = TRUE) - 1))`%
+of MixSIAR's. It falls furthest behind where MixSIAR is most precise (the lower left of
+the geese-like panel): on the worst `r sum(ratio > 1.75, na.rm = TRUE)` of
+`r sum(!is.na(ratio))` datasets its CRPS is close to twice MixSIAR's.
+
+### Posterior means against the truth
+
+```{r truth, fig.height = 5}
+tp <- cmp[cmp$method %in% c("MixSIARPFN v2", "MixSIAR long"), ]
+tp$method <- factor(sub(" v2| long", "", tp$method), c("MixSIAR", "MixSIARPFN"))
+tp$set <- factor(set_lab[tp$set], set_lab)
+ggplot(tp, aes(truth, mean, colour = method)) +
+  geom_abline(colour = "grey60") +
+  geom_point(alpha = 0.15, size = 0.7) +
+  scale_colour_manual(values = cols, guide = "none") +
+  facet_grid(method ~ set) + coord_equal() +
+  scale_x_continuous(breaks = c(0, 0.5, 1)) + scale_y_continuous(breaks = c(0, 0.5, 1)) +
+  labs(x = "True proportion", y = "Posterior mean")
+```
+
+Every diet proportion in every dataset. The two methods make the same kind of errors:
+both pull proportions the data cannot pin down towards the middle, as the prior says
+they should.
+
+### Interval widths
+
+```{r widths, fig.height = 3.3}
+ggplot(sp, aes(`width.MixSIAR long`, `width.MixSIARPFN v2`)) +
+  geom_abline(colour = "grey60") +
+  geom_point(colour = "#D55E00", alpha = 0.6, size = 1.6) +
+  facet_wrap(~ set) + coord_equal() +
+  labs(x = "MixSIAR long: mean 95% interval width",
+       y = "MixSIARPFN: mean 95% interval width")
+```
+
+Most points sit a little above the line: MixSIARPFN's intervals are typically
+`r round(100 * min(g2$width))`–`r round(100 * max(g2$width))`% wider. This is the main
+thing that separates it from MixSIAR. The network is unsure of its own approximation
+and hedges, which keeps it calibrated.
+
+### Where the gap comes from
+
+```{r by-truth, fig.height = 3.6}
+bp <- cmp[cmp$method %in% c("MixSIARPFN v2", "MixSIAR long"), ]
+bp$band <- cut(bp$truth, c(-0.01, 0.02, 0.1, 0.9, 1.01),
+               c("below 0.02", "0.02 to 0.1", "0.1 to 0.9", "above 0.9"))
+bt <- aggregate(crps ~ set + band + method, bp, mean)
+bt$method <- factor(sub(" v2| long", "", bt$method), c("MixSIAR", "MixSIARPFN"))
+bt$set <- factor(set_lab[bt$set], set_lab)
+ggplot(bt, aes(band, crps, fill = method)) +
+  geom_col(position = position_dodge2(padding = 0.15), width = 0.75) +
+  scale_fill_manual(values = cols, name = NULL) +
+  facet_wrap(~ set) +
+  labs(x = "True proportion", y = "Mean CRPS") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1), panel.grid.major.x = element_blank())
+```
+
+The gap is spread across all true values, not confined to one range. Proportions near
+0 are a known weak spot: where the data cannot rule a source out, MixSIARPFN tends to
+put more probability close to 0 than MixSIAR does (see the geese example).
+
+### MixSIAR's own convergence and run time
+
+```{r mixsiar-table}
+conv <- unique(sc[grepl("^MixSIAR (normal|long)$", sc$method), c("set", "dataset", "method", "converged")])
+mt <- ss$mixsiar_seconds
+mt <- mt[mt$length %in% c("normal", "long"), ]
+ct <- do.call(rbind, lapply(names(set_lab), function(s) data.frame(
+  set = set_lab1[[s]],
+  conv_normal = mean(conv$converged[conv$set == s & conv$method == "MixSIAR normal"]),
+  conv_long = mean(conv$converged[conv$set == s & conv$method == "MixSIAR long"]),
+  t_normal = median(mt$seconds[mt$set == s & mt$length == "normal"]) / 60,
+  t_long = median(mt$seconds[mt$set == s & mt$length == "long"]) / 60)))
+knitr::kable(ct, digits = c(0, 2, 2, 0, 0), row.names = FALSE,
+             col.names = c("Data", "Converged, normal", "Converged, long",
+                           "Minutes, normal", "Minutes, long"),
+             caption = "Share of MixSIAR runs that converged, and median run time (three chains).")
+```
+
+The comparison above uses only datasets where MixSIAR's long run converged, which is
+the fairest test for MixSIAR. In practice MixSIAR's "normal" run often fails to
+converge on data like these, especially with nested random effects. MixSIARPFN takes
+under a second for any of them and has nothing to converge.
+
+Against MixSIAR's normal run, on the datasets where it converged:
+
+```{r normal-table}
+gn <- do.call(rbind, lapply(names(set_lab), function(s) {
+  okn <- unique(sc[sc$set == s & sc$method == "MixSIAR normal" & sc$converged, "dataset"])
+  w <- wide[wide$set == s & wide$dataset %in% okn, ]
+  data.frame(set = set_lab1[[s]], n = nrow(w),
+             gap = mean(w$`crps.MixSIARPFN v2`) / mean(w$`crps.MixSIAR normal`) - 1)
+}))
+gn$gap <- pct(gn$gap)
+knitr::kable(gn, row.names = FALSE, col.names = c("Data", "Datasets", "MixSIARPFN CRPS relative to MixSIAR normal"))
+```
+
+## What this means for use
+
+- For data like MixSIAR's examples, MixSIARPFN gives posteriors close to a fully
+  converged MixSIAR run, with intervals a little wider, in a second instead of hours.
+  That makes it practical to fit many models, many datasets or many what-if versions
+  of one.
+- Its intervals are honest: they cover the truth at least as often as they claim.
+- Being marginal-only, it cannot give posteriors of sums or differences of
+  proportions, or posterior predictive checks of the model. For a final analysis, or
+  where small differences in a proportion matter, confirm with a MixSIAR run.
+
+## References
+
+- Hollmann, N., Müller, S., Purucker, L., et al. (2025). Accurate predictions on small
+  data with a tabular foundation model. *Nature* 637, 319–326.
+- Müller, S., Hollmann, N., Pineda Arango, S., Grabocka, J. and Hutter, F. (2022).
+  Transformers can do Bayesian inference. *ICLR*.
+- Stock, B. C., Jackson, A. L., Ward, E. J., Parnell, A. C., Phillips, D. L. and
+  Semmens, B. X. (2018). Analyzing mixing systems using a new generation of Bayesian
+  tracer mixing models. *PeerJ* 6:e5096.
+
+The simulation study's results are in `system.file("extdata", "simstudy.rds",
+package = "MixSIARPFN")`; `r ss$notes`

@@ -16,3 +16,5 @@ First release.
 * Networks version 2, downloaded from Zenodo on first use and checked by SHA-256.
 * Vignettes: MixSIAR's killer whale, geese and wolves examples, each compared with
   MixSIAR's fit.
+* Article "How MixSIARPFN works and how well it does": the network, its training, and
+  a simulation study of 450 datasets with known diets against converged MixSIAR.

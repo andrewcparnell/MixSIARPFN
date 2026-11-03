@@ -31,6 +31,9 @@ per error structure, downloaded on first use (see pfn_networks())."></head><body
     <li><a class="dropdown-item" href="../articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="../articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="../articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
+    <li><a class="dropdown-item" href="../articles/performance.html">How MixSIARPFN works and how well it does</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -70,8 +73,9 @@ whale, geese and wolves vignettes.</p>
 but there are no joint draws: the marginal means of one diet need not sum to
 exactly 1, and sums, differences or ratios of proportions cannot be computed.</p></li>
 <li><p><strong>Accuracy.</strong> On data simulated from MixSIAR's model the 95% intervals are
-calibrated, but somewhat wider than MixSIAR's, and the posteriors a little less
-accurate (CRPS up to about 10% higher than fully converged MixSIAR).</p></li>
+calibrated but 5 to 11% wider than MixSIAR's, and the posteriors a little less
+accurate (CRPS 4 to 5% higher than fully converged MixSIAR; see
+<code><a href="../articles/performance.html">vignette("performance")</a></code>).</p></li>
 <li><p><strong>Weakly identified sources.</strong> Where the data cannot pin a source down, the
 network tends to put more probability near 0 than MixSIAR does.</p></li>
 <li><p><strong>No model checks.</strong> Without joint draws, posterior predictive checks cannot be

@@ -14,8 +14,9 @@
 #'   but there are no joint draws: the marginal means of one diet need not sum to
 #'   exactly 1, and sums, differences or ratios of proportions cannot be computed.
 #' * **Accuracy.** On data simulated from MixSIAR's model the 95% intervals are
-#'   calibrated, but somewhat wider than MixSIAR's, and the posteriors a little less
-#'   accurate (CRPS up to about 10% higher than fully converged MixSIAR).
+#'   calibrated but 5 to 11% wider than MixSIAR's, and the posteriors a little less
+#'   accurate (CRPS 4 to 5% higher than fully converged MixSIAR; see
+#'   `vignette("performance")`).
 #' * **Weakly identified sources.** Where the data cannot pin a source down, the
 #'   network tends to put more probability near 0 than MixSIAR does.
 #' * **No model checks.** Without joint draws, posterior predictive checks cannot be
