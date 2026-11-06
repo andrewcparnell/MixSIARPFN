@@ -28,27 +28,30 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/MixSIARPFN.html">Get started</a></li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Examples</h6></li>
-    <li><a class="dropdown-item" href="../articles/killerwhale.html">Killer whale: no effects</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-examples" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Examples</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-examples">
+<li><a class="dropdown-item" href="../articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="../articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="../articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
     <li><a class="dropdown-item" href="../articles/alligator.html">Alligator: eight models in a few seconds</a></li>
     <li><a class="dropdown-item" href="../articles/lake.html">Lake: a continuous effect, raw source data</a></li>
-    <li><a class="dropdown-item" href="../articles/mantis.html">Mantis shrimp: sources by habitat, concentrations and an informative prior</a></li>
+    <li><a class="dropdown-item" href="../articles/mantis.html">Mantis shrimp: sources by habitat, concentrations, informative prior</a></li>
     <li><a class="dropdown-item" href="../articles/palmyra.html">Palmyra: a fixed effect, raw source data</a></li>
     <li><a class="dropdown-item" href="../articles/snail.html">Snail: one tracer, raw source data</a></li>
     <li><a class="dropdown-item" href="../articles/stormpetrel.html">Storm petrel: a fixed effect, raw source data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
-    <li><a class="dropdown-item" href="../articles/performance.html">How MixSIARPFN works and how well it does</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-accuracy" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Accuracy</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-accuracy">
+<li><a class="dropdown-item" href="../articles/performance.html">How MixSIARPFN works and how well it does</a></li>
     <li><a class="dropdown-item" href="../articles/simulations.html">MixSIARPFN on every simulated dataset</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -433,7 +436,7 @@ MixSIARPFN does not give, so it is not repeated here.</p>
 <p>MixSIAR 3.1.12 fitted the same model to the same data with 3 chains
 of 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which
 took 35 minutes (largest Gelman-Rubin diagnostic 1.044). MixSIARPFN took
-0.4 seconds, about 5,200 times faster.</p>
+0.4 seconds, about 5,800 times faster.</p>
 <p>Means, SDs, 95% intervals and the Wasserstein-1 distance between the
 two posteriors (W1: how far, on average, one posterior’s mass has to
 move to match the other, on the proportion scale):</p>

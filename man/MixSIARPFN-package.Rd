@@ -41,6 +41,7 @@ networks were trained for are refused.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://andrewcparnell.github.io/MixSIARPFN/}
   \item \url{https://github.com/andrewcparnell/MixSIARPFN}
   \item Report bugs at \url{https://github.com/andrewcparnell/MixSIARPFN/issues}
 }

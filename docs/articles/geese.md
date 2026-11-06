@@ -54,7 +54,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = FALSE)
 )
 fit
-#> MixSIARPFN fit (Residual only error), 4 sources, in 0.7 s
+#> MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>        source  mean    sd  2.5% 97.5%
 #>  Enteromorpha 0.176 0.119 0.008 0.440

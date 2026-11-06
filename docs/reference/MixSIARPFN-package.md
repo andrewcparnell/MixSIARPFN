@@ -49,6 +49,8 @@ the killer whale, geese and wolves vignettes.
 
 Useful links:
 
+- <https://andrewcparnell.github.io/MixSIARPFN/>
+
 - <https://github.com/andrewcparnell/MixSIARPFN>
 
 - Report bugs at <https://github.com/andrewcparnell/MixSIARPFN/issues>

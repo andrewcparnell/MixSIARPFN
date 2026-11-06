@@ -61,7 +61,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = TRUE)
 )
 fit
-#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.6 s
+#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>    source  mean    sd  2.5% 97.5%
 #>    Canada 0.760 0.036 0.687 0.828
@@ -114,8 +114,8 @@ blocks <- "Region"
 
 MixSIAR 3.1.12 fitted the same model to the same data with 3 chains of
 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which took
-71 minutes (largest Gelman-Rubin diagnostic 1.005). MixSIARPFN took 0.6
-seconds, about 7,200 times faster.
+71 minutes (largest Gelman-Rubin diagnostic 1.005). MixSIARPFN took 0.5
+seconds, about 8,000 times faster.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance between the two
 posteriors (W1: how far, on average, one posterior’s mass has to move to

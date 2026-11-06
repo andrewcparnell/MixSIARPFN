@@ -4,8 +4,37 @@ template:
 
 navbar:
   structure:
-    left: [intro, reference, articles]
+    left: [intro, examples, accuracy, reference, news]
     right: [search, github]
+  components:
+    examples:
+      text: Examples
+      menu:
+      - text: "Killer whale: no effects"
+        href: articles/killerwhale.html
+      - text: "Geese: a fixed effect and concentration dependence"
+        href: articles/geese.html
+      - text: "Wolves: nested random effects, sources by region"
+        href: articles/wolves.html
+      - text: "Alligator: eight models in a few seconds"
+        href: articles/alligator.html
+      - text: "Lake: a continuous effect, raw source data"
+        href: articles/lake.html
+      - text: "Mantis shrimp: sources by habitat, concentrations, informative prior"
+        href: articles/mantis.html
+      - text: "Palmyra: a fixed effect, raw source data"
+        href: articles/palmyra.html
+      - text: "Snail: one tracer, raw source data"
+        href: articles/snail.html
+      - text: "Storm petrel: a fixed effect, raw source data"
+        href: articles/stormpetrel.html
+    accuracy:
+      text: Accuracy
+      menu:
+      - text: How MixSIARPFN works and how well it does
+        href: articles/performance.html
+      - text: MixSIARPFN on every simulated dataset
+        href: articles/simulations.html
 
 reference:
 - title: Load data (as MixSIAR)
@@ -34,7 +63,6 @@ reference:
 
 articles:
 - title: Examples from MixSIAR's vignettes
-  navbar: Examples
   contents:
   - killerwhale
   - geese
@@ -46,7 +74,6 @@ articles:
   - snail
   - stormpetrel
 - title: Method and accuracy
-  navbar: Method
   contents:
   - performance
   - simulations

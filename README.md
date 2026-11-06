@@ -2,12 +2,19 @@
 
 Fit [MixSIAR](https://github.com/brianstock/MixSIAR) stable isotope mixing models in
 about a second, without JAGS: thousands of times faster than MixSIAR, with nearly the
-same answers. MixSIARPFN reads the same files with the same function
-calls as MixSIAR, but takes the posterior from a *prior-data fitted network*: a
+same answers.
+
+**Website, with a get-started guide, nine worked examples and the accuracy tests:
+<https://andrewcparnell.github.io/MixSIARPFN/>**
+
+MixSIARPFN reads the same files with the same function calls as MixSIAR, but takes the posterior from a *prior-data fitted network*: a
 transformer trained on simulations from MixSIAR's own model, one network per error
 structure.
 
 ```r
+# install.packages("remotes")
+remotes::install_github("andrewcparnell/MixSIARPFN")
+
 library(MixSIARPFN)
 mix <- load_mix_data(filename = "consumer.csv", iso_names = c("d13C", "d15N"),
                      factors = c("Region", "Pack"), fac_random = c(TRUE, TRUE),
@@ -19,6 +26,14 @@ discr <- load_discr_data(filename = "discrimination.csv", mix)
 fit <- run_pfn(mix, source, discr)   # in place of write_JAGS_model() + run_model()
 output_pfn(fit, mix, source)         # in place of output_JAGS()
 ```
+
+**The first fit takes longer, once.** MixSIARPFN's networks run in Python, which you
+do not need to install or know: the first time, the `reticulate` package sets up a
+private Python environment (numpy, pandas and ONNX Runtime, about 180 MB) and the
+network for your model is downloaded from Zenodo (about 70 MB). That takes about half
+a minute on a fast connection; both are kept, and after that a fit takes about a
+second. See [Get started](https://andrewcparnell.github.io/MixSIARPFN/articles/MixSIARPFN.html)
+for how to set up your own CSV files.
 
 ## What it fits
 
@@ -75,7 +90,8 @@ remotes::install_github("andrewcparnell/MixSIARPFN")
 
 The first fit sets up a small Python environment (numpy, pandas, ONNX Runtime)
 through reticulate and downloads the network it needs (about 70 MB); both are cached.
-No Python knowledge is needed.
+No Python knowledge is needed. `pfn_networks(download = TRUE)` downloads all three
+networks in advance.
 
 ## Licence and credit
 

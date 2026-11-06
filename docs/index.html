@@ -30,27 +30,30 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/MixSIARPFN.html">Get started</a></li>
 <li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Examples</h6></li>
-    <li><a class="dropdown-item" href="articles/killerwhale.html">Killer whale: no effects</a></li>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-examples" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Examples</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-examples">
+<li><a class="dropdown-item" href="articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
     <li><a class="dropdown-item" href="articles/alligator.html">Alligator: eight models in a few seconds</a></li>
     <li><a class="dropdown-item" href="articles/lake.html">Lake: a continuous effect, raw source data</a></li>
-    <li><a class="dropdown-item" href="articles/mantis.html">Mantis shrimp: sources by habitat, concentrations and an informative prior</a></li>
+    <li><a class="dropdown-item" href="articles/mantis.html">Mantis shrimp: sources by habitat, concentrations, informative prior</a></li>
     <li><a class="dropdown-item" href="articles/palmyra.html">Palmyra: a fixed effect, raw source data</a></li>
     <li><a class="dropdown-item" href="articles/snail.html">Snail: one tracer, raw source data</a></li>
     <li><a class="dropdown-item" href="articles/stormpetrel.html">Storm petrel: a fixed effect, raw source data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
-    <li><a class="dropdown-item" href="articles/performance.html">How MixSIARPFN works and how well it does</a></li>
+  </ul>
+</li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-accuracy" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Accuracy</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-accuracy">
+<li><a class="dropdown-item" href="articles/performance.html">How MixSIARPFN works and how well it does</a></li>
     <li><a class="dropdown-item" href="articles/simulations.html">MixSIARPFN on every simulated dataset</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -67,9 +70,14 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="mixsiarpfn">MixSIARPFN<a class="anchor" aria-label="anchor" href="#mixsiarpfn"></a>
 </h1></div>
-<p>Fit <a href="https://github.com/brianstock/MixSIAR" class="external-link">MixSIAR</a> stable isotope mixing models in about a second, without JAGS: thousands of times faster than MixSIAR, with nearly the same answers. MixSIARPFN reads the same files with the same function calls as MixSIAR, but takes the posterior from a <em>prior-data fitted network</em>: a transformer trained on simulations from MixSIAR’s own model, one network per error structure.</p>
+<p>Fit <a href="https://github.com/brianstock/MixSIAR" class="external-link">MixSIAR</a> stable isotope mixing models in about a second, without JAGS: thousands of times faster than MixSIAR, with nearly the same answers.</p>
+<p><strong>Website, with a get-started guide, nine worked examples and the accuracy tests: <a href="https://andrewcparnell.github.io/MixSIARPFN/" class="uri">https://andrewcparnell.github.io/MixSIARPFN/</a></strong></p>
+<p>MixSIARPFN reads the same files with the same function calls as MixSIAR, but takes the posterior from a <em>prior-data fitted network</em>: a transformer trained on simulations from MixSIAR’s own model, one network per error structure.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewcparnell.github.io/MixSIARPFN/">MixSIARPFN</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"andrewcparnell/MixSIARPFN"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://andrewcparnell.github.io/MixSIARPFN/">MixSIARPFN</a></span><span class="op">)</span></span>
 <span><span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_mix_data.html">load_mix_data</a></span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"consumer.csv"</span>, iso_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>, <span class="st">"d15N"</span><span class="op">)</span>,</span>
 <span>                     factors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Region"</span>, <span class="st">"Pack"</span><span class="op">)</span>, fac_random <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>                     fac_nested <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>, cont_effects <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
@@ -79,6 +87,7 @@
 <span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_pfn.html">run_pfn</a></span><span class="op">(</span><span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span><span class="op">)</span>   <span class="co"># in place of write_JAGS_model() + run_model()</span></span>
 <span><span class="fu"><a href="reference/output_pfn.html">output_pfn</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">mix</span>, <span class="va">source</span><span class="op">)</span>         <span class="co"># in place of output_JAGS()</span></span></code></pre></div>
+<p><strong>The first fit takes longer, once.</strong> MixSIARPFN’s networks run in Python, which you do not need to install or know: the first time, the <code>reticulate</code> package sets up a private Python environment (numpy, pandas and ONNX Runtime, about 180 MB) and the network for your model is downloaded from Zenodo (about 70 MB). That takes about half a minute on a fast connection; both are kept, and after that a fit takes about a second. See <a href="https://andrewcparnell.github.io/MixSIARPFN/articles/MixSIARPFN.html">Get started</a> for how to set up your own CSV files.</p>
 <div class="section level2">
 <h2 id="what-it-fits">What it fits<a class="anchor" aria-label="anchor" href="#what-it-fits"></a>
 </h2>
@@ -123,7 +132,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"andrewcparnell/MixSIARPFN"</span><span class="op">)</span></span></code></pre></div>
-<p>The first fit sets up a small Python environment (numpy, pandas, ONNX Runtime) through reticulate and downloads the network it needs (about 70 MB); both are cached. No Python knowledge is needed.</p>
+<p>The first fit sets up a small Python environment (numpy, pandas, ONNX Runtime) through reticulate and downloads the network it needs (about 70 MB); both are cached. No Python knowledge is needed. <code>pfn_networks(download = TRUE)</code> downloads all three networks in advance.</p>
 </div>
 <div class="section level2">
 <h2 id="licence-and-credit">Licence and credit<a class="anchor" aria-label="anchor" href="#licence-and-credit"></a>

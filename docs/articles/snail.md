@@ -102,8 +102,8 @@ blocks <- "global"
 
 MixSIAR 3.1.12 fitted the same model to the same data with 3 chains of
 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which took 2
-minutes (largest Gelman-Rubin diagnostic 1.012). MixSIARPFN took 0.3
-seconds, about 390 times faster.
+minutes (largest Gelman-Rubin diagnostic 1.012). MixSIARPFN took 0.2
+seconds, about 480 times faster.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance between the two
 posteriors (W1: how far, on average, one posterior’s mass has to move to

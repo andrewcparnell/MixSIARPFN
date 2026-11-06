@@ -1,0 +1,189 @@
+---
+title: "Get started: fitting your own data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Get started: fitting your own data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+ok <- MixSIARPFN:::networks_ready()   # the fitting code needs the networks
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 7, fig.height = 4.5,
+                      out.width = "100%")
+```
+
+MixSIARPFN fits MixSIAR's stable isotope mixing models from three CSV files, with the
+same function calls as MixSIAR. This page shows how to install it, what happens the
+first time you use it, what the three files look like, and how to fit your own data.
+
+## Installing
+
+```{r install, eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("andrewcparnell/MixSIARPFN")
+```
+
+## The first time you fit a model
+
+MixSIARPFN's networks run in Python, but you do not need to install or know any
+Python. **The first fit in a new installation sets everything up, once:**
+
+1. **A small private Python environment.** The `reticulate` package downloads numpy,
+   pandas and ONNX Runtime (about 180 MB; and Python itself, if your computer has no
+   suitable version) into its own cache. Your other Python installations are not
+   touched.
+2. **The network for your model's error structure** (about 70 MB each; there are three:
+   Residual * Process, Residual only and Process only), downloaded from Zenodo
+   ([doi:10.5281/zenodo.24002247](https://doi.org/10.5281/zenodo.24002247)) and checked
+   by its checksum.
+
+On a fast connection this takes about half a minute; on a slow one, a few minutes.
+You will see messages while it happens. Both are kept, so later fits take about a
+second, and the first fit in each new R session a few seconds (to start Python). You
+can download all three networks in advance, and see where they are kept:
+
+```{r networks, eval = FALSE}
+pfn_networks(download = TRUE)
+```
+
+## The three input files
+
+MixSIARPFN reads exactly the same files as MixSIAR. The package includes MixSIAR's
+example data, and looking at those is the quickest way to see the format. They are in
+the package's `extdata` folder:
+
+```{r files, eval = TRUE}
+x <- system.file("extdata", package = "MixSIARPFN")
+list.files(x, pattern = "csv$")
+```
+
+### 1. Consumers (the mixture)
+
+One row per consumer: one column per tracer, plus a column for each grouping factor
+or continuous covariate you want in the model. Column names are up to you; you tell
+the loader which are which. The wolves data, with two factors:
+
+```{r consumer, eval = TRUE}
+head(read.csv(file.path(x, "wolves_consumer.csv")))
+```
+
+A continuous covariate is just a numeric column (lake example). R turns characters
+such as `:` in column names into `.`, so `Secchi:Mixed` is used as `Secchi.Mixed`:
+
+```{r consumer-cont, eval = TRUE}
+head(read.csv(file.path(x, "lake_consumer.csv")))
+```
+
+### 2. Sources
+
+Either **summary statistics** or **raw samples**.
+
+*Summary statistics* (`data_type = "means"`): one row per source, with the source
+names in the first column, then `Mean<tracer>` and `SD<tracer>` for every tracer and
+the sample size `n`. The tracer names must match the consumer file's (`Meand13C`
+for `d13C`):
+
+```{r sources-means, eval = TRUE}
+read.csv(file.path(x, "killerwhale_sources.csv"))
+```
+
+With concentration dependence, add `Conc<tracer>` columns (geese example):
+
+```{r sources-conc, eval = TRUE}
+read.csv(file.path(x, "geese_sources.csv"))
+```
+
+If the sources were measured separately in each level of a factor (say each region),
+add that factor's column, with one row per source and level (wolves example; the
+factor must also be in the consumer file):
+
+```{r sources-factor, eval = TRUE}
+read.csv(file.path(x, "wolves_sources.csv"))
+```
+
+*Raw samples* (`data_type = "raw"`): one row per sample, with the source name in the
+first column and one column per tracer (Palmyra example). MixSIARPFN summarises them
+to each source's mean, SD and sample size:
+
+```{r sources-raw, eval = TRUE}
+head(read.csv(file.path(x, "palmyra_sources.csv")))
+```
+
+### 3. Discrimination (trophic enrichment)
+
+One row per source, with the same source names: `Mean<tracer>` and `SD<tracer>` for
+every tracer.
+
+```{r discr, eval = TRUE}
+read.csv(file.path(x, "killerwhale_discrimination.csv"))
+```
+
+### Starting your own files from an example
+
+The simplest way to get the format right is to copy an example and replace the
+numbers:
+
+```{r copy, eval = FALSE}
+file.copy(file.path(x, c("wolves_consumer.csv", "wolves_sources.csv",
+                         "wolves_discrimination.csv")), ".")
+```
+
+## Fitting your own data
+
+Load the three files, fit, and summarise. With your own files, give their paths, for
+example `filename = "my_consumers.csv"`. Here, the wolves example: two random effects,
+pack nested in region, and sources measured in each region.
+
+```{r load, eval = TRUE}
+mix <- load_mix_data(filename = file.path(x, "wolves_consumer.csv"),
+                     iso_names = c("d13C", "d15N"),     # the tracer columns
+                     factors = c("Region", "Pack"),     # grouping factors (or NULL)
+                     fac_random = c(TRUE, TRUE),        # random (TRUE) or fixed (FALSE)
+                     fac_nested = c(FALSE, TRUE),       # Pack is nested in Region
+                     cont_effects = NULL)               # a continuous covariate (or NULL)
+source <- load_source_data(filename = file.path(x, "wolves_sources.csv"),
+                           source_factors = "Region",   # sources given by region (or NULL)
+                           conc_dep = FALSE,            # concentration dependence?
+                           data_type = "means",         # "means" or "raw"
+                           mix)
+discr <- load_discr_data(filename = file.path(x, "wolves_discrimination.csv"), mix)
+```
+
+Look at the data before fitting:
+
+```{r plot, eval = TRUE, fig.height = 5}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+Then fit, in place of MixSIAR's `write_JAGS_model()` and `run_model()`:
+
+```{r fit, eval = ok}
+fit <- run_pfn(mix, source, discr,
+               alpha.prior = 1,                       # MixSIAR's uninformative prior
+               resid_err = TRUE, process_err = TRUE)  # Residual * Process error
+fit
+```
+
+`output_pfn()` replaces MixSIAR's `output_JAGS()`: it writes the summary statistics
+and plots the posteriors. `summary_table()` gives the summary as a data frame:
+
+```{r output, eval = ok}
+knitr::kable(head(round(summary_table(fit), 3), 8))
+```
+
+Your files are checked as MixSIAR checks them. If something is wrong, the loaders (for
+example a misspelt column name) or `run_pfn()` (for example a source missing from the
+discrimination file: "No discrimination values for sources: Sockeye") stop with a
+message saying what to fix. `run_pfn()` also refuses data outside what the networks
+were trained for (for example more than 8 sources or 4 tracers), saying why.
+
+## Where next
+
+- The **Examples** menu goes through each of MixSIAR's nine isotope examples, each
+  compared with MixSIAR's own fit.
+- The **Accuracy** menu has *How MixSIARPFN works and how well it does*, which explains
+  the method and tests it, and *MixSIARPFN on every simulated dataset*, which gives
+  every comparison with MixSIAR.
+- Each function's help page (Reference) lists all its arguments.
