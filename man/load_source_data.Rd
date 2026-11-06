@@ -16,7 +16,12 @@ concentration dependence, \verb{Conc<tracer>}.}
 
 \item{conc_dep}{Logical: use concentration dependence?}
 
-\item{data_type}{\code{"means"} (source means and SDs). \code{"raw"} is not supported yet.}
+\item{data_type}{\code{"means"} (source means, SDs and sample sizes) or \code{"raw"} (one row
+per source sample, columns named by the tracers). Raw data are summarised to each
+source's mean, SD and sample size (per level of \code{source_factors}, if given; with
+mean concentrations if \code{conc_dep}), which is what the networks use. MixSIAR's raw
+data model instead estimates each source's mean and variance in the fit, so
+results can differ a little from MixSIAR's for small source samples.}
 
 \item{mix}{The output of \code{\link[=load_mix_data]{load_mix_data()}}.}
 }
@@ -26,7 +31,8 @@ A list with \code{data}, \code{source_names} (MixSIAR's alphabetical order),
 \code{S_factor1} and \code{S_factor_levels}.
 }
 \description{
-Reads the source data file (means, SDs and sample sizes), exactly as
-\code{MixSIAR::load_source_data()} does, with the same arguments. Only source summary
-statistics (\code{data_type = "means"}) are supported in this version.
+Reads the source data file, exactly as \code{MixSIAR::load_source_data()} does, with the
+same arguments: either source summary statistics (\code{data_type = "means"}) or raw
+source samples (\code{data_type = "raw"}), which are summarised to means, SDs and sample
+sizes.
 }

@@ -1,7 +1,8 @@
 # MixSIARPFN
 
 Fit [MixSIAR](https://github.com/brianstock/MixSIAR) stable isotope mixing models in
-about a second, without JAGS. MixSIARPFN reads the same files with the same function
+about a second, without JAGS: thousands of times faster than MixSIAR, with nearly the
+same answers. MixSIARPFN reads the same files with the same function
 calls as MixSIAR, but takes the posterior from a *prior-data fitted network*: a
 transformer trained on simulations from MixSIAR's own model, one network per error
 structure.
@@ -21,36 +22,40 @@ output_pfn(fit, mix, source)         # in place of output_JAGS()
 
 ## What it fits
 
-The models MixSIAR fits with isotope data and source summary statistics: up to two
-categorical effects (fixed or random, crossed or nested), one continuous effect,
-concentration dependence, sources given by a factor, and Residual * Process,
-Residual only or Process only error. Up to 8 sources and 4 tracers. Data outside
+The models MixSIAR fits with isotope data: up to two categorical effects (fixed or
+random, crossed or nested), one continuous effect, concentration dependence, sources
+given by a factor, informative priors, and Residual * Process, Residual only or
+Process only error. Up to 8 sources and 4 tracers. Source data can be summary
+statistics or raw samples (summarised to means, SDs and sample sizes). Data outside
 what the networks were trained for are refused with a message.
 
-Not yet: raw source data, fatty acid data, more than 4 tracers.
+Not yet: fatty acid data with more than 4 tracers.
 
 ## How well it does
 
-Tested against MixSIAR on 450 simulated datasets with known diets (150 each like
-MixSIAR's geese example, its wolves example with diets from MixSIAR's prior, and its
-wolves example with realistic diets) and on MixSIAR's three example datasets:
+Tested against MixSIAR on 492 simulated datasets with known diets, and on all nine
+of MixSIAR's isotope examples:
 
-- **Calibrated.** On simulated data, MixSIARPFN's 95% intervals contain the true diet
-  proportion 95 to 97% of the time.
-- **Close to MixSIAR, a little less precise.** Its accuracy (CRPS) is 2 to 5% behind
-  fully converged MixSIAR runs (geese-like 5.3%, wolves-like 1.9% and 4.1%), and its
-  intervals are 5 to 12% wider.
+- **Thousands of times faster.** A fit takes about half a second; MixSIAR's runs on
+  the same simulated data took a median of 20 minutes to almost 2 hours.
+- **Nearly the same answers.** Its accuracy (CRPS) is within 2 to 5% of fully
+  converged MixSIAR runs (geese-like 5.3%, wolves-like 1.9% and 4.1%), and on about a
+  third of datasets it is *more* accurate than converged MixSIAR.
+- **Calibrated.** Its 95% intervals contain the true diet proportion 95 to 97% of
+  the time; they are 5 to 11% wider than MixSIAR's.
+- **Always an answer.** Nothing to converge: MixSIAR's standard run failed its
+  convergence check on half of the simulated datasets.
+- **On MixSIAR's examples** the two give close answers. Where they differ most
+  (geese and wolves), a posterior predictive check shows MixSIAR's own model does not
+  fit those data well.
 - **Weakly identified sources.** Where the data cannot pin a source down, MixSIARPFN
-  tends to put more probability near 0 than MixSIAR does.
-- **On MixSIAR's examples** it agrees closely for killer whale. For geese and wolves
-  the two differ more, mostly in groups where MixSIAR's own model does not fit the
-  data: a posterior predictive check of MixSIAR's fits shows group spreads and
-  tracer correlations the model cannot produce. The vignettes show both fits side
-  by side and the check.
+  tends to put a little more probability near 0 than MixSIAR does.
 
-The article *How MixSIARPFN works and how well it does*
-(`vignette("performance", package = "MixSIARPFN")`) describes the network and gives
-the full simulation study, with plots.
+The articles *How MixSIARPFN works and how well it does*
+(`vignette("performance", package = "MixSIARPFN")`) and *MixSIARPFN on every
+simulated dataset* (`vignette("simulations", package = "MixSIARPFN")`) give the
+details, and there is a vignette for each MixSIAR example: killer whale, geese,
+wolves, alligator, lake, mantis shrimp, Palmyra, snail and storm petrel.
 
 ## What is different from MixSIAR
 

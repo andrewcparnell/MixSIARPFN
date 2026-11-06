@@ -1,35 +1,87 @@
 #' MixSIAR's own fits of the example data
 #'
-#' MixSIAR 3.1.12 fits of the killer whale, geese and wolves vignettes, made for
-#' benchmarking MixSIARPFN: 1,000 posterior draws of every diet proportion (thinned
-#' from the saved chains), MixSIAR's summary statistics table (which also covers the
-#' random-effect SDs and residual multipliers, whose draws were not saved), and the run
-#' settings (chain length, burn-in, run time, largest Gelman-Rubin diagnostic).
+#' MixSIAR 3.1.12 fits of MixSIAR's example datasets, made for benchmarking MixSIARPFN:
+#' 1,000 posterior draws of every diet proportion (thinned from the saved chains),
+#' MixSIAR's summary statistics (which also cover the random-effect SDs and residual
+#' multipliers), and the run settings (chain length, burn-in, run time, largest
+#' Gelman-Rubin diagnostic).
 #'
-#' Also a posterior predictive check of each MixSIAR fit: MixSIAR's own model, rerun
-#' with replicated consumers drawn from its likelihood, compared with the data group by
-#' group (each tracer's mean and SD, and the correlation between tracers), on the
-#' standardised tracer scale MixSIAR's JAGS model uses. The same check on six datasets
-#' simulated from the model itself, like geese and like wolves, shows what a good fit
-#' looks like.
+#' The examples are `"killerwhale"`, `"geese"` and `"wolves"`, and MixSIAR's further
+#' examples `"alligator_1"` to `"alligator_8"` (its eight alligator models), `"lake"`,
+#' `"mantis"`, `"palmyra"`, `"snail"` and `"stormpetrel"`. Lake, palmyra, snail and storm
+#' petrel have raw source data: their reference is MixSIAR fitted to the same source
+#' summaries MixSIARPFN uses (means, SDs and sample sizes), and `"<name>_raw"` is
+#' MixSIAR fitted to the raw source data, as in MixSIAR's own example script.
 #'
-#' @param vignette `"killerwhale"`, `"geese"` or `"wolves"`.
+#' For the killer whale, geese and wolves fits there is also a posterior predictive
+#' check: MixSIAR's own model, rerun with replicated consumers drawn from its
+#' likelihood, compared with the data group by group (each tracer's mean and SD, and
+#' the correlation between tracers), on the standardised tracer scale MixSIAR's JAGS
+#' model uses. The same check on six datasets simulated from the model itself, like
+#' geese and like wolves, shows what a good fit looks like.
+#'
+#' @param vignette The example's name (see Details).
 #' @return A list with `draws` (data frame: `name`, `value`; names as in MixSIAR's
 #'   summary, e.g. `p.Pack 1.Deer`), `summary` (data frame: `name`, `mean`, `sd`,
-#'   `q2.5`, `q97.5`), `info` (list) and `ppc` (list: `stats`, one row per checked
-#'   statistic with the observed value, the replicated mean and 95% interval and the
-#'   posterior predictive p-value `ppp`; `summary` and `controls`, how many group
-#'   statistics fall outside 95% and 99% of their replicates; `grouping`, the factor
-#'   checked).
+#'   `q2.5`, `q97.5`), `info` (list), `ppc` (list or `NULL`: `stats`, one row per
+#'   checked statistic with the observed value, the replicated mean and 95% interval
+#'   and the posterior predictive p-value `ppp`; `summary` and `controls`, how many
+#'   group statistics fall outside 95% and 99% of their replicates; `grouping`, the
+#'   factor checked) and `pind` (data frame or `NULL`: with a continuous effect, each
+#'   consumer's diet posterior mean and 95% interval from MixSIAR's `p.ind`, with the
+#'   consumer's covariate and factor values; see [plot_compare_covariate()]).
 #' @export
-mixsiar_reference <- function(vignette = c("killerwhale", "geese", "wolves")) {
-  vignette <- match.arg(vignette)
+mixsiar_reference <- function(vignette) {
   ref <- readRDS(system.file("extdata", "mixsiar_reference.rds", package = "MixSIARPFN"))
+  vignette <- match.arg(vignette, names(ref$draws))
   list(draws = ref$draws[[vignette]],
        summary = utils::read.csv(system.file("extdata", paste0(vignette, "_mixsiar_summary.csv"),
                                              package = "MixSIARPFN")),
        info = ref$info[[vignette]],
-       ppc = ref$ppc[[vignette]])
+       ppc = ref$ppc[[vignette]],
+       pind = ref$pind[[vignette]])
+}
+
+#' Compare diets along a continuous effect with MixSIAR's
+#'
+#' Each consumer's diet posterior (mean and 95% interval) from MixSIARPFN against
+#' MixSIAR's (`p.ind`), plotted against the consumer's value of the continuous effect,
+#' one panel per source.
+#'
+#' @param fit The output of [run_pfn()], for a model with a continuous effect.
+#' @param pind MixSIAR's per-consumer diets: `mixsiar_reference(...)$pind`, or a data
+#'   frame with columns `consumer`, `source`, `mean`, `q2.5`, `q97.5` and the
+#'   covariate.
+#' @param cont The continuous effect (default: the model's first).
+#' @param by Optional: a factor of the model (a column of `pind`) to split the panels by,
+#'   when the diet depends on it as well as on the covariate.
+#' @return A ggplot.
+#' @export
+plot_compare_covariate <- function(fit, pind, cont = fit$cont_effects[1], by = NULL) {
+  s <- fit$summary[fit$summary$block == "consumer", ]
+  key <- fit$consumers
+  pfn <- merge(key[, c("consumer", "level")], s[, c("level", "source", "mean", "q2.5", "q97.5")],
+               by = "level")
+  pfn <- merge(pfn, unique(pind[, c("consumer", cont, by), drop = FALSE]), by = "consumer")
+  pfn$method <- "MixSIARPFN"
+  mx <- pind
+  mx$method <- "MixSIAR"
+  keep <- c("consumer", "source", "mean", "q2.5", "q97.5", cont, by, "method")
+  d <- rbind(pfn[, keep], mx[, keep])
+  d$x <- d[[cont]]
+  d <- d[order(d$method, d$source, d$x), ]
+  ggplot2::ggplot(d, ggplot2::aes(x = .data$x, y = .data$mean, colour = .data$method,
+                                  fill = .data$method)) +
+    ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$q2.5, ymax = .data$q97.5), alpha = 0.15,
+                         colour = NA) +
+    ggplot2::geom_line(linewidth = 0.8) +
+    ggplot2::scale_colour_manual(values = c(MixSIAR = "grey35", MixSIARPFN = "#D55E00"), name = NULL) +
+    ggplot2::scale_fill_manual(values = c(MixSIAR = "grey35", MixSIARPFN = "#D55E00"), name = NULL) +
+    (if (is.null(by)) ggplot2::facet_wrap(~source) else
+      ggplot2::facet_grid(stats::as.formula(paste("`", by, "` ~ source", sep = "")))) +
+    ggplot2::coord_cartesian(ylim = c(0, 1)) +
+    ggplot2::labs(x = cont, y = "Diet proportion (consumer posterior mean and 95% interval)") +
+    ggplot2::theme_bw() + ggplot2::theme(legend.position = "top")
 }
 
 # The vignettes' posterior predictive check plot: for each group, the observed mean, SD

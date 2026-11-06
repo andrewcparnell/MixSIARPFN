@@ -62,7 +62,7 @@ test_that("load_source_data reads sources by factor and checks them", {
   expect_equal(src$S_factor_levels, 3)
   expect_error(load_source_data(x("wolves_sources.csv"), source_factors = NULL,
                                 conc_dep = FALSE, data_type = "raw", mix),
-               "not supported yet")
+               "one column per tracer")
   expect_error(load_source_data(x("wolves_sources.csv"), source_factors = "Lake",
                                 conc_dep = FALSE, data_type = "means", mix),
                "do not match")
@@ -105,4 +105,23 @@ test_that("the mix object has MixSIAR's fields and values", {
     fac_nested = c(FALSE, TRUE), cont_effects = NULL))
   expect_setequal(names(ours), names(theirs))
   for (k in names(theirs)) expect_equal(ours[[k]], theirs[[k]], ignore_attr = TRUE, label = k)
+})
+
+test_that("raw source data are summarised to means, SDs and sample sizes", {
+  x <- system.file("extdata", package = "MixSIARPFN")
+  mix <- load_mix_data(file.path(x, "palmyra_consumer.csv"), iso_names = c("d13C", "d15N"),
+                       factors = "Taxa", fac_random = FALSE, fac_nested = FALSE,
+                       cont_effects = NULL)
+  expect_message(source <- load_source_data(file.path(x, "palmyra_sources.csv"),
+                                            source_factors = NULL, conc_dep = FALSE,
+                                            data_type = "raw", mix), "summarised")
+  raw <- utils::read.csv(file.path(x, "palmyra_sources.csv"))
+  reef <- raw[raw[, 1] == "Reef", ]
+  row <- source$data[source$data$Source == "Reef", ]
+  expect_equal(row$Meand13C, mean(reef$d13C))
+  expect_equal(row$SDd15N, stats::sd(reef$d15N))
+  expect_equal(row$n, nrow(reef))
+  expect_equal(source$source_names, c("Lagoon", "Pelagic", "Reef"))
+  expect_error(load_source_data(file.path(x, "palmyra_sources.csv"), source_factors = NULL,
+                                conc_dep = FALSE, data_type = "other", mix), "means' or 'raw")
 })

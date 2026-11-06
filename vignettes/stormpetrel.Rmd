@@ -1,0 +1,92 @@
+---
+title: "Storm petrel: a fixed effect, raw source data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Storm petrel: a fixed effect, raw source data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
+```
+
+This follows MixSIAR's storm petrel example script (`mixsiar_script_stormpetrel.R`).
+Here the "sources" are not foods but places: three breeding colonies (Canada, Iceland
+and Scotland), sampled on their own, and the consumers are birds caught in several
+regions, with region as a fixed effect. The mixing model then estimates what share of
+the birds in each region come from each colony. Two tracers (δ¹³C and δ¹⁵N), and the
+source data are raw samples. Only the fitting call differs from MixSIAR's script:
+`run_pfn()` in place of `write_JAGS_model()` and `run_model()`.
+
+## The data
+
+```{r load, eval = TRUE}
+mix <- load_mix_data(
+  filename = system.file("extdata", "stormpetrel_consumer.csv", package = "MixSIARPFN"),
+  iso_names = c("d13C", "d15N"), factors = "Region", fac_random = FALSE,
+  fac_nested = FALSE, cont_effects = NULL)
+source <- load_source_data(
+  filename = system.file("extdata", "stormpetrel_sources.csv", package = "MixSIARPFN"),
+  source_factors = NULL, conc_dep = FALSE, data_type = "raw", mix)
+discr <- load_discr_data(
+  filename = system.file("extdata", "stormpetrel_discrimination.csv", package = "MixSIARPFN"),
+  mix)
+```
+
+`load_source_data()` summarises the raw source samples to each source's mean, SD and
+sample size, which is what MixSIARPFN's networks use:
+
+```{r sources, eval = TRUE}
+source$data
+```
+
+There are `r mix$N` birds in `r length(mix$FAC[[1]]$labels)` regions
+(`r paste(mix$FAC[[1]]$labels, collapse = ", ")`).
+
+```{r isospace, eval = TRUE, fig.height = 5}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+## Fitting the model
+
+Residual * Process error and MixSIAR's uninformative Dirichlet prior, as in MixSIAR's
+script.
+
+```{r fit}
+time <- system.time(
+  fit <- run_pfn(mix, source, discr, alpha.prior = 1,
+                 resid_err = TRUE, process_err = TRUE)
+)
+fit
+```
+
+## Results
+
+```{r output, results = "hide", fig.show = "hide"}
+out <- output_pfn(fit, mix, source,
+                  output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
+```
+
+```{r summary-table}
+knitr::kable(round(summary_table(fit), 3))
+```
+
+```{r result-plots, fig.height = 4}
+for (p in out$plots[grepl("^Region", names(out$plots))]) print(p)
+```
+
+## Comparison with MixSIAR
+
+```{r reference}
+ref <- mixsiar_reference("stormpetrel")
+ref_raw <- mixsiar_reference("stormpetrel_raw")
+blocks <- "Region"
+```
+
+```{r child = "_compare.Rmd"}
+```

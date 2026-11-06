@@ -1,0 +1,136 @@
+---
+title: "Alligator: eight models in a few seconds"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Alligator: eight models in a few seconds}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
+```
+
+This follows MixSIAR's alligator example script (`mixsiar_script_alligator.R`), based
+on Nifong et al. (2015, *Journal of Animal Ecology*, doi:10.1111/1365-2656.12306): American alligators,
+two tracers (δ¹³C and δ¹⁵N) and two sources, marine and
+freshwater prey. MixSIAR's script fits **eight** models, to ask which of habitat, sex,
+size class and body length explain how much each alligator relies on marine prey.
+With MixSIAR each model is a separate MCMC run; with MixSIARPFN all eight take a few
+seconds, which is what this example shows.
+
+## The data and the eight models
+
+```{r models, eval = TRUE}
+models <- list(
+  "1: null"                   = list(factors = NULL, cont = NULL),
+  "2: habitat"                = list(factors = "habitat", cont = NULL),
+  "3: sex"                    = list(factors = "sex", cont = NULL),
+  "4: size class"             = list(factors = "sclass", cont = NULL),
+  "5: length"                 = list(factors = NULL, cont = "Length"),
+  "6: sex + size class"       = list(factors = c("sex", "sclass"), cont = NULL),
+  "7: sex + length"           = list(factors = "sex", cont = "Length"),
+  "8: sex x size class"       = list(factors = "sex_sclass", cont = NULL))
+x <- system.file("extdata", package = "MixSIARPFN")
+load_model <- function(m) {
+  nf <- length(m$factors)
+  mix <- load_mix_data(file.path(x, "alligator_consumer.csv"), iso_names = c("d13C", "d15N"),
+                       factors = m$factors, fac_random = rep(FALSE, nf),
+                       fac_nested = rep(FALSE, nf), cont_effects = m$cont)
+  source <- load_source_data(file.path(x, "alligator_sources_simplemean.csv"),
+                             source_factors = NULL, conc_dep = FALSE, data_type = "means", mix)
+  discr <- load_discr_data(file.path(x, "alligator_TEF.csv"), mix)
+  list(mix = mix, source = source, discr = discr)
+}
+data <- lapply(models, load_model)
+```
+
+There are `r data[[1]]$mix$N` alligators. All models use Residual * Process error and
+MixSIAR's uninformative prior, as in MixSIAR's script; the effects are fixed.
+
+```{r isospace, eval = TRUE, fig.height = 5}
+plot_data(mix = data[[1]]$mix, source = data[[1]]$source, discr = data[[1]]$discr)
+```
+
+## Fitting all eight models
+
+```{r fit}
+time <- system.time(
+  fits <- lapply(data, function(d) run_pfn(d$mix, d$source, d$discr, alpha.prior = 1,
+                                           resid_err = TRUE, process_err = TRUE))
+)
+```
+
+All eight models took `r num(time[["elapsed"]], 1)` seconds together (the first
+includes starting Python and loading the network).
+
+MixSIAR's script compares the models by leave-one-out cross-validation (LOO), which
+needs the likelihood at each posterior draw. MixSIARPFN gives marginal posteriors
+only, so it cannot compute LOO; what it makes quick is looking at every model's
+posteriors.
+
+## How each model compares with MixSIAR
+
+```{r compare-all}
+refs <- lapply(seq_along(models), function(i) mixsiar_reference(paste0("alligator_", i)))
+rows <- lapply(seq_along(models), function(i) {
+  cmp <- compare_mixsiar(fits[[i]], refs[[i]]$draws, refs[[i]]$summary)
+  diet <- cmp[!is.na(cmp$w1), ]
+  data.frame(model = names(models)[i], diets = nrow(diet),
+             mean_gap = mean(abs(diet$pfn_mean - diet$mixsiar_mean)),
+             w1 = mean(diet$w1), sd_ratio = median(diet$sd_ratio),
+             pfn_seconds = fits[[i]]$seconds, mixsiar_minutes = refs[[i]]$info$minutes,
+             psrf = refs[[i]]$info$max_psrf)
+})
+tab <- do.call(rbind, rows)
+knitr::kable(tab, digits = c(0, 0, 3, 3, 2, 2, 0, 3), row.names = FALSE,
+             col.names = c("Model", "Diet proportions compared", "Mean difference in means",
+                           "Mean W1", "Median SD ratio", "MixSIARPFN seconds",
+                           "MixSIAR minutes", "MixSIAR largest PSRF"))
+```
+
+Each row compares MixSIARPFN's diet posteriors with MixSIAR's for one model (MixSIAR's
+"long" run, three chains). For models with a continuous effect, the diets compared are
+the global diet at the average length; the curves along length are compared below.
+In total, MixSIAR took `r num(sum(tab$mixsiar_minutes), 0)` minutes of computing for the
+eight models; MixSIARPFN took `r num(sum(tab$pfn_seconds), 1)` seconds.
+
+## A closer look
+
+The model with the interaction of sex and size class (model 8):
+
+```{r m8, fig.height = 5}
+plot_compare(fits[[8]], refs[[8]]$draws, block = "sex_sclass")
+```
+
+Diet along body length (model 5), each alligator's posterior from both methods:
+
+```{r m5, fig.height = 3.5}
+plot_compare_covariate(fits[[5]], refs[[5]]$pind)
+```
+
+And along length separately for each sex (model 7):
+
+```{r m7, fig.height = 5}
+plot_compare_covariate(fits[[7]], refs[[7]]$pind, by = "sex")
+```
+
+```{r numbers, include = FALSE}
+cov_gap <- function(fit, pind) {
+  pf <- merge(fit$consumers[, c("consumer", "level")],
+              fit$summary[fit$summary$block == "consumer", c("level", "source", "mean")], by = "level")
+  pc <- merge(pf, pind[, c("consumer", "source", "mean")], by = c("consumer", "source"))
+  mean(abs(pc$mean.x - pc$mean.y))
+}
+g5 <- cov_gap(fits[[5]], refs[[5]]$pind)
+g7 <- cov_gap(fits[[7]], refs[[7]]$pind)
+```
+
+**What this shows.** Across all eight models, MixSIARPFN's posterior means differ from
+MixSIAR's by `r num(mean(tab$mean_gap), 3)` on average, and along body length each
+alligator's posterior mean diet differs by `r num(g5, 3)` (model 5) and
+`r num(g7, 3)` (model 7).

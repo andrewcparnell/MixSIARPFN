@@ -1,0 +1,92 @@
+---
+title: "Snail: one tracer, raw source data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Snail: one tracer, raw source data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
+```
+
+This follows MixSIAR's snail example script (`mixsiar_script_snail.R`): snails
+with one tracer (δ¹³C) and two food sources, C3 and CAM plants, and no effects. Two things make it different from the other examples: there is only one
+tracer, and the source data are raw samples rather than means and SDs. Only the
+fitting call differs from MixSIAR's script: `run_pfn()` in place of
+`write_JAGS_model()` and `run_model()`.
+
+## The data
+
+```{r load, eval = TRUE}
+mix <- load_mix_data(
+  filename = system.file("extdata", "snail_consumer.csv", package = "MixSIARPFN"),
+  iso_names = "d13C", factors = NULL, fac_random = NULL,
+  fac_nested = NULL, cont_effects = NULL)
+source <- load_source_data(
+  filename = system.file("extdata", "snail_sources.csv", package = "MixSIARPFN"),
+  source_factors = NULL, conc_dep = FALSE, data_type = "raw", mix)
+discr <- load_discr_data(
+  filename = system.file("extdata", "snail_discrimination.csv", package = "MixSIARPFN"),
+  mix)
+```
+
+With `data_type = "raw"`, `load_source_data()` summarises each source's samples to
+its mean, SD and sample size, which is what MixSIARPFN's networks use:
+
+```{r sources, eval = TRUE}
+source$data
+```
+
+There are `r mix$N` snails.
+
+```{r isospace, eval = TRUE, fig.height = 4}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+## Fitting the model
+
+Residual * Process error and MixSIAR's uninformative Dirichlet prior, as in MixSIAR's
+script.
+
+```{r fit}
+time <- system.time(
+  fit <- run_pfn(mix, source, discr, alpha.prior = 1,
+                 resid_err = TRUE, process_err = TRUE)
+)
+fit
+```
+
+## Results
+
+```{r output, results = "hide", fig.show = "hide"}
+out <- output_pfn(fit, mix, source,
+                  output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
+```
+
+```{r summary-table}
+knitr::kable(round(summary_table(fit), 3))
+```
+
+```{r result-plots, fig.height = 4}
+out$plots$global
+```
+
+The snails' diet is mostly C3 plants. With one tracer and two sources the diet is
+well identified: the consumers' δ¹³C sits between the two sources, much closer to C3.
+
+## Comparison with MixSIAR
+
+```{r reference}
+ref <- mixsiar_reference("snail")
+ref_raw <- mixsiar_reference("snail_raw")
+blocks <- "global"
+```
+
+```{r child = "_compare.Rmd"}
+```

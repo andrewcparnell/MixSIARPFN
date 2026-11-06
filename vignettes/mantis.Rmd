@@ -1,0 +1,97 @@
+---
+title: "Mantis shrimp: sources by habitat, concentrations and an informative prior"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Mantis shrimp: sources by habitat, concentrations and an informative prior}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
+```
+
+This follows MixSIAR's mantis shrimp example script (`mixsiar_script_mantis.R`): mantis
+shrimp from several habitats, two tracers (δ¹³C and δ¹⁵N) and six prey sources. It
+uses three options together: habitat is a fixed effect, the sources were measured
+separately in each habitat (`source_factors = "Habitat"`), and the sources'
+elemental concentrations differ (concentration dependence). MixSIAR's script also uses
+an informative "specialist" prior, which MixSIARPFN supports too. Only the fitting call
+differs from MixSIAR's script: `run_pfn()` in place of `write_JAGS_model()` and
+`run_model()`.
+
+## The data
+
+```{r load, eval = TRUE}
+mix <- load_mix_data(
+  filename = system.file("extdata", "mantis_consumer.csv", package = "MixSIARPFN"),
+  iso_names = c("d13C", "d15N"), factors = "Habitat", fac_random = FALSE,
+  fac_nested = FALSE, cont_effects = NULL)
+source <- load_source_data(
+  filename = system.file("extdata", "mantis_source.csv", package = "MixSIARPFN"),
+  source_factors = "Habitat", conc_dep = TRUE, data_type = "means", mix)
+discr <- load_discr_data(
+  filename = system.file("extdata", "mantis_discrimination.csv", package = "MixSIARPFN"),
+  mix)
+```
+
+There are `r mix$N` mantis shrimp in `r length(mix$FAC[[1]]$labels)` habitats
+(`r paste(mix$FAC[[1]]$labels, collapse = ", ")`), and `r source$n.sources` sources
+(`r paste(source$source_names, collapse = ", ")`).
+
+```{r isospace, eval = TRUE, fig.height = 5}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+## Fitting the model
+
+Residual * Process error, and MixSIAR's specialist prior: weights 1, 1, 4, 4, 1, 4 on
+the sources (in `source$source_names` order), scaled so that they sum to the number of
+sources, exactly as in MixSIAR's script.
+
+```{r prior, eval = TRUE}
+alpha.spec <- c(1, 1, 4, 4, 1, 4)
+alpha.spec <- alpha.spec * length(alpha.spec) / sum(alpha.spec)
+setNames(round(alpha.spec, 2), source$source_names)
+```
+
+```{r fit}
+time <- system.time(
+  fit <- run_pfn(mix, source, discr, alpha.prior = alpha.spec,
+                 resid_err = TRUE, process_err = TRUE)
+)
+fit
+```
+
+## Results
+
+```{r output, results = "hide", fig.show = "hide"}
+out <- output_pfn(fit, mix, source,
+                  output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
+```
+
+```{r summary-table}
+knitr::kable(round(summary_table(fit), 3))
+```
+
+```{r result-plots, fig.height = 4}
+for (p in out$plots[grepl("^Habitat", names(out$plots))]) print(p)
+```
+
+MixSIAR's script goes on to combine sources after the fit (hard-shelled against
+soft-bodied prey), with `combine_sources()`. That needs joint posterior draws, which
+MixSIARPFN does not give, so it is not repeated here.
+
+## Comparison with MixSIAR
+
+```{r reference}
+ref <- mixsiar_reference("mantis")
+blocks <- "Habitat"
+```
+
+```{r child = "_compare.Rmd"}
+```

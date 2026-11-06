@@ -144,11 +144,56 @@ load_mix_data <- function(filename, iso_names, factors, fac_random, fac_nested,
   ), class = c("pfn_mix", "list"))
 }
 
+#' Summarise raw source data to means, SDs and sample sizes
+#'
+#' @param SOURCE Raw source data: source names in the first column, one row per sample.
+#' @param iso_names Tracer column names.
+#' @param source_factors Name of the source factor column, or `NULL`.
+#' @param conc_dep Logical: keep mean `Conc<tracer>` columns?
+#' @return A data frame in MixSIAR's "means" format.
+#' @noRd
+summarise_raw_sources <- function(SOURCE, iso_names, source_factors, conc_dep) {
+  missing <- setdiff(iso_names, colnames(SOURCE))
+  if (length(missing)) {
+    stop("Raw source data must have one column per tracer, named as in iso_names; ",
+         "missing: ", paste(missing, collapse = ", "), ".", call. = FALSE)
+  }
+  conc_names <- if (isTRUE(conc_dep)) paste0("Conc", iso_names) else character(0)
+  if (length(setdiff(conc_names, colnames(SOURCE)))) {
+    stop("Concentration dependence column names mislabeled. Should be 'Conc' + ",
+         "iso_names, e.g. 'Concd13C' if iso_names = 'd13C'.", call. = FALSE)
+  }
+  keys <- list(source = as.character(SOURCE[, 1]))
+  if (length(source_factors) == 1) keys[[source_factors]] <- as.character(SOURCE[, source_factors])
+  groups <- split(SOURCE, keys, drop = TRUE, sep = "\r")
+  out <- do.call(rbind, lapply(groups, function(g) {
+    row <- data.frame(Source = as.character(g[1, 1]), stringsAsFactors = FALSE)
+    if (length(source_factors) == 1) row[[source_factors]] <- g[1, source_factors]
+    for (t in iso_names) {
+      row[[paste0("Mean", t)]] <- mean(g[[t]], na.rm = TRUE)
+      row[[paste0("SD", t)]] <- stats::sd(g[[t]], na.rm = TRUE)
+    }
+    for (cn in conc_names) row[[cn]] <- mean(g[[cn]], na.rm = TRUE)
+    row$n <- nrow(g)
+    row
+  }))
+  if (any(out$n < 2)) {
+    stop("Every source needs at least 2 raw samples to estimate its SD; too few for: ",
+         paste(unique(out$Source[out$n < 2]), collapse = ", "), ".", call. = FALSE)
+  }
+  rownames(out) <- NULL
+  message("Raw source data summarised to means, SDs and sample sizes (",
+          paste0(out$Source, if (length(source_factors) == 1)
+            paste0(" (", out[[source_factors]], ")"), ": n = ", out$n, collapse = "; "), ").")
+  out
+}
+
 #' Load source data
 #'
-#' Reads the source data file (means, SDs and sample sizes), exactly as
-#' `MixSIAR::load_source_data()` does, with the same arguments. Only source summary
-#' statistics (`data_type = "means"`) are supported in this version.
+#' Reads the source data file, exactly as `MixSIAR::load_source_data()` does, with the
+#' same arguments: either source summary statistics (`data_type = "means"`) or raw
+#' source samples (`data_type = "raw"`), which are summarised to means, SDs and sample
+#' sizes.
 #'
 #' @param filename Path of the source `.csv` file (or a data frame): source names in
 #'   the first column, then `Mean<tracer>`, `SD<tracer>`, `n` and, with
@@ -156,7 +201,12 @@ load_mix_data <- function(filename, iso_names, factors, fac_random, fac_nested,
 #' @param source_factors Name of the categorical effect the sources are given by
 #'   (one row per source and level), or `NULL`.
 #' @param conc_dep Logical: use concentration dependence?
-#' @param data_type `"means"` (source means and SDs). `"raw"` is not supported yet.
+#' @param data_type `"means"` (source means, SDs and sample sizes) or `"raw"` (one row
+#'   per source sample, columns named by the tracers). Raw data are summarised to each
+#'   source's mean, SD and sample size (per level of `source_factors`, if given; with
+#'   mean concentrations if `conc_dep`), which is what the networks use. MixSIAR's raw
+#'   data model instead estimates each source's mean and variance in the fit, so
+#'   results can differ a little from MixSIAR's for small source samples.
 #' @param mix The output of [load_mix_data()].
 #'
 #' @return A list with `data`, `source_names` (MixSIAR's alphabetical order),
@@ -166,10 +216,11 @@ load_mix_data <- function(filename, iso_names, factors, fac_random, fac_nested,
 load_source_data <- function(filename, source_factors = NULL, conc_dep, data_type,
                              mix) {
   SOURCE <- read_input(filename)
-  if (!identical(data_type, "means")) {
-    stop("*** Error: data_type = '", data_type, "' is not supported yet. MixSIARPFN ",
-         "currently fits source summary statistics only (data_type = 'means': ",
-         "columns Mean<tracer>, SD<tracer> and n). ***", call. = FALSE)
+  if (!data_type %in% c("means", "raw")) {
+    stop("*** Error: data_type must be 'means' or 'raw'. ***", call. = FALSE)
+  }
+  if (identical(data_type, "raw")) {
+    SOURCE <- summarise_raw_sources(SOURCE, mix$iso_names, source_factors, conc_dep)
   }
   if (length(source_factors) > 1) {
     stop("More than one source factor. MixSIAR can only fit source data by up to ",

@@ -59,7 +59,10 @@ for (s in names(sets)) for (batch in c("a", "b")) {
 }
 times <- do.call(rbind, times)
 
-simstudy <- list(scores = scores, mixsiar_seconds = times,
+# MixSIARPFN fit times through the package (dev/time_simstudy.R)
+pfn_times <- utils::read.csv(file.path(base, "pfn_seconds.csv"))
+
+simstudy <- list(scores = scores, mixsiar_seconds = times, pfn_seconds = pfn_times,
                  made = format(Sys.Date()),
                  notes = paste("Datasets a_*: seed 2026 (50 per set); b_*: seed 2027 (100 per",
                                "set). MixSIARPFN v3 = the released networks; v3 changed only the",

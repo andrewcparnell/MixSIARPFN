@@ -27,6 +27,7 @@ reference:
   - mixsiar_draws
   - compare_mixsiar
   - plot_compare
+  - plot_compare_covariate
 - title: Package
   contents:
   - MixSIARPFN-package
@@ -38,7 +39,14 @@ articles:
   - killerwhale
   - geese
   - wolves
+  - alligator
+  - lake
+  - mantis
+  - palmyra
+  - snail
+  - stormpetrel
 - title: Method and accuracy
   navbar: Method
   contents:
   - performance
+  - simulations

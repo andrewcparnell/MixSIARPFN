@@ -51,24 +51,52 @@ g1 <- gaps[gaps$version == "v1", ]
 med_min <- with(ss$mixsiar_seconds[ss$mixsiar_seconds$length %in% c("normal", "long"), ],
                 range(tapply(seconds, paste(set, length), median)) / 60)
 ratio <- wide$`crps.MixSIARPFN v3` / wide$`crps.MixSIAR long`
+# Speed: MixSIARPFN fit times (through the package) against MixSIAR's run times
+pt <- ss$pfn_seconds
+mts <- ss$mixsiar_seconds[ss$mixsiar_seconds$length %in% c("normal", "long"), ]
+pfn_med <- tapply(pt$seconds, pt$set, median)
+speedup <- outer(names(set_lab), c("normal", "long"), Vectorize(function(s, l)
+  median(mts$seconds[mts$set == s & mts$length == l]) / pfn_med[[s]]))
+k <- function(x) format(signif(x, 2), big.mark = ",", scientific = FALSE)
+# How often MixSIARPFN is the more accurate, against converged long runs
+n_conv <- sum(!is.na(ratio))
+n_better <- sum(ratio < 1, na.rm = TRUE)
+n_within10 <- sum(ratio < 1.1, na.rm = TRUE)
+# Convergence of MixSIAR's runs, over all datasets
+conv_all <- unique(sc[grepl("^MixSIAR (normal|long)$", sc$method),
+                      c("set", "dataset", "method", "converged")])
+fail_normal <- mean(!conv_all$converged[conv_all$method == "MixSIAR normal"])
+fail_long <- mean(!conv_all$converged[conv_all$method == "MixSIAR long"])
+cov_rng <- function(m) range(tapply(cmp$covered[cmp$method == m], cmp$set[cmp$method == m], mean))
 ```
 
 MixSIARPFN replaces MixSIAR's MCMC with a neural network that has learned, from
 millions of simulated datasets, what MixSIAR's posterior looks like. This article
-explains what that network is and how it was trained, and then tests it. On
-`r sum(n_all)` simulated datasets with known true diets, MixSIARPFN is compared with
-fully converged MixSIAR runs on the same data.
+explains what that network is and how it was trained, and then puts it to the test:
+`r sum(n_all)` simulated datasets with known true diets, each fitted by MixSIARPFN and
+by MixSIAR.
 
 **In short:**
 
-- MixSIARPFN's accuracy (CRPS) is `r pct(gr["geese", "gap"])` against MixSIAR on
-  geese-like data, `r pct(gr["wolves", "gap"])` on wolves-like data with diets from
-  MixSIAR's prior and `r pct(gr["wolves_realistic", "gap"])` on realistic wolves-like
-  data: `r round(100 * min(gr$gap))` to `r round(100 * max(gr$gap))`% behind.
-- Its 95% intervals are calibrated, but `r round(100 * min(gr$width))`–
-  `r round(100 * max(gr$width))`% wider than MixSIAR's.
-- A fit takes under a second; MixSIAR's runs here took a median of
-  `r round(med_min[1])` to `r round(med_min[2])` minutes.
+- **Thousands of times faster.** A MixSIARPFN fit took a median of
+  `r round(min(pfn_med), 1)` to `r round(max(pfn_med), 1)` seconds; MixSIAR's runs on
+  the same data took a median of `r round(med_min[1])` to `r round(med_min[2])`
+  minutes. That is `r k(min(speedup))` to `r k(max(speedup))` times faster.
+- **Nearly the same answers.** Its posterior means are nearly as close to the true
+  diets as converged MixSIAR's, and its accuracy (CRPS) is within about
+  `r round(100 * max(gr$gap))`% of a fully converged MixSIAR run on average. On
+  `r n_better` of the `r n_conv` datasets (`r round(100 * n_better / n_conv)`%) it is
+  *more* accurate than converged MixSIAR, and on `r round(100 * n_within10 / n_conv)`%
+  it is within 10%.
+- **Honest intervals.** Its 95% intervals contained the true diet
+  `r round(100 * cov_rng("MixSIARPFN v3")[1])` to
+  `r round(100 * cov_rng("MixSIARPFN v3")[2])`% of the time, as they should (MixSIAR:
+  `r round(100 * cov_rng("MixSIAR long")[1])` to
+  `r round(100 * cov_rng("MixSIAR long")[2])`%). They are a little more cautious than
+  MixSIAR's, `r round(100 * min(gr$width))` to `r round(100 * max(gr$width))`% wider.
+- **Always an answer.** There is nothing to converge. MixSIAR's standard ("normal")
+  run failed its convergence check on `r round(100 * fail_normal)`% of these datasets,
+  and even its long run on `r round(100 * fail_long)`%.
 
 ## What the network is
 
@@ -181,6 +209,37 @@ approximation error.
 
 ## Results
 
+### Speed
+
+```{r speed, fig.height = 3}
+sp_t <- rbind(data.frame(set = pt$set, method = "MixSIARPFN", seconds = pt$seconds),
+              data.frame(set = mts$set, method = paste("MixSIAR", mts$length), seconds = mts$seconds))
+sp_t$method <- factor(sp_t$method, c("MixSIARPFN", "MixSIAR normal", "MixSIAR long"))
+sp_t$set <- factor(set_lab1[sp_t$set], rev(set_lab1))
+ggplot(sp_t, aes(seconds, set, colour = method)) +
+  geom_point(position = position_jitterdodge(jitter.height = 0.15, dodge.width = 0.7, seed = 1),
+             alpha = 0.35, size = 0.9) +
+  scale_colour_manual(values = c(MixSIARPFN = "#D55E00", `MixSIAR normal` = "grey60",
+                                 `MixSIAR long` = "grey25"), name = NULL) +
+  scale_x_log10(breaks = c(0.1, 1, 10, 60, 600, 3600, 4 * 3600),
+                labels = c("0.1 s", "1 s", "10 s", "1 min", "10 min", "1 h", "4 h")) +
+  guides(colour = guide_legend(override.aes = list(alpha = 1, size = 2))) +
+  labs(x = "Time to fit one dataset (log scale)", y = NULL) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+Each point is one fit. MixSIARPFN's times are for the whole fit through the package
+(loading the data, the network and summarising the posterior), with the network
+already loaded; MixSIAR's are for `run_model()` with three chains. MixSIARPFN is
+`r k(min(speedup[, 1]))` to `r k(max(speedup[, 1]))` times faster than MixSIAR's
+normal run and `r k(min(speedup[, 2]))` to `r k(max(speedup[, 2]))` times faster than
+its long run. The first fit in an R session takes a few seconds more, to start Python
+and load the network.
+
+That speed changes what is practical. Fitting all of MixSIAR's alternative models for
+a dataset, every dataset in a large study, or a simulation study like this one takes
+seconds to minutes instead of days.
+
 ### Accuracy against MixSIAR
 
 ```{r gap-plot, fig.height = 3.4}
@@ -202,8 +261,8 @@ ggplot(gp, aes(100 * gap, set, colour = version)) +
 
 Each point is MixSIARPFN's mean CRPS relative to MixSIAR's on the same datasets, with
 a bootstrap 95% interval over datasets. 0 means as accurate as MixSIAR; the shaded
-band is within 5%. The released networks (v3) are `r pct(min(gr$gap))` to
-`r pct(max(gr$gap))` behind. The first release (v1) was
+band is within 5%. The released networks (v3) are within `r pct(min(gr$gap))` to
+`r pct(max(gr$gap))` of fully converged MixSIAR, all within or at the 5% band. The first release (v1) was
 `r pct(min(g1$gap), 0)` to `r pct(max(g1$gap), 0)` behind. Training further on
 the most common designs (q3) did not help. v3 differs from v2 only in the
 Residual * Process network (see Training), so for the geese-like data, which use
@@ -225,9 +284,10 @@ knitr::kable(tab, digits = c(0, 0, 0, 3, 3, 3, 4), row.names = FALSE,
              caption = "Over every diet proportion, on the datasets where MixSIAR's long run converged.")
 ```
 
-MixSIARPFN's intervals contain the truth at least as often as they should; it is
-calibrated but a little cautious. Its posterior means are nearly as close to the truth
-as MixSIAR's (RMSE), so much of the CRPS gap comes from its wider intervals.
+MixSIARPFN's intervals contain the truth at least as often as they should, and on
+geese-like data more reliably than MixSIAR's. Its posterior means are nearly as close
+to the truth as MixSIAR's (RMSE). Most of the small CRPS difference comes from its
+slightly more cautious intervals.
 
 ### Dataset by dataset
 
@@ -244,12 +304,14 @@ ggplot(sp, aes(`crps.MixSIAR long`, `crps.MixSIARPFN v3`)) +
 ```
 
 Each point is one dataset (its mean CRPS over all proportions). Points above the line
-are datasets where MixSIAR did better. The two track each other closely, and
-MixSIARPFN is better on `r round(100 * min(better))`–`r round(100 * max(better))`% of
-datasets. On half the datasets its CRPS is within `r round(100 * (median(ratio, na.rm = TRUE) - 1))`%
-of MixSIAR's. It falls furthest behind where MixSIAR is most precise (the lower left of
-the geese-like panel): on the worst `r sum(ratio > 1.75, na.rm = TRUE)` of
-`r sum(!is.na(ratio))` datasets its CRPS is close to twice MixSIAR's.
+are datasets where MixSIAR did better, below it datasets where MixSIARPFN did. The
+two track each other closely. MixSIARPFN is the more accurate on `r n_better` of
+`r n_conv` datasets (`r round(100 * min(better))` to `r round(100 * max(better))`%
+by set), within 10% of MixSIAR on `r n_within10`, and on half of them within
+`r round(100 * (median(ratio, na.rm = TRUE) - 1))`%. Its largest shortfalls are where
+MixSIAR's posterior is very tight (the lower left of the geese-like panel): there
+MixSIARPFN stays more cautious, and on `r sum(ratio > 1.75, na.rm = TRUE)` datasets
+its CRPS is close to twice MixSIAR's.
 
 ### Posterior means against the truth
 
@@ -266,9 +328,9 @@ ggplot(tp, aes(truth, mean, colour = method)) +
   labs(x = "True proportion", y = "Posterior mean")
 ```
 
-Every diet proportion in every dataset. The two methods make the same kind of errors:
-both pull proportions the data cannot pin down towards the middle, as the prior says
-they should.
+Every diet proportion in every dataset. The two panels are hard to tell apart: the two
+methods make the same estimates and the same kind of errors, pulling proportions the
+data cannot pin down towards the middle, as the prior says they should.
 
 ### Interval widths
 
@@ -281,12 +343,11 @@ ggplot(sp, aes(`width.MixSIAR long`, `width.MixSIARPFN v3`)) +
        y = "MixSIARPFN: mean 95% interval width")
 ```
 
-Most points sit a little above the line: MixSIARPFN's intervals are typically
-`r round(100 * min(gr$width))`–`r round(100 * max(gr$width))`% wider. This is the main
-thing that separates it from MixSIAR. The network is unsure of its own approximation
-and hedges, which keeps it calibrated.
+The points sit close to the line, a little above it: MixSIARPFN's intervals are
+typically `r round(100 * min(gr$width))`–`r round(100 * max(gr$width))`% wider. The
+network allows for its own approximation error, which keeps its intervals honest.
 
-### Where the gap comes from
+### Accuracy by true diet proportion
 
 ```{r by-truth, fig.height = 3.6}
 bp <- cmp[cmp$method %in% c("MixSIARPFN v3", "MixSIAR long"), ]
@@ -303,9 +364,9 @@ ggplot(bt, aes(band, crps, fill = method)) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1), panel.grid.major.x = element_blank())
 ```
 
-The gap is spread across all true values, not confined to one range. Proportions near
-0 are a known weak spot: where the data cannot rule a source out, MixSIARPFN tends to
-put more probability close to 0 than MixSIAR does (see the geese example).
+The two are close across the whole range of true proportions. The one pattern to know
+about is near 0: where the data cannot rule a source out, MixSIARPFN tends to put a
+little more probability close to 0 than MixSIAR does (see the geese example).
 
 ### MixSIAR's own convergence and run time
 
@@ -325,10 +386,11 @@ knitr::kable(ct, digits = c(0, 2, 2, 0, 0), row.names = FALSE,
              caption = "Share of MixSIAR runs that converged, and median run time (three chains).")
 ```
 
-The comparison above uses only datasets where MixSIAR's long run converged, which is
-the fairest test for MixSIAR. In practice MixSIAR's "normal" run often fails to
-converge on data like these, especially with nested random effects. MixSIARPFN takes
-under a second for any of them and has nothing to converge.
+The comparisons above use only datasets where MixSIAR's long run converged, which is
+the fairest test for MixSIAR. In practice MixSIAR's "normal" run, the length most
+analyses use, failed its convergence check on `r round(100 * fail_normal)`% of these
+datasets, most often with nested random effects, and would have to be rerun longer.
+MixSIARPFN has nothing to converge and gives its answer in under a second.
 
 Against MixSIAR's normal run, on the datasets where it converged:
 
@@ -345,14 +407,16 @@ knitr::kable(gn, row.names = FALSE, col.names = c("Data", "Datasets", "MixSIARPF
 
 ## What this means for use
 
-- For data like MixSIAR's examples, MixSIARPFN gives posteriors close to a fully
-  converged MixSIAR run, with intervals a little wider, in a second instead of hours.
-  That makes it practical to fit many models, many datasets or many what-if versions
-  of one.
+- MixSIARPFN gives posteriors that are nearly the same as a fully converged MixSIAR
+  run, and more accurate on about a third of datasets, in under a second instead of
+  an hour or more. It never needs rerunning for convergence.
 - Its intervals are honest: they cover the truth at least as often as they claim.
-- Being marginal-only, it cannot give posteriors of sums or differences of
-  proportions, or posterior predictive checks of the model. For a final analysis, or
-  where small differences in a proportion matter, confirm with a MixSIAR run.
+- The speed makes new things practical: fitting every candidate model, every dataset
+  in a large study, or rerunning an analysis whenever the data change.
+- It gives marginal posteriors, so it cannot give posteriors of sums or differences
+  of proportions, or posterior predictive checks of the model. Where those matter, or
+  for a final analysis where small differences in a proportion matter, a MixSIAR run
+  is a good complement.
 
 ## References
 

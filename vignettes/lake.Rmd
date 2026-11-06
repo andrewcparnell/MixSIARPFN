@@ -1,0 +1,125 @@
+---
+title: "Lake: a continuous effect, raw source data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lake: a continuous effect, raw source data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(MixSIARPFN)
+ok <- MixSIARPFN:::networks_ready()   # the code needs the networks (see pfn_networks())
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
+                      fig.width = 7, fig.height = 4.5, out.width = "100%")
+num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
+```
+
+This follows MixSIAR's lake example (its `lake_ex` vignette), whose data are simulated
+based on Francis et al. (2011, *Ecology Letters*, doi:10.1111/j.1461-0248.2011.01597.x): zooplankton in 21
+lakes, two tracers (δ¹³C and δ¹⁵N) and three sources (terrestrial detritus, surface
+particulate organic matter (POM) and subsurface POM). The diet changes along a
+continuous effect, each lake's ratio of Secchi depth to mixing depth
+(`Secchi.Mixed`), a measure of how far light reaches into the mixed layer. The source
+data are raw samples, and the error structure is Residual only. Only the fitting call
+differs from MixSIAR's: `run_pfn()` in place of `write_JAGS_model()` and
+`run_model()`.
+
+## The data
+
+```{r load, eval = TRUE}
+mix <- load_mix_data(
+  filename = system.file("extdata", "lake_consumer.csv", package = "MixSIARPFN"),
+  iso_names = c("d13C", "d15N"), factors = NULL, fac_random = NULL,
+  fac_nested = NULL, cont_effects = "Secchi.Mixed")
+source <- load_source_data(
+  filename = system.file("extdata", "lake_sources.csv", package = "MixSIARPFN"),
+  source_factors = NULL, conc_dep = FALSE, data_type = "raw", mix)
+discr <- load_discr_data(
+  filename = system.file("extdata", "lake_discrimination.csv", package = "MixSIARPFN"),
+  mix)
+```
+
+`load_source_data()` summarises the raw source samples to each source's mean, SD and
+sample size, which is what MixSIARPFN's networks use:
+
+```{r sources, eval = TRUE}
+source$data
+```
+
+There are `r mix$N` zooplankton samples, with `Secchi.Mixed` from
+`r num(min(mix$data$Secchi.Mixed))` to `r num(max(mix$data$Secchi.Mixed))`.
+
+```{r isospace, eval = TRUE, fig.height = 5}
+plot_data(mix = mix, source = source, discr = discr)
+```
+
+## Fitting the model
+
+Residual only error and MixSIAR's uninformative Dirichlet prior, as in MixSIAR's
+vignette.
+
+```{r fit}
+time <- system.time(
+  fit <- run_pfn(mix, source, discr, alpha.prior = 1,
+                 resid_err = TRUE, process_err = FALSE)
+)
+fit
+```
+
+## Results
+
+```{r output, results = "hide", fig.show = "hide"}
+out <- output_pfn(fit, mix, source,
+                  output_options = list(summary_save = FALSE, plot_post_save_pdf = FALSE))
+```
+
+The diet along `Secchi.Mixed`, as in MixSIAR's vignette:
+
+```{r result-plots, fig.height = 4.5}
+for (p in out$plots[grepl("Secchi", names(out$plots))]) print(p)
+```
+
+```{r trend, include = FALSE}
+cs <- fit$summary[fit$summary$block == "Secchi.Mixed (continuous)", ]
+cs$x <- as.numeric(cs$level)
+ends <- do.call(rbind, lapply(split(cs, cs$source), function(d) data.frame(
+  source = d$source[1], low = d$mean[which.min(d$x)], high = d$mean[which.max(d$x)])))
+up <- ends[which.max(ends$high - ends$low), ]
+down <- ends[which.min(ends$high - ends$low), ]
+```
+
+From the lowest to the highest `Secchi.Mixed`, the share of `r if (ok) up$source` rises
+from `r num(up$low)` to `r num(up$high)` and the share of `r if (ok) down$source` falls
+from `r num(down$low)` to `r num(down$high)`.
+
+## Comparison with MixSIAR
+
+```{r reference}
+ref <- mixsiar_reference("lake")
+ref_raw <- mixsiar_reference("lake_raw")
+blocks <- character(0)
+```
+
+With a continuous effect, each consumer has its own diet. Each lake's diet from
+MixSIARPFN against MixSIAR's (MixSIAR's `p.ind`), along `Secchi.Mixed`:
+
+```{r covariate, fig.height = 4}
+plot_compare_covariate(fit, ref$pind)
+```
+
+```{r cov-numbers, include = FALSE}
+pf <- merge(fit$consumers[, c("consumer", "level")],
+            fit$summary[fit$summary$block == "consumer", c("level", "source", "mean")], by = "level")
+pc <- merge(pf, ref$pind[, c("consumer", "source", "mean")], by = c("consumer", "source"),
+            suffixes = c("_pfn", "_mixsiar"))
+cov_gap <- mean(abs(pc$mean_pfn - pc$mean_mixsiar))
+```
+
+The two curves follow each other closely: the consumers' posterior mean diets differ
+by `r num(cov_gap, 3)` on average.
+
+The global diet (at the average `Secchi.Mixed`) and the residual multipliers:
+
+```{r child = "_compare.Rmd"}
+```
