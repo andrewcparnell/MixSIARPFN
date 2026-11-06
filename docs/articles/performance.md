@@ -98,7 +98,7 @@ the wolves-like data below. The other two networks are version 2’s.
 
 Data outside this range are refused with a message. The networks are on
 Zenodo
-([doi:10.5281/zenodo.PENDING](https://doi.org/10.5281/zenodo.PENDING))
+([doi:10.5281/zenodo.24002247](https://doi.org/10.5281/zenodo.24002247))
 and are downloaded on first use.
 
 ## How it was tested
