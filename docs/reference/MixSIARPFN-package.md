@@ -22,8 +22,8 @@ the killer whale, geese and wolves vignettes.
   proportions cannot be computed.
 
 - **Accuracy.** On data simulated from MixSIAR's model the 95% intervals
-  are calibrated but 5 to 11% wider than MixSIAR's, and the posteriors a
-  little less accurate (CRPS 4 to 5% higher than fully converged
+  are calibrated but 5 to 12% wider than MixSIAR's, and the posteriors a
+  little less accurate (CRPS 2 to 5% higher than fully converged
   MixSIAR; see [`vignette("performance")`](../articles/performance.md)).
 
 - **Weakly identified sources.** Where the data cannot pin a source

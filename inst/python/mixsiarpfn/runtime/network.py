@@ -66,6 +66,10 @@ class GeneralNetwork:
         self.head_borders = {h: arrays[f"borders_{h}"] for h in HEADS}
         self.borders = self.head_borders["unit"]       # the proportions' borders
         self.max_effects = self.meta["model"]["max_effects"]
+        # Query cell width: 7, plus conditioning features for networks with joint diets
+        # (mixsiarpfn.runtime.joint); narrower query cells are padded with zeros
+        self.conditional_features = self.meta["model"].get("conditional_features", 0)
+        self.query_cell_width = 7 + self.conditional_features
         self.max_items = max_items
         self.max_queries = max_queries
 
@@ -127,7 +131,7 @@ class GeneralNetwork:
 
         feeds = {"consumers": enc.consumers.astype(np.float32),
                  "sources": enc.sources.astype(np.float32),
-                 "queries": enc.queries.astype(np.float32),
+                 "queries": _pad_cells(enc.queries, self.query_cell_width).astype(np.float32),
                  "column_kind": enc.column_kind.astype(np.int64),
                  "query_kind": enc.query_kind.astype(np.int64),
                  "query_column": enc.query_column.astype(np.int64),
@@ -170,6 +174,15 @@ class GeneralNetwork:
         n = n_assignments or self.meta["inference"].get("level_assignments", 8)
         rng = rng or np.random.default_rng()
         return self.probabilities(enc, self.draw_assignments(enc, n, rng))
+
+
+def _pad_cells(cells: np.ndarray, width: int) -> np.ndarray:
+    """Cells with zero features appended up to ``width`` (an unconditional query of a
+    joint-diet network has all-zero conditioning features)."""
+    missing = width - cells.shape[-1]
+    if missing <= 0:
+        return cells
+    return np.concatenate([cells, np.zeros(cells.shape[:-1] + (missing,), cells.dtype)], axis=-1)
 
 
 def _query_slice(enc: Encoded, sl: slice) -> Encoded:

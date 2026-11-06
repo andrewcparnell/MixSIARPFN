@@ -36,10 +36,10 @@ MixSIAR's geese example, its wolves example with diets from MixSIAR's prior, and
 wolves example with realistic diets) and on MixSIAR's three example datasets:
 
 - **Calibrated.** On simulated data, MixSIARPFN's 95% intervals contain the true diet
-  proportion 95 to 98% of the time.
-- **Close to MixSIAR, a little less precise.** Its accuracy (CRPS) is 4 to 5% behind
-  fully converged MixSIAR runs (geese-like 5.3%, wolves-like 3.6% and 5.4%), and its
-  intervals are 5 to 11% wider.
+  proportion 95 to 97% of the time.
+- **Close to MixSIAR, a little less precise.** Its accuracy (CRPS) is 2 to 5% behind
+  fully converged MixSIAR runs (geese-like 5.3%, wolves-like 1.9% and 4.1%), and its
+  intervals are 5 to 12% wider.
 - **Weakly identified sources.** Where the data cannot pin a source down, MixSIARPFN
   tends to put more probability near 0 than MixSIAR does.
 - **On MixSIAR's examples** it agrees closely for killer whale. For geese and wolves
@@ -79,7 +79,7 @@ killer whale, geese and wolves vignettes: Stock, B. C., Jackson, A. L., Ward, E.
 Parnell, A. C., Phillips, D. L. and Semmens, B. X. (2018). Analyzing mixing systems
 using a new generation of Bayesian tracer mixing models. *PeerJ* 6:e5096.
 
-The networks: Parnell, A. (2026). MixSIARPFN networks, version 2. Zenodo.
-<https://doi.org/10.5281/zenodo.23899709>
+The networks: Parnell, A. (2026). MixSIARPFN networks, version 3. Zenodo.
+<https://doi.org/10.5281/zenodo.PENDING>
 
 `citation("MixSIARPFN")` gives both references.

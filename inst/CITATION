@@ -1,5 +1,5 @@
 # The networks' DOI is the Zenodo record of the version in the package's manifest.
-networks_doi <- "10.5281/zenodo.23899709"
+networks_doi <- "10.5281/zenodo.PENDING"
 
 bibentry(
   bibtype = "Manual",
@@ -16,12 +16,12 @@ bibentry(
 
 bibentry(
   bibtype = "Misc",
-  title = "{MixSIARPFN} networks, version 2",
+  title = "{MixSIARPFN} networks, version 3",
   author = person("Andrew", "Parnell"),
   year = "2026",
   publisher = "Zenodo",
   doi = networks_doi,
-  textVersion = paste0("Parnell, A. (2026). MixSIARPFN networks, version 2. Zenodo. ",
+  textVersion = paste0("Parnell, A. (2026). MixSIARPFN networks, version 3. Zenodo. ",
                        "https://doi.org/", networks_doi)
 )
 

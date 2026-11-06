@@ -43,14 +43,14 @@ gap <- function(s, v, ref = "MixSIAR long", B = 4000) {
                mean(w[[paste0("width.", ref)]][keep]) - 1)
 }
 gaps <- do.call(rbind, lapply(names(set_lab), function(s)
-  do.call(rbind, lapply(c("v1", "v2", "q3"), function(v) gap(s, v)))))
-g2 <- gaps[gaps$version == "v2", ]
-rownames(g2) <- g2$set
+  do.call(rbind, lapply(c("v1", "v2", "q3", "v3"), function(v) gap(s, v)))))
+gr <- gaps[gaps$version == "v3", ]          # the released networks
+rownames(gr) <- gr$set
 n_all <- sapply(names(set_lab), function(s) length(unique(sc$dataset[sc$set == s])))
 g1 <- gaps[gaps$version == "v1", ]
 med_min <- with(ss$mixsiar_seconds[ss$mixsiar_seconds$length %in% c("normal", "long"), ],
                 range(tapply(seconds, paste(set, length), median)) / 60)
-ratio <- wide$`crps.MixSIARPFN v2` / wide$`crps.MixSIAR long`
+ratio <- wide$`crps.MixSIARPFN v3` / wide$`crps.MixSIAR long`
 ```
 
 MixSIARPFN replaces MixSIAR's MCMC with a neural network that has learned, from
@@ -61,12 +61,12 @@ fully converged MixSIAR runs on the same data.
 
 **In short:**
 
-- MixSIARPFN's accuracy (CRPS) is `r pct(g2["geese", "gap"])` against MixSIAR on
-  geese-like data, `r pct(g2["wolves", "gap"])` on wolves-like data with diets from
-  MixSIAR's prior and `r pct(g2["wolves_realistic", "gap"])` on realistic wolves-like
-  data, about 4–5% behind.
-- Its 95% intervals are calibrated, but `r round(100 * min(g2$width))`–
-  `r round(100 * max(g2$width))`% wider than MixSIAR's.
+- MixSIARPFN's accuracy (CRPS) is `r pct(gr["geese", "gap"])` against MixSIAR on
+  geese-like data, `r pct(gr["wolves", "gap"])` on wolves-like data with diets from
+  MixSIAR's prior and `r pct(gr["wolves_realistic", "gap"])` on realistic wolves-like
+  data: `r round(100 * min(gr$gap))` to `r round(100 * max(gr$gap))`% behind.
+- Its 95% intervals are calibrated, but `r round(100 * min(gr$width))`–
+  `r round(100 * max(gr$width))`% wider than MixSIAR's.
 - A fit takes under a second; MixSIAR's runs here took a median of
   `r round(med_min[1])` to `r round(med_min[2])` minutes.
 
@@ -135,8 +135,15 @@ the same dataset twice. The simulations cover everything MixSIARPFN supports:
 - sources given by a factor, and concentration dependence;
 - 1 to 1,000 consumers.
 
+In version 3, the Residual * Process network was trained for a further 150,000 steps
+on a second task as well: predicting a diet one source at a time, each source's share
+of what the earlier sources leave. This teaches the network how sources trade off
+against each other (where the data fix the sum of two sources but not how it splits),
+and it made the network's ordinary marginal posteriors more accurate too, by 1 to 2%
+on the wolves-like data below. The other two networks are version 2's.
+
 Data outside this range are refused with a message. The networks are on Zenodo
-([doi:10.5281/zenodo.23899709](https://doi.org/10.5281/zenodo.23899709)) and are
+([doi:10.5281/zenodo.PENDING](https://doi.org/10.5281/zenodo.PENDING)) and are
 downloaded on first use.
 
 ## How it was tested
@@ -178,16 +185,16 @@ approximation error.
 
 ```{r gap-plot, fig.height = 3.4}
 gp <- gaps
-gp$version <- factor(gp$version, c("v1", "q3", "v2"),
+gp$version <- factor(gp$version, c("v1", "q3", "v2", "v3"),
                      c("v1 (first release)", "q3 (trained further on common designs)",
-                       "v2 (released)"))
+                       "v2", "v3 (released)"))
 gp$set <- factor(set_lab1[gp$set], rev(set_lab1))
 ggplot(gp, aes(100 * gap, set, colour = version)) +
   annotate("rect", xmin = -Inf, xmax = 5, ymin = -Inf, ymax = Inf, fill = "grey95") +
   geom_vline(xintercept = 0, colour = "grey50") +
   geom_pointrange(aes(xmin = 100 * lo, xmax = 100 * hi),
                   position = position_dodge(width = 0.6), size = 0.4, linewidth = 0.6) +
-  scale_colour_manual(values = c("grey75", "grey40", "#D55E00"), name = NULL) +
+  scale_colour_manual(values = c("grey80", "grey60", "grey35", "#D55E00"), name = NULL) +
   guides(colour = guide_legend(nrow = 2, reverse = TRUE)) +
   labs(x = "CRPS relative to converged MixSIAR (%)", y = NULL) +
   theme(panel.grid.major.y = element_blank())
@@ -195,10 +202,12 @@ ggplot(gp, aes(100 * gap, set, colour = version)) +
 
 Each point is MixSIARPFN's mean CRPS relative to MixSIAR's on the same datasets, with
 a bootstrap 95% interval over datasets. 0 means as accurate as MixSIAR; the shaded
-band is within 5%. The released networks (v2) are `r pct(min(g2$gap))` to
-`r pct(max(g2$gap))` behind. The first release (v1) was
+band is within 5%. The released networks (v3) are `r pct(min(gr$gap))` to
+`r pct(max(gr$gap))` behind. The first release (v1) was
 `r pct(min(g1$gap), 0)` to `r pct(max(g1$gap), 0)` behind. Training further on
-the most common designs (q3) did not help, so v2 stays.
+the most common designs (q3) did not help. v3 differs from v2 only in the
+Residual * Process network (see Training), so for the geese-like data, which use
+Residual only error, v2 and v3 are the same.
 
 ```{r summary-table}
 summ <- function(s, method) {
@@ -207,9 +216,9 @@ summ <- function(s, method) {
              rmse = sqrt(mean((d$mean - d$truth)^2)), crps = mean(d$crps))
 }
 tab <- do.call(rbind, lapply(names(set_lab), function(s) {
-  r <- rbind(cbind(method = "MixSIARPFN", summ(s, "MixSIARPFN v2")),
+  r <- rbind(cbind(method = "MixSIARPFN", summ(s, "MixSIARPFN v3")),
              cbind(method = "MixSIAR long", summ(s, "MixSIAR long")))
-  cbind(set = c(set_lab1[[s]], ""), datasets = c(g2[s, "n"], ""), r)
+  cbind(set = c(set_lab1[[s]], ""), datasets = c(gr[s, "n"], ""), r)
 }))
 knitr::kable(tab, digits = c(0, 0, 0, 3, 3, 3, 4), row.names = FALSE,
              col.names = c("Data", "Datasets", "Method", "95% coverage", "Width", "RMSE", "CRPS"),
@@ -225,8 +234,8 @@ as MixSIAR's (RMSE), so much of the CRPS gap comes from its wider intervals.
 ```{r scatter, fig.height = 3.3}
 sp <- wide[!is.na(wide$`crps.MixSIAR long`), ]
 sp$set <- factor(set_lab[sp$set], set_lab)
-better <- tapply(sp$`crps.MixSIARPFN v2` < sp$`crps.MixSIAR long`, sp$set, mean)
-ggplot(sp, aes(`crps.MixSIAR long`, `crps.MixSIARPFN v2`)) +
+better <- tapply(sp$`crps.MixSIARPFN v3` < sp$`crps.MixSIAR long`, sp$set, mean)
+ggplot(sp, aes(`crps.MixSIAR long`, `crps.MixSIARPFN v3`)) +
   geom_abline(colour = "grey60") +
   geom_point(colour = "#D55E00", alpha = 0.6, size = 1.6) +
   scale_x_log10() + scale_y_log10() +
@@ -245,8 +254,8 @@ the geese-like panel): on the worst `r sum(ratio > 1.75, na.rm = TRUE)` of
 ### Posterior means against the truth
 
 ```{r truth, fig.height = 5}
-tp <- cmp[cmp$method %in% c("MixSIARPFN v2", "MixSIAR long"), ]
-tp$method <- factor(sub(" v2| long", "", tp$method), c("MixSIAR", "MixSIARPFN"))
+tp <- cmp[cmp$method %in% c("MixSIARPFN v3", "MixSIAR long"), ]
+tp$method <- factor(sub(" v3| long", "", tp$method), c("MixSIAR", "MixSIARPFN"))
 tp$set <- factor(set_lab[tp$set], set_lab)
 ggplot(tp, aes(truth, mean, colour = method)) +
   geom_abline(colour = "grey60") +
@@ -264,7 +273,7 @@ they should.
 ### Interval widths
 
 ```{r widths, fig.height = 3.3}
-ggplot(sp, aes(`width.MixSIAR long`, `width.MixSIARPFN v2`)) +
+ggplot(sp, aes(`width.MixSIAR long`, `width.MixSIARPFN v3`)) +
   geom_abline(colour = "grey60") +
   geom_point(colour = "#D55E00", alpha = 0.6, size = 1.6) +
   facet_wrap(~ set) + coord_equal() +
@@ -273,18 +282,18 @@ ggplot(sp, aes(`width.MixSIAR long`, `width.MixSIARPFN v2`)) +
 ```
 
 Most points sit a little above the line: MixSIARPFN's intervals are typically
-`r round(100 * min(g2$width))`–`r round(100 * max(g2$width))`% wider. This is the main
+`r round(100 * min(gr$width))`–`r round(100 * max(gr$width))`% wider. This is the main
 thing that separates it from MixSIAR. The network is unsure of its own approximation
 and hedges, which keeps it calibrated.
 
 ### Where the gap comes from
 
 ```{r by-truth, fig.height = 3.6}
-bp <- cmp[cmp$method %in% c("MixSIARPFN v2", "MixSIAR long"), ]
+bp <- cmp[cmp$method %in% c("MixSIARPFN v3", "MixSIAR long"), ]
 bp$band <- cut(bp$truth, c(-0.01, 0.02, 0.1, 0.9, 1.01),
                c("below 0.02", "0.02 to 0.1", "0.1 to 0.9", "above 0.9"))
 bt <- aggregate(crps ~ set + band + method, bp, mean)
-bt$method <- factor(sub(" v2| long", "", bt$method), c("MixSIAR", "MixSIARPFN"))
+bt$method <- factor(sub(" v3| long", "", bt$method), c("MixSIAR", "MixSIARPFN"))
 bt$set <- factor(set_lab[bt$set], set_lab)
 ggplot(bt, aes(band, crps, fill = method)) +
   geom_col(position = position_dodge2(padding = 0.15), width = 0.75) +
@@ -328,7 +337,7 @@ gn <- do.call(rbind, lapply(names(set_lab), function(s) {
   okn <- unique(sc[sc$set == s & sc$method == "MixSIAR normal" & sc$converged, "dataset"])
   w <- wide[wide$set == s & wide$dataset %in% okn, ]
   data.frame(set = set_lab1[[s]], n = nrow(w),
-             gap = mean(w$`crps.MixSIARPFN v2`) / mean(w$`crps.MixSIAR normal`) - 1)
+             gap = mean(w$`crps.MixSIARPFN v3`) / mean(w$`crps.MixSIAR normal`) - 1)
 }))
 gn$gap <- pct(gn$gap)
 knitr::kable(gn, row.names = FALSE, col.names = c("Data", "Datasets", "MixSIARPFN CRPS relative to MixSIAR normal"))

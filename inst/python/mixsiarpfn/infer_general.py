@@ -339,6 +339,9 @@ class GeneralPosterior:
     parameter_borders: list = field(default_factory=list)    # the borders for each row
     combinations: pd.DataFrame = field(default_factory=pd.DataFrame)
     consumers: pd.DataFrame = field(default_factory=pd.DataFrame)
+    # Joint draws of every diet (block, level, draw, source, value; each draw of a diet
+    # sums to 1), when asked for and the network has conditional diet queries
+    joint: pd.DataFrame | None = None
 
     def draws(self, n: int = 3000, seed: int | None = None) -> pd.DataFrame:
         """Independent draws from each diet row's marginal posterior, in long format
@@ -398,7 +401,7 @@ def _unique_labels(labels: list[str]) -> list[str]:
 def fit_general(data: GeneralData, alpha=1, error: str = "mult", network=None,
                 seed: int = 1, n_assignments: int | None = None, covariate_values=None,
                 n_grid: int = 25, covariate_by: str | None = None, consumer_diets: bool = True,
-                combinations: pd.DataFrame | None = None) -> GeneralPosterior:
+                combinations: pd.DataFrame | None = None, joint_draws: int = 0) -> GeneralPosterior:
     """Marginal posteriors of every diet and parameter (see :class:`GeneralPosterior`).
 
     Args:
@@ -424,6 +427,10 @@ def fit_general(data: GeneralData, alpha=1, error: str = "mult", network=None,
         combinations: further diets to report (block ``combination``): one row each,
             with columns named after effects (level labels; missing means no level)
             and covariates (original units; missing means the covariate's mean).
+        joint_draws: also draw this many joint draws of every diet (``joint``), by
+            stick-breaking with a random source order per draw
+            (:mod:`mixsiarpfn.runtime.joint`); each draw sums to 1. Needs a network
+            trained with conditional diet queries.
 
     Raises:
         EnvelopeError: if the data, prior, model options or requested covariate values
@@ -611,6 +618,22 @@ def fit_general(data: GeneralData, alpha=1, error: str = "mult", network=None,
         cons = [("global", "all")] * data.consumers.shape[0]
     consumers = pd.DataFrame({"consumer": np.arange(1, data.consumers.shape[0] + 1),
                               "block": [b for b, _ in cons], "level": [lv for _, lv in cons]})
+    joint = None
+    if joint_draws:
+        # Joint draws by stick-breaking (mixsiarpfn.runtime.joint); needs a network
+        # trained with conditional diet queries
+        from mixsiarpfn.runtime.joint import joint_draws as draw_joint
+        pi = draw_joint(network, enc, len(blocks), k, j, joint_draws,
+                        np.random.default_rng(seed + 1), n_assignments)    # [n, D, K]
+        n_d = len(blocks)
+        joint = pd.DataFrame({
+            "block": np.repeat([b for b, _ in blocks], k)[None].repeat(joint_draws, 0).reshape(-1),
+            "level": np.repeat(np.array([lv for _, lv in blocks], dtype=object), k)[None]
+                     .repeat(joint_draws, 0).reshape(-1),
+            "draw": np.repeat(np.arange(1, joint_draws + 1), n_d * k),
+            "source": np.tile(np.array(data.sources, dtype=object), joint_draws * n_d),
+            "value": pi.reshape(-1)})
     return GeneralPosterior(summary=summary, probs=diet_probs, borders=borders, notes=list(data.notes),
                             parameters=parameters, parameter_probs=par_probs,
-                            parameter_borders=par_borders, combinations=combos, consumers=consumers)
+                            parameter_borders=par_borders, combinations=combos, consumers=consumers,
+                            joint=joint)

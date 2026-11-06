@@ -14,7 +14,10 @@ build <- if (length(args) >= 1) args[1] else "~/MixSIARPFN-build"
 base <- file.path(path.expand(build), "experiments", "general", "simstudy")
 
 sets <- c(geese = "geese", wolves = "wolves", wolves_realistic = "wolves_realistic")
-labels <- c(v1 = "v1", v2 = "v2", q3 = "q3_best")          # network version -> score label
+labels <- c(v1 = "v1", v2 = "v2", q3 = "q3_best", v3 = "v3")   # network version -> score label
+# v3 changed only the Residual * Process network (wolves sets); geese's Residual only
+# network in v3 is v2's, so its v3 scores are v2's
+same_as <- list(geese = c(v3 = "v2"))
 keep <- c("dataset", "method", "converged", "psrf", "name", "block", "truth", "mean", "lo",
           "hi", "covered", "width", "crps")
 
@@ -22,7 +25,9 @@ rows <- list()
 for (s in names(sets)) for (batch in c("a", "b")) {
   dir <- file.path(base, if (batch == "a") sets[[s]] else paste0(sets[[s]], "_b"))
   for (v in names(labels)) {
-    f <- file.path(dir, paste0("scores_", labels[[v]], ".csv"))
+    lab <- labels[[v]]
+    if (!is.null(same_as[[s]]) && v %in% names(same_as[[s]])) lab <- labels[[same_as[[s]][[v]]]]
+    f <- file.path(dir, paste0("scores_", lab, ".csv"))
     if (!file.exists(f)) stop("missing ", f)
     d <- utils::read.csv(f)[, keep]
     # MixSIAR's rows are the same in every file: take them from the v2 file only
@@ -57,8 +62,8 @@ times <- do.call(rbind, times)
 simstudy <- list(scores = scores, mixsiar_seconds = times,
                  made = format(Sys.Date()),
                  notes = paste("Datasets a_*: seed 2026 (50 per set); b_*: seed 2027 (100 per",
-                               "set). MixSIARPFN v2 = the released networks (Zenodo",
-                               "10.5281/zenodo.23899709)."))
+                               "set). MixSIARPFN v3 = the released networks; v3 changed only the",
+                               "Residual * Process network, so geese's v3 rows equal v2's."))
 saveRDS(simstudy, "inst/extdata/simstudy.rds", compress = "xz")
 message("simstudy.rds: ", nrow(scores), " score rows, ", nrow(times), " MixSIAR runs, ",
         round(file.size("inst/extdata/simstudy.rds") / 1e6, 2), " MB")

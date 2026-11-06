@@ -10,8 +10,8 @@ same data.
 **In short:**
 
 - MixSIARPFN’s accuracy (CRPS) is +5.3% against MixSIAR on geese-like
-  data, +3.6% on wolves-like data with diets from MixSIAR’s prior and
-  +5.4% on realistic wolves-like data, about 4–5% behind.
+  data, +1.9% on wolves-like data with diets from MixSIAR’s prior and
+  +4.1% on realistic wolves-like data: 2 to 5% behind.
 - Its 95% intervals are calibrated, but 5– 11% wider than MixSIAR’s.
 - A fit takes under a second; MixSIAR’s runs here took a median of 20 to
   103 minutes.
@@ -88,9 +88,17 @@ twice. The simulations cover everything MixSIARPFN supports:
 - sources given by a factor, and concentration dependence;
 - 1 to 1,000 consumers.
 
+In version 3, the Residual \* Process network was trained for a further
+150,000 steps on a second task as well: predicting a diet one source at
+a time, each source’s share of what the earlier sources leave. This
+teaches the network how sources trade off against each other (where the
+data fix the sum of two sources but not how it splits), and it made the
+network’s ordinary marginal posteriors more accurate too, by 1 to 2% on
+the wolves-like data below. The other two networks are version 2’s.
+
 Data outside this range are refused with a message. The networks are on
 Zenodo
-([doi:10.5281/zenodo.23899709](https://doi.org/10.5281/zenodo.23899709))
+([doi:10.5281/zenodo.PENDING](https://doi.org/10.5281/zenodo.PENDING))
 and are downloaded on first use.
 
 ## How it was tested
@@ -139,17 +147,19 @@ gap to it is the network’s approximation error.
 Each point is MixSIARPFN’s mean CRPS relative to MixSIAR’s on the same
 datasets, with a bootstrap 95% interval over datasets. 0 means as
 accurate as MixSIAR; the shaded band is within 5%. The released networks
-(v2) are +3.6% to +5.4% behind. The first release (v1) was +8% to +14%
-behind. Training further on the most common designs (q3) did not help,
-so v2 stays.
+(v3) are +1.9% to +5.3% behind. The first release (v1) was +8% to +14%
+behind. Training further on the most common designs (q3) did not help.
+v3 differs from v2 only in the Residual \* Process network (see
+Training), so for the geese-like data, which use Residual only error, v2
+and v3 are the same.
 
 | Data | Datasets | Method | 95% coverage | Width | RMSE | CRPS |
 |:---|:---|:---|---:|---:|---:|---:|
 | Geese-like | 144 | MixSIARPFN | 0.955 | 0.349 | 0.127 | 0.0568 |
 |  |  | MixSIAR long | 0.936 | 0.313 | 0.123 | 0.0539 |
-| Wolves-like, diets from the prior | 58 | MixSIARPFN | 0.968 | 0.418 | 0.153 | 0.0590 |
+| Wolves-like, diets from the prior | 58 | MixSIARPFN | 0.971 | 0.415 | 0.151 | 0.0580 |
 |  |  | MixSIAR long | 0.969 | 0.396 | 0.149 | 0.0570 |
-| Realistic wolves-like | 90 | MixSIARPFN | 0.978 | 0.453 | 0.132 | 0.0639 |
+| Realistic wolves-like | 90 | MixSIARPFN | 0.973 | 0.445 | 0.130 | 0.0631 |
 |  |  | MixSIAR long | 0.963 | 0.419 | 0.126 | 0.0606 |
 
 Over every diet proportion, on the datasets where MixSIAR’s long run
@@ -166,8 +176,8 @@ gap comes from its wider intervals.
 
 Each point is one dataset (its mean CRPS over all proportions). Points
 above the line are datasets where MixSIAR did better. The two track each
-other closely, and MixSIARPFN is better on 31–34% of datasets. On half
-the datasets its CRPS is within 5% of MixSIAR’s. It falls furthest
+other closely, and MixSIARPFN is better on 34–36% of datasets. On half
+the datasets its CRPS is within 4% of MixSIAR’s. It falls furthest
 behind where MixSIAR is most precise (the lower left of the geese-like
 panel): on the worst 6 of 292 datasets its CRPS is close to twice
 MixSIAR’s.
@@ -220,8 +230,8 @@ Against MixSIAR’s normal run, on the datasets where it converged:
 | Data | Datasets | MixSIARPFN CRPS relative to MixSIAR normal |
 |:---|---:|:---|
 | Geese-like | 114 | +1.9% |
-| Wolves-like, diets from the prior | 27 | +5.8% |
-| Realistic wolves-like | 51 | +5.5% |
+| Wolves-like, diets from the prior | 27 | +3.5% |
+| Realistic wolves-like | 51 | +4.6% |
 
 ## What this means for use
 
@@ -251,4 +261,5 @@ Against MixSIAR’s normal run, on the datasets where it converged:
 The simulation study’s results are in
 `system.file("extdata", "simstudy.rds", package = "MixSIARPFN")`;
 Datasets a\_*: seed 2026 (50 per set); b\_*: seed 2027 (100 per set).
-MixSIARPFN v2 = the released networks (Zenodo 10.5281/zenodo.23899709).
+MixSIARPFN v3 = the released networks; v3 changed only the Residual \*
+Process network, so geese’s v3 rows equal v2’s.

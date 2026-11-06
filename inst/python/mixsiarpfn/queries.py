@@ -60,8 +60,10 @@ def head_of_kind(kind, max_effects: int):
 
 
 # Query groups: labels for validation and reporting only (not network inputs)
-GLOBAL, LEVEL, COVARIATE, COMBINATION, SD, SLOPE, RESID = range(7)
-GROUP_NAMES = ("global", "level", "covariate", "combination", "sd", "slope", "resid")
+GLOBAL, LEVEL, COVARIATE, COMBINATION, SD, SLOPE, RESID, CONDITIONAL = range(8)
+# "conditional": diet queries given a prefix of the diet's sources (mixsiarpfn.conditional)
+GROUP_NAMES = ("global", "level", "covariate", "combination", "sd", "slope", "resid",
+               "conditional")
 
 
 @dataclass

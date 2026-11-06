@@ -49,11 +49,11 @@ fit
 #> MixSIARPFN fit (Residual * Process error), 5 sources, in 0.3 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>     source  mean    sd  2.5% 97.5%
-#>    Chinook 0.358 0.124 0.073 0.542
-#>       Chum 0.128 0.101 0.004 0.371
-#>       Coho 0.173 0.138 0.006 0.517
-#>    Sockeye 0.086 0.068 0.003 0.247
-#>  Steelhead 0.231 0.105 0.022 0.407
+#>    Chinook 0.360 0.120 0.087 0.539
+#>       Chum 0.125 0.101 0.004 0.374
+#>       Coho 0.189 0.140 0.009 0.526
+#>    Sockeye 0.090 0.070 0.003 0.254
+#>  Steelhead 0.238 0.106 0.024 0.414
 #> Use output_pfn() for every proportion and parameter.
 ```
 
@@ -72,13 +72,13 @@ knitr::kable(round(summary_table(fit), 3))
 
 |                    |  Mean |    SD |  2.5% |    5% |   25% |   50% |   75% |   95% | 97.5% |
 |:-------------------|------:|------:|------:|------:|------:|------:|------:|------:|------:|
-| Epsilon.1          | 1.062 | 0.764 | 0.317 | 0.374 | 0.616 | 0.882 | 1.282 | 2.296 | 2.840 |
-| Epsilon.2          | 2.418 | 1.687 | 0.675 | 0.801 | 1.356 | 1.982 | 2.935 | 5.490 | 6.842 |
-| p.global.Chinook   | 0.358 | 0.124 | 0.073 | 0.117 | 0.278 | 0.383 | 0.453 | 0.523 | 0.542 |
-| p.global.Chum      | 0.128 | 0.101 | 0.004 | 0.009 | 0.048 | 0.106 | 0.186 | 0.325 | 0.371 |
-| p.global.Coho      | 0.173 | 0.138 | 0.006 | 0.013 | 0.065 | 0.137 | 0.247 | 0.457 | 0.517 |
-| p.global.Sockeye   | 0.086 | 0.068 | 0.003 | 0.005 | 0.031 | 0.071 | 0.127 | 0.219 | 0.247 |
-| p.global.Steelhead | 0.231 | 0.105 | 0.022 | 0.042 | 0.154 | 0.242 | 0.312 | 0.386 | 0.407 |
+| Epsilon.1          | 1.081 | 0.843 | 0.311 | 0.366 | 0.604 | 0.874 | 1.295 | 2.423 | 3.048 |
+| Epsilon.2          | 2.425 | 1.715 | 0.691 | 0.812 | 1.351 | 1.970 | 2.937 | 5.537 | 6.911 |
+| p.global.Chinook   | 0.360 | 0.120 | 0.087 | 0.130 | 0.284 | 0.381 | 0.451 | 0.520 | 0.539 |
+| p.global.Chum      | 0.125 | 0.101 | 0.004 | 0.008 | 0.045 | 0.101 | 0.181 | 0.325 | 0.374 |
+| p.global.Coho      | 0.189 | 0.140 | 0.009 | 0.017 | 0.078 | 0.159 | 0.271 | 0.468 | 0.526 |
+| p.global.Sockeye   | 0.090 | 0.070 | 0.003 | 0.006 | 0.034 | 0.075 | 0.133 | 0.225 | 0.254 |
+| p.global.Steelhead | 0.238 | 0.106 | 0.024 | 0.046 | 0.161 | 0.251 | 0.320 | 0.393 | 0.414 |
 
 ``` r
 out$plots$global
@@ -125,13 +125,13 @@ knitr::kable(data.frame(
 
 | quantity | MixSIARPFN mean | MixSIAR mean | MixSIARPFN SD | MixSIAR SD | MixSIARPFN 95% CI | MixSIAR 95% CI | W1 |
 |:---|---:|---:|---:|---:|:---|:---|---:|
-| Epsilon.1 | 1.062 | 1.082 | 0.764 | 0.802 | 0.32 to 2.84 | 0.33 to 3.10 | NA |
-| Epsilon.2 | 2.418 | 2.585 | 1.687 | 1.997 | 0.67 to 6.84 | 0.72 to 8.28 | NA |
-| p.global.Chinook | 0.358 | 0.369 | 0.124 | 0.111 | 0.07 to 0.54 | 0.09 to 0.52 | 0.014 |
-| p.global.Chum | 0.128 | 0.106 | 0.101 | 0.092 | 0.00 to 0.37 | 0.00 to 0.32 | 0.022 |
-| p.global.Coho | 0.173 | 0.172 | 0.138 | 0.136 | 0.01 to 0.52 | 0.01 to 0.51 | 0.007 |
-| p.global.Sockeye | 0.086 | 0.067 | 0.068 | 0.056 | 0.00 to 0.25 | 0.00 to 0.20 | 0.019 |
-| p.global.Steelhead | 0.231 | 0.286 | 0.105 | 0.089 | 0.02 to 0.41 | 0.08 to 0.43 | 0.056 |
+| Epsilon.1 | 1.081 | 1.082 | 0.843 | 0.802 | 0.31 to 3.05 | 0.33 to 3.10 | NA |
+| Epsilon.2 | 2.425 | 2.585 | 1.715 | 1.997 | 0.69 to 6.91 | 0.72 to 8.28 | NA |
+| p.global.Chinook | 0.360 | 0.369 | 0.120 | 0.111 | 0.09 to 0.54 | 0.09 to 0.52 | 0.011 |
+| p.global.Chum | 0.125 | 0.106 | 0.101 | 0.092 | 0.00 to 0.37 | 0.00 to 0.32 | 0.019 |
+| p.global.Coho | 0.189 | 0.172 | 0.140 | 0.136 | 0.01 to 0.53 | 0.01 to 0.51 | 0.018 |
+| p.global.Sockeye | 0.090 | 0.067 | 0.070 | 0.056 | 0.00 to 0.25 | 0.00 to 0.20 | 0.023 |
+| p.global.Steelhead | 0.238 | 0.286 | 0.106 | 0.089 | 0.02 to 0.41 | 0.08 to 0.43 | 0.048 |
 
 ``` r
 plot_compare(fit, ref$draws, block = "global")
@@ -147,8 +147,8 @@ plot_compare(fit, ref$draws, type = "means")
 
 **What this shows.** The two posteriors are close. MixSIARPFN’s means
 differ from MixSIAR’s by 0.02 on average (MixSIAR’s posterior SDs are
-about 0.10), and its SDs are about the same (median SD ratio 1.12). The
-largest difference is for Steelhead (0.23 against 0.29).
+about 0.10), and its SDs are about the same (median SD ratio 1.09). The
+largest difference is for Steelhead (0.24 against 0.29).
 
 ## Does MixSIAR’s model fit these data?
 

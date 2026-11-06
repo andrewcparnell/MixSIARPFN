@@ -13,7 +13,7 @@ First release.
 * Comparison with MixSIAR: `mixsiar_reference()` (MixSIAR's own fits of the three
   examples, with a posterior predictive check of each), `mixsiar_draws()`,
   `compare_mixsiar()` and `plot_compare()`.
-* Networks version 2, downloaded from Zenodo on first use and checked by SHA-256.
+* Networks version 3, downloaded from Zenodo on first use and checked by SHA-256.
 * Vignettes: MixSIAR's killer whale, geese and wolves examples, each compared with
   MixSIAR's fit.
 * Article "How MixSIARPFN works and how well it does": the network, its training, and

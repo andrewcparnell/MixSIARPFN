@@ -25,7 +25,7 @@ First release.
   each), [`mixsiar_draws()`](../reference/mixsiar_draws.md),
   [`compare_mixsiar()`](../reference/compare_mixsiar.md) and
   [`plot_compare()`](../reference/plot_compare.md).
-- Networks version 2, downloaded from Zenodo on first use and checked by
+- Networks version 3, downloaded from Zenodo on first use and checked by
   SHA-256.
 - Vignettes: MixSIAR’s killer whale, geese and wolves examples, each
   compared with MixSIAR’s fit.
