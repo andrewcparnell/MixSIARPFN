@@ -1,9 +1,10 @@
 # Load source data
 
-Reads the source data file (means, SDs and sample sizes), exactly as
+Reads the source data file, exactly as
 [`MixSIAR::load_source_data()`](https://rdrr.io/pkg/MixSIAR/man/load_source_data.html)
-does, with the same arguments. Only source summary statistics
-(`data_type = "means"`) are supported in this version.
+does, with the same arguments: either source summary statistics
+(`data_type = "means"`) or raw source samples (`data_type = "raw"`),
+which are summarised to means, SDs and sample sizes.
 
 ## Usage
 
@@ -30,7 +31,13 @@ load_source_data(filename, source_factors = NULL, conc_dep, data_type, mix)
 
 - data_type:
 
-  `"means"` (source means and SDs). `"raw"` is not supported yet.
+  `"means"` (source means, SDs and sample sizes) or `"raw"` (one row per
+  source sample, columns named by the tracers). Raw data are summarised
+  to each source's mean, SD and sample size (per level of
+  `source_factors`, if given; with mean concentrations if `conc_dep`),
+  which is what the networks use. MixSIAR's raw data model instead
+  estimates each source's mean and variance in the fit, so results can
+  differ a little from MixSIAR's for small source samples.
 
 - mix:
 

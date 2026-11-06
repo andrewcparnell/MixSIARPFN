@@ -15,8 +15,9 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = ok,
 num <- function(x, digits = 2) if (ok) format(round(x, digits), nsmall = digits) else "?"
 ```
 
-This follows MixSIAR's snail example script (`mixsiar_script_snail.R`): snails
-with one tracer (δ¹³C) and two food sources, C3 and CAM plants, and no effects. Two things make it different from the other examples: there is only one
+This follows MixSIAR's snail example script (`mixsiar_script_snail.R`), with data from
+Yanes et al. (2013): land snails, one tracer (δ¹³C) and two food sources, C3 and CAM
+plants, and no effects. Two things make it different from the other examples: there is only one
 tracer, and the source data are raw samples rather than means and SDs. Only the
 fitting call differs from MixSIAR's script: `run_pfn()` in place of
 `write_JAGS_model()` and `run_model()`.
@@ -88,5 +89,5 @@ ref_raw <- mixsiar_reference("snail_raw")
 blocks <- "global"
 ```
 
-```{r child = "_compare.Rmd"}
+```{r child = "children/_compare.Rmd"}
 ```

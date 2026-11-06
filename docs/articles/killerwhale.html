@@ -37,9 +37,16 @@
     <li><a class="dropdown-item" href="../articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="../articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="../articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
+    <li><a class="dropdown-item" href="../articles/alligator.html">Alligator: eight models in a few seconds</a></li>
+    <li><a class="dropdown-item" href="../articles/lake.html">Lake: a continuous effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/mantis.html">Mantis shrimp: sources by habitat, concentrations and an informative prior</a></li>
+    <li><a class="dropdown-item" href="../articles/palmyra.html">Palmyra: a fixed effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/snail.html">Snail: one tracer, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/stormpetrel.html">Storm petrel: a fixed effect, raw source data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
     <li><a class="dropdown-item" href="../articles/performance.html">How MixSIARPFN works and how well it does</a></li>
+    <li><a class="dropdown-item" href="../articles/simulations.html">MixSIARPFN on every simulated dataset</a></li>
   </ul>
 </li>
       </ul>
@@ -105,7 +112,7 @@ check. Only the fitting call differs from MixSIAR’s vignette:
 <p>Residual * Process error and MixSIAR’s uninformative Dirichlet prior
 (all <code>alpha.prior</code> equal to 1), as in MixSIAR’s vignette. The
 network for this error structure is downloaded the first time it is
-needed (about 36 MB) and cached.</p>
+needed (about 70 MB) and cached.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pfn.html">run_pfn</a></span><span class="op">(</span><span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span>, alpha.prior <span class="op">=</span> <span class="fl">1</span>,</span>

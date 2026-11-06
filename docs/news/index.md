@@ -8,6 +8,8 @@ First release.
   [`load_source_data()`](../reference/load_source_data.md) and
   [`load_discr_data()`](../reference/load_discr_data.md), with the same
   arguments and checks, and [`plot_data()`](../reference/plot_data.md).
+  Source data can be summary statistics or raw samples
+  (`data_type = "raw"`, summarised to means, SDs and sample sizes).
 - [`run_pfn()`](../reference/run_pfn.md) in place of
   `write_JAGS_model()` and `run_model()`: marginal posteriors of every
   diet proportion and parameter from prior-data fitted networks, one per
@@ -21,14 +23,20 @@ First release.
   [`pfn_networks()`](../reference/pfn_networks.md).
 - Comparison with MixSIAR:
   [`mixsiar_reference()`](../reference/mixsiar_reference.md) (MixSIAR’s
-  own fits of the three examples, with a posterior predictive check of
-  each), [`mixsiar_draws()`](../reference/mixsiar_draws.md),
-  [`compare_mixsiar()`](../reference/compare_mixsiar.md) and
-  [`plot_compare()`](../reference/plot_compare.md).
+  own fits of all nine of its isotope examples, with a posterior
+  predictive check for killer whale, geese and wolves),
+  [`mixsiar_draws()`](../reference/mixsiar_draws.md),
+  [`compare_mixsiar()`](../reference/compare_mixsiar.md),
+  [`plot_compare()`](../reference/plot_compare.md) and
+  [`plot_compare_covariate()`](../reference/plot_compare_covariate.md).
 - Networks version 3, downloaded from Zenodo on first use and checked by
   SHA-256.
-- Vignettes: MixSIAR’s killer whale, geese and wolves examples, each
-  compared with MixSIAR’s fit.
+- Vignettes: MixSIAR’s nine isotope examples (killer whale, geese,
+  wolves, alligator, lake, mantis shrimp, Palmyra, snail and storm
+  petrel), each compared with MixSIAR’s fit.
 - Article “How MixSIARPFN works and how well it does”: the network, its
-  training, and a simulation study of 450 datasets with known diets
-  against converged MixSIAR.
+  training, its speed, and a simulation study of 450 datasets with known
+  diets against converged MixSIAR.
+- Article “MixSIARPFN on every simulated dataset”: all 492 simulated
+  datasets with MixSIAR fits, including 42 benchmark designs covering
+  the supported models.

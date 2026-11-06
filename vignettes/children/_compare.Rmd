@@ -7,7 +7,9 @@ diet <- cmp[!is.na(cmp$w1), ]
 gaps <- abs(diet$pfn_mean - diet$mixsiar_mean)
 worst <- diet[which.max(gaps), ]
 speedup <- ref$info$minutes * 60 / time[["elapsed"]]
-has_raw <- exists("ref_raw") && !is.null(ref_raw)
+# Each vignette sets ref_raw (NULL without raw source data): vignettes can share one R
+# session when the package is built
+has_raw <- !is.null(ref_raw)
 ```
 
 MixSIAR `r if (ok) ref$info$mixsiar` fitted the same model to the same data with
@@ -53,4 +55,4 @@ raw_cmp <- merge(
 raw_gap <- mean(abs(raw_cmp$value_raw - raw_cmp$value_means))
 ```
 
-`r if (ok && has_raw) paste0("The source data here are raw samples, which MixSIARPFN summarises to each source's mean, SD and sample size. MixSIAR's own example fits the raw samples instead, estimating each source's mean and variance in the model. That MixSIAR fit (", round(ref_raw$info$minutes), " minutes, largest Gelman-Rubin diagnostic ", format(round(ref_raw$info$max_psrf, 3), nsmall = 3), if (ref_raw$info$max_psrf > 1.1) ", so not fully converged" else "", ") and MixSIAR's fit to the summaries differ by ", format(round(raw_gap, 3), nsmall = 3), " in posterior means on average, so summarising the sources changes little here, and the comparison above is like for like: both methods fitted the same summaries.")`
+`r if (ok && has_raw) paste0("The source data here are raw samples, which MixSIARPFN summarises to each source's mean, SD and sample size. MixSIAR's own example fits the raw samples instead, estimating each source's mean and variance in the model. That MixSIAR fit (", round(ref_raw$info$minutes), " minutes, largest Gelman-Rubin diagnostic ", format(round(ref_raw$info$max_psrf, 3), nsmall = 3), if (ref_raw$info$max_psrf > 1.1) ", so not fully converged" else "", ") and MixSIAR's fit to the summaries differ by ", format(round(raw_gap, 3), nsmall = 3), " in posterior means on average", if (raw_gap < 0.01) ", so summarising the sources changes little here" else "", ". The comparison above is like for like: both methods fitted the same summaries.")`

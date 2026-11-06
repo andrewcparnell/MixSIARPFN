@@ -90,8 +90,9 @@ MixSIARPFN does not give, so it is not repeated here.
 
 ```{r reference}
 ref <- mixsiar_reference("mantis")
+ref_raw <- NULL   # means source data: no raw-data fit
 blocks <- "Habitat"
 ```
 
-```{r child = "_compare.Rmd"}
+```{r child = "children/_compare.Rmd"}
 ```

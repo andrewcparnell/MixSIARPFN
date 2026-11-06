@@ -37,9 +37,16 @@
     <li><a class="dropdown-item" href="../articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="../articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="../articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
+    <li><a class="dropdown-item" href="../articles/alligator.html">Alligator: eight models in a few seconds</a></li>
+    <li><a class="dropdown-item" href="../articles/lake.html">Lake: a continuous effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/mantis.html">Mantis shrimp: sources by habitat, concentrations and an informative prior</a></li>
+    <li><a class="dropdown-item" href="../articles/palmyra.html">Palmyra: a fixed effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/snail.html">Snail: one tracer, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/stormpetrel.html">Storm petrel: a fixed effect, raw source data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
     <li><a class="dropdown-item" href="../articles/performance.html">How MixSIARPFN works and how well it does</a></li>
+    <li><a class="dropdown-item" href="../articles/simulations.html">MixSIARPFN on every simulated dataset</a></li>
   </ul>
 </li>
       </ul>
@@ -112,21 +119,21 @@ with ±1 SD:</p>
 </h2>
 <p>Residual * Process error and MixSIAR’s uninformative prior, as in
 MixSIAR’s vignette. The network for this error structure is downloaded
-the first time it is needed (about 36 MB) and cached.</p>
+the first time it is needed (about 70 MB) and cached.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_pfn.html">run_pfn</a></span><span class="op">(</span><span class="va">mix</span>, <span class="va">source</span>, <span class="va">discr</span>, alpha.prior <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                 resid_err <span class="op">=</span> <span class="cn">TRUE</span>, process_err <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">fit</span></span>
-<span><span class="co">#&gt; MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s</span></span>
+<span><span class="co">#&gt; MixSIARPFN fit (Residual * Process error), 3 sources, in 0.4 s</span></span>
 <span><span class="co">#&gt; Marginal posteriors (no joint draws). Global diet:</span></span>
 <span><span class="co">#&gt;          source  mean    sd  2.5% 97.5%</span></span>
 <span><span class="co">#&gt;            Deer 0.463 0.197 0.089 0.829</span></span>
 <span><span class="co">#&gt;  Marine Mammals 0.193 0.151 0.012 0.585</span></span>
 <span><span class="co">#&gt;          Salmon 0.332 0.197 0.035 0.770</span></span>
 <span><span class="co">#&gt; Use output_pfn() for every proportion and parameter.</span></span></code></pre></div>
-<p>The fit took 0.5 seconds.</p>
+<p>The fit took 0.4 seconds.</p>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
@@ -676,7 +683,7 @@ output.</p>
 <p>MixSIAR 3.1.12 fitted the same model with 3 chains of 3,000,000
 iterations (burn-in 1,500,000, thinned by 500), a run of about 6.3 hours
 that was needed for the Region SD to converge (largest Gelman-Rubin
-diagnostic 1.012). MixSIARPFN took 0.5 seconds.</p>
+diagnostic 1.012). MixSIARPFN took 0.4 seconds.</p>
 <p>The table gives both posteriors’ means, SDs and 95% intervals, and
 the Wasserstein-1 distance between them (W1: how far, on average, one
 posterior’s mass has to move to match the other, on the proportion

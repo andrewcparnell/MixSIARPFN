@@ -39,9 +39,16 @@
     <li><a class="dropdown-item" href="articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
+    <li><a class="dropdown-item" href="articles/alligator.html">Alligator: eight models in a few seconds</a></li>
+    <li><a class="dropdown-item" href="articles/lake.html">Lake: a continuous effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="articles/mantis.html">Mantis shrimp: sources by habitat, concentrations and an informative prior</a></li>
+    <li><a class="dropdown-item" href="articles/palmyra.html">Palmyra: a fixed effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="articles/snail.html">Snail: one tracer, raw source data</a></li>
+    <li><a class="dropdown-item" href="articles/stormpetrel.html">Storm petrel: a fixed effect, raw source data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
     <li><a class="dropdown-item" href="articles/performance.html">How MixSIARPFN works and how well it does</a></li>
+    <li><a class="dropdown-item" href="articles/simulations.html">MixSIARPFN on every simulated dataset</a></li>
   </ul>
 </li>
       </ul>
@@ -60,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="mixsiarpfn">MixSIARPFN<a class="anchor" aria-label="anchor" href="#mixsiarpfn"></a>
 </h1></div>
-<p>Fit <a href="https://github.com/brianstock/MixSIAR" class="external-link">MixSIAR</a> stable isotope mixing models in about a second, without JAGS. MixSIARPFN reads the same files with the same function calls as MixSIAR, but takes the posterior from a <em>prior-data fitted network</em>: a transformer trained on simulations from MixSIAR’s own model, one network per error structure.</p>
+<p>Fit <a href="https://github.com/brianstock/MixSIAR" class="external-link">MixSIAR</a> stable isotope mixing models in about a second, without JAGS: thousands of times faster than MixSIAR, with nearly the same answers. MixSIARPFN reads the same files with the same function calls as MixSIAR, but takes the posterior from a <em>prior-data fitted network</em>: a transformer trained on simulations from MixSIAR’s own model, one network per error structure.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/andrewcparnell/MixSIARPFN" class="external-link">MixSIARPFN</a></span><span class="op">)</span></span>
 <span><span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_mix_data.html">load_mix_data</a></span><span class="op">(</span>filename <span class="op">=</span> <span class="st">"consumer.csv"</span>, iso_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d13C"</span>, <span class="st">"d15N"</span><span class="op">)</span>,</span>
@@ -75,24 +82,28 @@
 <div class="section level2">
 <h2 id="what-it-fits">What it fits<a class="anchor" aria-label="anchor" href="#what-it-fits"></a>
 </h2>
-<p>The models MixSIAR fits with isotope data and source summary statistics: up to two categorical effects (fixed or random, crossed or nested), one continuous effect, concentration dependence, sources given by a factor, and Residual * Process, Residual only or Process only error. Up to 8 sources and 4 tracers. Data outside what the networks were trained for are refused with a message.</p>
-<p>Not yet: raw source data, fatty acid data, more than 4 tracers.</p>
+<p>The models MixSIAR fits with isotope data: up to two categorical effects (fixed or random, crossed or nested), one continuous effect, concentration dependence, sources given by a factor, informative priors, and Residual * Process, Residual only or Process only error. Up to 8 sources and 4 tracers. Source data can be summary statistics or raw samples (summarised to means, SDs and sample sizes). Data outside what the networks were trained for are refused with a message.</p>
+<p>Not yet: fatty acid data with more than 4 tracers.</p>
 </div>
 <div class="section level2">
 <h2 id="how-well-it-does">How well it does<a class="anchor" aria-label="anchor" href="#how-well-it-does"></a>
 </h2>
-<p>Tested against MixSIAR on 450 simulated datasets with known diets (150 each like MixSIAR’s geese example, its wolves example with diets from MixSIAR’s prior, and its wolves example with realistic diets) and on MixSIAR’s three example datasets:</p>
+<p>Tested against MixSIAR on 492 simulated datasets with known diets, and on all nine of MixSIAR’s isotope examples:</p>
 <ul>
 <li>
-<strong>Calibrated.</strong> On simulated data, MixSIARPFN’s 95% intervals contain the true diet proportion 95 to 97% of the time.</li>
+<strong>Thousands of times faster.</strong> A fit takes about half a second; MixSIAR’s runs on the same simulated data took a median of 20 minutes to almost 2 hours.</li>
 <li>
-<strong>Close to MixSIAR, a little less precise.</strong> Its accuracy (CRPS) is 2 to 5% behind fully converged MixSIAR runs (geese-like 5.3%, wolves-like 1.9% and 4.1%), and its intervals are 5 to 12% wider.</li>
+<strong>Nearly the same answers.</strong> Its accuracy (CRPS) is within 2 to 5% of fully converged MixSIAR runs (geese-like 5.3%, wolves-like 1.9% and 4.1%), and on about a third of datasets it is <em>more</em> accurate than converged MixSIAR.</li>
 <li>
-<strong>Weakly identified sources.</strong> Where the data cannot pin a source down, MixSIARPFN tends to put more probability near 0 than MixSIAR does.</li>
+<strong>Calibrated.</strong> Its 95% intervals contain the true diet proportion 95 to 97% of the time; they are 5 to 11% wider than MixSIAR’s.</li>
 <li>
-<strong>On MixSIAR’s examples</strong> it agrees closely for killer whale. For geese and wolves the two differ more, mostly in groups where MixSIAR’s own model does not fit the data: a posterior predictive check of MixSIAR’s fits shows group spreads and tracer correlations the model cannot produce. The vignettes show both fits side by side and the check.</li>
+<strong>Always an answer.</strong> Nothing to converge: MixSIAR’s standard run failed its convergence check on half of the simulated datasets.</li>
+<li>
+<strong>On MixSIAR’s examples</strong> the two give close answers. Where they differ most (geese and wolves), a posterior predictive check shows MixSIAR’s own model does not fit those data well.</li>
+<li>
+<strong>Weakly identified sources.</strong> Where the data cannot pin a source down, MixSIARPFN tends to put a little more probability near 0 than MixSIAR does.</li>
 </ul>
-<p>The article <em>How MixSIARPFN works and how well it does</em> (<code><a href="articles/performance.html">vignette("performance", package = "MixSIARPFN")</a></code>) describes the network and gives the full simulation study, with plots.</p>
+<p>The articles <em>How MixSIARPFN works and how well it does</em> (<code><a href="articles/performance.html">vignette("performance", package = "MixSIARPFN")</a></code>) and <em>MixSIARPFN on every simulated dataset</em> (<code><a href="articles/simulations.html">vignette("simulations", package = "MixSIARPFN")</a></code>) give the details, and there is a vignette for each MixSIAR example: killer whale, geese, wolves, alligator, lake, mantis shrimp, Palmyra, snail and storm petrel.</p>
 </div>
 <div class="section level2">
 <h2 id="what-is-different-from-mixsiar">What is different from MixSIAR<a class="anchor" aria-label="anchor" href="#what-is-different-from-mixsiar"></a>

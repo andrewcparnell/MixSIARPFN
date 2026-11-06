@@ -133,4 +133,8 @@ g7 <- cov_gap(fits[[7]], refs[[7]]$pind)
 **What this shows.** Across all eight models, MixSIARPFN's posterior means differ from
 MixSIAR's by `r num(mean(tab$mean_gap), 3)` on average, and along body length each
 alligator's posterior mean diet differs by `r num(g5, 3)` (model 5) and
-`r num(g7, 3)` (model 7).
+`r num(g7, 3)` (model 7). MixSIARPFN's posteriors are wider here than in the other
+examples (median SD ratio `r num(min(tab$sd_ratio))` to `r num(max(tab$sd_ratio))`):
+with only two sources and a lot of data, MixSIAR's posteriors are tight, and the
+network stays a little more cautious. For model 6, MixSIAR saved only the global diet
+(it does not report per-level diets for two fixed effects), so only that is compared.

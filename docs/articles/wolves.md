@@ -46,7 +46,7 @@ plot_data(mix = mix, source = source, discr = discr)
 
 Residual \* Process error and MixSIAR’s uninformative prior, as in
 MixSIAR’s vignette. The network for this error structure is downloaded
-the first time it is needed (about 36 MB) and cached.
+the first time it is needed (about 70 MB) and cached.
 
 ``` r
 time <- system.time(
@@ -54,7 +54,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = TRUE)
 )
 fit
-#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s
+#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.4 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>          source  mean    sd  2.5% 97.5%
 #>            Deer 0.463 0.197 0.089 0.829
@@ -63,7 +63,7 @@ fit
 #> Use output_pfn() for every proportion and parameter.
 ```
 
-The fit took 0.5 seconds.
+The fit took 0.4 seconds.
 
 ## Results
 
@@ -164,7 +164,7 @@ cmp <- compare_mixsiar(fit, ref$draws, ref$summary)
 MixSIAR 3.1.12 fitted the same model with 3 chains of 3,000,000
 iterations (burn-in 1,500,000, thinned by 500), a run of about 6.3 hours
 that was needed for the Region SD to converge (largest Gelman-Rubin
-diagnostic 1.012). MixSIARPFN took 0.5 seconds.
+diagnostic 1.012). MixSIARPFN took 0.4 seconds.
 
 The table gives both posteriors’ means, SDs and 95% intervals, and the
 Wasserstein-1 distance between them (W1: how far, on average, one

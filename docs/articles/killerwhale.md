@@ -38,7 +38,7 @@ plot_data(mix = mix, source = source, discr = discr)
 Residual \* Process error and MixSIAR’s uninformative Dirichlet prior
 (all `alpha.prior` equal to 1), as in MixSIAR’s vignette. The network
 for this error structure is downloaded the first time it is needed
-(about 36 MB) and cached.
+(about 70 MB) and cached.
 
 ``` r
 time <- system.time(

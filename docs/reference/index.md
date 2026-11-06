@@ -32,6 +32,8 @@
   MixSIAR's posterior
 - [`plot_compare()`](plot_compare.md) : Plot a fit against MixSIAR's
   posterior
+- [`plot_compare_covariate()`](plot_compare_covariate.md) : Compare
+  diets along a continuous effect with MixSIAR's
 
 ## Package
 

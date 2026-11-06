@@ -80,7 +80,8 @@ plot_compare_covariate <- function(fit, pind, cont = fit$cont_effects[1], by = N
     (if (is.null(by)) ggplot2::facet_wrap(~source) else
       ggplot2::facet_grid(stats::as.formula(paste("`", by, "` ~ source", sep = "")))) +
     ggplot2::coord_cartesian(ylim = c(0, 1)) +
-    ggplot2::labs(x = cont, y = "Diet proportion (consumer posterior mean and 95% interval)") +
+    ggplot2::labs(x = cont, y = "Diet proportion",
+                  caption = "Lines: each consumer's posterior mean; bands: 95% intervals") +
     ggplot2::theme_bw() + ggplot2::theme(legend.position = "top")
 }
 

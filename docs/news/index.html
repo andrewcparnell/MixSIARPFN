@@ -23,9 +23,16 @@
     <li><a class="dropdown-item" href="../articles/killerwhale.html">Killer whale: no effects</a></li>
     <li><a class="dropdown-item" href="../articles/geese.html">Geese: a fixed effect and concentration dependence</a></li>
     <li><a class="dropdown-item" href="../articles/wolves.html">Wolves: nested random effects, sources by region</a></li>
+    <li><a class="dropdown-item" href="../articles/alligator.html">Alligator: eight models in a few seconds</a></li>
+    <li><a class="dropdown-item" href="../articles/lake.html">Lake: a continuous effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/mantis.html">Mantis shrimp: sources by habitat, concentrations and an informative prior</a></li>
+    <li><a class="dropdown-item" href="../articles/palmyra.html">Palmyra: a fixed effect, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/snail.html">Snail: one tracer, raw source data</a></li>
+    <li><a class="dropdown-item" href="../articles/stormpetrel.html">Storm petrel: a fixed effect, raw source data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Method</h6></li>
     <li><a class="dropdown-item" href="../articles/performance.html">How MixSIARPFN works and how well it does</a></li>
+    <li><a class="dropdown-item" href="../articles/simulations.html">MixSIARPFN on every simulated dataset</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -45,15 +52,16 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="mixsiarpfn-010">MixSIARPFN 0.1.0<a class="anchor" aria-label="anchor" href="#mixsiarpfn-010"></a></h2>
 <p>First release.</p>
-<ul><li>MixSIAR’s loaders, <code><a href="../reference/load_mix_data.html">load_mix_data()</a></code>, <code><a href="../reference/load_source_data.html">load_source_data()</a></code> and <code><a href="../reference/load_discr_data.html">load_discr_data()</a></code>, with the same arguments and checks, and <code><a href="../reference/plot_data.html">plot_data()</a></code>.</li>
+<ul><li>MixSIAR’s loaders, <code><a href="../reference/load_mix_data.html">load_mix_data()</a></code>, <code><a href="../reference/load_source_data.html">load_source_data()</a></code> and <code><a href="../reference/load_discr_data.html">load_discr_data()</a></code>, with the same arguments and checks, and <code><a href="../reference/plot_data.html">plot_data()</a></code>. Source data can be summary statistics or raw samples (<code>data_type = "raw"</code>, summarised to means, SDs and sample sizes).</li>
 <li>
 <code><a href="../reference/run_pfn.html">run_pfn()</a></code> in place of <code>write_JAGS_model()</code> and <code>run_model()</code>: marginal posteriors of every diet proportion and parameter from prior-data fitted networks, one per error structure (Residual * Process, Residual only, Process only), in about a second. Isotope data with source summary statistics (<code>data_type = "means"</code>).</li>
 <li>
 <code><a href="../reference/output_pfn.html">output_pfn()</a></code> in place of <code>output_JAGS()</code>, with <code><a href="../reference/summary_table.html">summary_table()</a></code>, <code><a href="../reference/posterior_draws.html">posterior_draws()</a></code> and <code><a href="../reference/pfn_networks.html">pfn_networks()</a></code>.</li>
-<li>Comparison with MixSIAR: <code><a href="../reference/mixsiar_reference.html">mixsiar_reference()</a></code> (MixSIAR’s own fits of the three examples, with a posterior predictive check of each), <code><a href="../reference/mixsiar_draws.html">mixsiar_draws()</a></code>, <code><a href="../reference/compare_mixsiar.html">compare_mixsiar()</a></code> and <code><a href="../reference/plot_compare.html">plot_compare()</a></code>.</li>
+<li>Comparison with MixSIAR: <code><a href="../reference/mixsiar_reference.html">mixsiar_reference()</a></code> (MixSIAR’s own fits of all nine of its isotope examples, with a posterior predictive check for killer whale, geese and wolves), <code><a href="../reference/mixsiar_draws.html">mixsiar_draws()</a></code>, <code><a href="../reference/compare_mixsiar.html">compare_mixsiar()</a></code>, <code><a href="../reference/plot_compare.html">plot_compare()</a></code> and <code><a href="../reference/plot_compare_covariate.html">plot_compare_covariate()</a></code>.</li>
 <li>Networks version 3, downloaded from Zenodo on first use and checked by SHA-256.</li>
-<li>Vignettes: MixSIAR’s killer whale, geese and wolves examples, each compared with MixSIAR’s fit.</li>
-<li>Article “How MixSIARPFN works and how well it does”: the network, its training, and a simulation study of 450 datasets with known diets against converged MixSIAR.</li>
+<li>Vignettes: MixSIAR’s nine isotope examples (killer whale, geese, wolves, alligator, lake, mantis shrimp, Palmyra, snail and storm petrel), each compared with MixSIAR’s fit.</li>
+<li>Article “How MixSIARPFN works and how well it does”: the network, its training, its speed, and a simulation study of 450 datasets with known diets against converged MixSIAR.</li>
+<li>Article “MixSIARPFN on every simulated dataset”: all 492 simulated datasets with MixSIAR fits, including 42 benchmark designs covering the supported models.</li>
 </ul></div>
   </main></div>
 

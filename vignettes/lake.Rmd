@@ -47,7 +47,7 @@ sample size, which is what MixSIARPFN's networks use:
 source$data
 ```
 
-There are `r mix$N` zooplankton samples, with `Secchi.Mixed` from
+There are `r mix$N` lakes (one consumer row each), with `Secchi.Mixed` from
 `r num(min(mix$data$Secchi.Mixed))` to `r num(max(mix$data$Secchi.Mixed))`.
 
 ```{r isospace, eval = TRUE, fig.height = 5}
@@ -121,5 +121,5 @@ by `r num(cov_gap, 3)` on average.
 
 The global diet (at the average `Secchi.Mixed`) and the residual multipliers:
 
-```{r child = "_compare.Rmd"}
+```{r child = "children/_compare.Rmd"}
 ```

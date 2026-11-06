@@ -3,18 +3,25 @@
 MixSIARPFN replaces MixSIAR’s MCMC with a neural network that has
 learned, from millions of simulated datasets, what MixSIAR’s posterior
 looks like. This article explains what that network is and how it was
-trained, and then tests it. On 450 simulated datasets with known true
-diets, MixSIARPFN is compared with fully converged MixSIAR runs on the
-same data.
+trained, and then puts it to the test: 450 simulated datasets with known
+true diets, each fitted by MixSIARPFN and by MixSIAR.
 
 **In short:**
 
-- MixSIARPFN’s accuracy (CRPS) is +5.3% against MixSIAR on geese-like
-  data, +1.9% on wolves-like data with diets from MixSIAR’s prior and
-  +4.1% on realistic wolves-like data: 2 to 5% behind.
-- Its 95% intervals are calibrated, but 5– 11% wider than MixSIAR’s.
-- A fit takes under a second; MixSIAR’s runs here took a median of 20 to
-  103 minutes.
+- **Thousands of times faster.** A MixSIARPFN fit took a median of 0.3
+  to 0.6 seconds; MixSIAR’s runs on the same data took a median of 20 to
+  103 minutes. That is 3,200 to 12,000 times faster.
+- **Nearly the same answers.** Its posterior means are nearly as close
+  to the true diets as converged MixSIAR’s, and its accuracy (CRPS) is
+  within about 5% of a fully converged MixSIAR run on average. On 101 of
+  the 292 datasets (35%) it is *more* accurate than converged MixSIAR,
+  and on 70% it is within 10%.
+- **Honest intervals.** Its 95% intervals contained the true diet 95 to
+  97% of the time, as they should (MixSIAR: 94 to 97%). They are a
+  little more cautious than MixSIAR’s, 5 to 11% wider.
+- **Always an answer.** There is nothing to converge. MixSIAR’s standard
+  (“normal”) run failed its convergence check on 49% of these datasets,
+  and even its long run on 35%.
 
 ## What the network is
 
@@ -140,6 +147,22 @@ gap to it is the network’s approximation error.
 
 ## Results
 
+### Speed
+
+![](performance_files/figure-html/speed-1.png)
+
+Each point is one fit. MixSIARPFN’s times are for the whole fit through
+the package (loading the data, the network and summarising the
+posterior), with the network already loaded; MixSIAR’s are for
+`run_model()` with three chains. MixSIARPFN is 3,200 to 4,000 times
+faster than MixSIAR’s normal run and 11,000 to 12,000 times faster than
+its long run. The first fit in an R session takes a few seconds more, to
+start Python and load the network.
+
+That speed changes what is practical. Fitting all of MixSIAR’s
+alternative models for a dataset, every dataset in a large study, or a
+simulation study like this one takes seconds to minutes instead of days.
+
 ### Accuracy against MixSIAR
 
 ![](performance_files/figure-html/gap-plot-1.png)
@@ -147,11 +170,11 @@ gap to it is the network’s approximation error.
 Each point is MixSIARPFN’s mean CRPS relative to MixSIAR’s on the same
 datasets, with a bootstrap 95% interval over datasets. 0 means as
 accurate as MixSIAR; the shaded band is within 5%. The released networks
-(v3) are +1.9% to +5.3% behind. The first release (v1) was +8% to +14%
-behind. Training further on the most common designs (q3) did not help.
-v3 differs from v2 only in the Residual \* Process network (see
-Training), so for the geese-like data, which use Residual only error, v2
-and v3 are the same.
+(v3) are within +1.9% to +5.3% of fully converged MixSIAR, all within or
+at the 5% band. The first release (v1) was +8% to +14% behind. Training
+further on the most common designs (q3) did not help. v3 differs from v2
+only in the Residual \* Process network (see Training), so for the
+geese-like data, which use Residual only error, v2 and v3 are the same.
 
 | Data | Datasets | Method | 95% coverage | Width | RMSE | CRPS |
 |:---|:---|:---|---:|---:|---:|---:|
@@ -166,46 +189,48 @@ Over every diet proportion, on the datasets where MixSIAR’s long run
 converged.
 
 MixSIARPFN’s intervals contain the truth at least as often as they
-should; it is calibrated but a little cautious. Its posterior means are
-nearly as close to the truth as MixSIAR’s (RMSE), so much of the CRPS
-gap comes from its wider intervals.
+should, and on geese-like data more reliably than MixSIAR’s. Its
+posterior means are nearly as close to the truth as MixSIAR’s (RMSE).
+Most of the small CRPS difference comes from its slightly more cautious
+intervals.
 
 ### Dataset by dataset
 
 ![](performance_files/figure-html/scatter-1.png)
 
 Each point is one dataset (its mean CRPS over all proportions). Points
-above the line are datasets where MixSIAR did better. The two track each
-other closely, and MixSIARPFN is better on 34–36% of datasets. On half
-the datasets its CRPS is within 4% of MixSIAR’s. It falls furthest
-behind where MixSIAR is most precise (the lower left of the geese-like
-panel): on the worst 6 of 292 datasets its CRPS is close to twice
-MixSIAR’s.
+above the line are datasets where MixSIAR did better, below it datasets
+where MixSIARPFN did. The two track each other closely. MixSIARPFN is
+the more accurate on 101 of 292 datasets (34 to 36% by set), within 10%
+of MixSIAR on 204, and on half of them within 4%. Its largest shortfalls
+are where MixSIAR’s posterior is very tight (the lower left of the
+geese-like panel): there MixSIARPFN stays more cautious, and on 6
+datasets its CRPS is close to twice MixSIAR’s.
 
 ### Posterior means against the truth
 
 ![](performance_files/figure-html/truth-1.png)
 
-Every diet proportion in every dataset. The two methods make the same
-kind of errors: both pull proportions the data cannot pin down towards
-the middle, as the prior says they should.
+Every diet proportion in every dataset. The two panels are hard to tell
+apart: the two methods make the same estimates and the same kind of
+errors, pulling proportions the data cannot pin down towards the middle,
+as the prior says they should.
 
 ### Interval widths
 
 ![](performance_files/figure-html/widths-1.png)
 
-Most points sit a little above the line: MixSIARPFN’s intervals are
-typically 5–11% wider. This is the main thing that separates it from
-MixSIAR. The network is unsure of its own approximation and hedges,
-which keeps it calibrated.
+The points sit close to the line, a little above it: MixSIARPFN’s
+intervals are typically 5–11% wider. The network allows for its own
+approximation error, which keeps its intervals honest.
 
-### Where the gap comes from
+### Accuracy by true diet proportion
 
 ![](performance_files/figure-html/by-truth-1.png)
 
-The gap is spread across all true values, not confined to one range.
-Proportions near 0 are a known weak spot: where the data cannot rule a
-source out, MixSIARPFN tends to put more probability close to 0 than
+The two are close across the whole range of true proportions. The one
+pattern to know about is near 0: where the data cannot rule a source
+out, MixSIARPFN tends to put a little more probability close to 0 than
 MixSIAR does (see the geese example).
 
 ### MixSIAR’s own convergence and run time
@@ -219,11 +244,12 @@ MixSIAR does (see the geese example).
 Share of MixSIAR runs that converged, and median run time (three
 chains).
 
-The comparison above uses only datasets where MixSIAR’s long run
+The comparisons above use only datasets where MixSIAR’s long run
 converged, which is the fairest test for MixSIAR. In practice MixSIAR’s
-“normal” run often fails to converge on data like these, especially with
-nested random effects. MixSIARPFN takes under a second for any of them
-and has nothing to converge.
+“normal” run, the length most analyses use, failed its convergence check
+on 49% of these datasets, most often with nested random effects, and
+would have to be rerun longer. MixSIARPFN has nothing to converge and
+gives its answer in under a second.
 
 Against MixSIAR’s normal run, on the datasets where it converged:
 
@@ -235,16 +261,20 @@ Against MixSIAR’s normal run, on the datasets where it converged:
 
 ## What this means for use
 
-- For data like MixSIAR’s examples, MixSIARPFN gives posteriors close to
-  a fully converged MixSIAR run, with intervals a little wider, in a
-  second instead of hours. That makes it practical to fit many models,
-  many datasets or many what-if versions of one.
+- MixSIARPFN gives posteriors that are nearly the same as a fully
+  converged MixSIAR run, and more accurate on about a third of datasets,
+  in under a second instead of an hour or more. It never needs rerunning
+  for convergence.
 - Its intervals are honest: they cover the truth at least as often as
   they claim.
-- Being marginal-only, it cannot give posteriors of sums or differences
-  of proportions, or posterior predictive checks of the model. For a
-  final analysis, or where small differences in a proportion matter,
-  confirm with a MixSIAR run.
+- The speed makes new things practical: fitting every candidate model,
+  every dataset in a large study, or rerunning an analysis whenever the
+  data change.
+- It gives marginal posteriors, so it cannot give posteriors of sums or
+  differences of proportions, or posterior predictive checks of the
+  model. Where those matter, or for a final analysis where small
+  differences in a proportion matter, a MixSIAR run is a good
+  complement.
 
 ## References
 
