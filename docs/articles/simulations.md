@@ -7,8 +7,8 @@ than 1,000 MixSIAR runs. They come in two groups:
 - **The simulation study** (450 datasets): three designs copied from
   MixSIAR’s geese and wolves examples, 150 datasets each. The article
   *How MixSIARPFN works and how well it does*
-  ([`vignette("performance")`](../articles/performance.md)) analyses
-  these in detail; this article gives the per-batch results.
+  ([`vignette("performance")`](https://andrewcparnell.github.io/MixSIARPFN/articles/performance.md))
+  analyses these in detail; this article gives the per-batch results.
 - **The benchmark** (42 datasets): designs chosen to cover what
   MixSIARPFN supports, from 2 to 8 sources, 1 to 4 tracers, 2 to 800
   consumers, every error structure, fixed, random, crossed and nested

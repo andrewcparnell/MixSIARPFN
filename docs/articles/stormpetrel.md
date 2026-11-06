@@ -10,8 +10,9 @@ juveniles in each region are isotopically like each colony.
 Discrimination is set to zero, since juveniles and adults feeding in the
 same region should look the same. Two tracers (δ¹³C and δ¹⁵N), and the
 source data are raw samples. Only the fitting call differs from
-MixSIAR’s script: [`run_pfn()`](../reference/run_pfn.md) in place of
-`write_JAGS_model()` and `run_model()`.
+MixSIAR’s script:
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -29,9 +30,9 @@ discr <- load_discr_data(
   mix)
 ```
 
-[`load_source_data()`](../reference/load_source_data.md) summarises the
-raw source samples to each source’s mean, SD and sample size, which is
-what MixSIARPFN’s networks use:
+[`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+summarises the raw source samples to each source’s mean, SD and sample
+size, which is what MixSIARPFN’s networks use:
 
 ``` r
 source$data

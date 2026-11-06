@@ -14,8 +14,9 @@ plot_compare_covariate(fit, pind, cont = fit$cont_effects[1], by = NULL)
 
 - fit:
 
-  The output of [`run_pfn()`](run_pfn.md), for a model with a continuous
-  effect.
+  The output of
+  [`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md),
+  for a model with a continuous effect.
 
 - pind:
 

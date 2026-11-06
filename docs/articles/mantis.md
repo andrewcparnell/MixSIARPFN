@@ -8,8 +8,9 @@ separately in each habitat (`source_factors = "Habitat"`), and the
 sources’ elemental concentrations differ (concentration dependence).
 MixSIAR’s script also uses an informative “specialist” prior, which
 MixSIARPFN supports too. Only the fitting call differs from MixSIAR’s
-script: [`run_pfn()`](../reference/run_pfn.md) in place of
-`write_JAGS_model()` and `run_model()`.
+script:
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -124,7 +125,7 @@ blocks <- "Habitat"
 MixSIAR 3.1.12 fitted the same model to the same data with 3 chains of
 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which took
 35 minutes (largest Gelman-Rubin diagnostic 1.044). MixSIARPFN took 0.4
-seconds, about 5,800 times faster.
+seconds, about 5,200 times faster.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance between the two
 posteriors (W1: how far, on average, one posterior’s mass has to move to

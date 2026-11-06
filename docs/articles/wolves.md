@@ -7,8 +7,8 @@ two tracers (δ¹³C and δ¹⁵N). Pack is a random effect nested within the
 random effect Region, and the sources’ isotope values were measured
 separately in each region. The model and data are exactly as in
 MixSIAR’s vignette; only the fitting call changes,
-[`run_pfn()`](../reference/run_pfn.md) in place of `write_JAGS_model()`
-and `run_model()`.
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -67,10 +67,10 @@ The fit took 0.4 seconds.
 
 ## Results
 
-[`output_pfn()`](../reference/output_pfn.md) takes MixSIAR’s
-`output_options` list. It prints the summary statistics, with MixSIAR’s
-row names, and draws a posterior density plot for the global diet, each
-effect and each parameter (here shown, not saved):
+[`output_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/output_pfn.md)
+takes MixSIAR’s `output_options` list. It prints the summary statistics,
+with MixSIAR’s row names, and draws a posterior density plot for the
+global diet, each effect and each parameter (here shown, not saved):
 
 ``` r
 out <- output_pfn(fit, mix, source,

@@ -14,7 +14,8 @@ summary_table(fit)
 
 - fit:
 
-  The output of [`run_pfn()`](run_pfn.md).
+  The output of
+  [`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md).
 
 ## Value
 

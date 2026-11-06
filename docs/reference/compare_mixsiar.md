@@ -17,13 +17,15 @@ compare_mixsiar(fit, draws, summary = NULL)
 
 - fit:
 
-  The output of [`run_pfn()`](run_pfn.md).
+  The output of
+  [`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md).
 
 - draws:
 
   MixSIAR's draws: a data frame with `name` and `value`, from
-  [`mixsiar_draws()`](mixsiar_draws.md) or
-  [`mixsiar_reference()`](mixsiar_reference.md).
+  [`mixsiar_draws()`](https://andrewcparnell.github.io/MixSIARPFN/reference/mixsiar_draws.md)
+  or
+  [`mixsiar_reference()`](https://andrewcparnell.github.io/MixSIARPFN/reference/mixsiar_reference.md).
 
 - summary:
 

@@ -55,7 +55,7 @@ time <- system.time(
 )
 ```
 
-All eight models took 5.1 seconds together (the first includes starting
+All eight models took 5.2 seconds together (the first includes starting
 Python and loading the network).
 
 MixSIAR’s script compares the models by leave-one-out cross-validation
@@ -86,19 +86,19 @@ knitr::kable(tab, digits = c(0, 0, 3, 3, 2, 2, 0, 3), row.names = FALSE,
 | Model | Diet proportions compared | Mean difference in means | Mean W1 | Median SD ratio | MixSIARPFN seconds | MixSIAR minutes | MixSIAR largest PSRF |
 |:---|---:|---:|---:|---:|---:|---:|---:|
 | 1: null | 2 | 0.003 | 0.008 | 1.25 | 0.33 | 68 | 1.002 |
-| 2: habitat | 8 | 0.011 | 0.013 | 1.23 | 0.57 | 76 | 1.002 |
-| 3: sex | 6 | 0.006 | 0.011 | 1.24 | 0.51 | 73 | 1.004 |
-| 4: size class | 10 | 0.009 | 0.014 | 1.28 | 0.54 | 71 | 1.003 |
+| 2: habitat | 8 | 0.011 | 0.013 | 1.23 | 0.55 | 76 | 1.002 |
+| 3: sex | 6 | 0.006 | 0.011 | 1.24 | 0.49 | 73 | 1.004 |
+| 4: size class | 10 | 0.009 | 0.014 | 1.28 | 0.55 | 71 | 1.003 |
 | 5: length | 2 | 0.018 | 0.019 | 1.29 | 0.26 | 86 | 1.004 |
-| 6: sex + size class | 2 | 0.045 | 0.046 | 1.35 | 0.56 | 84 | 1.004 |
-| 7: sex + length | 6 | 0.021 | 0.023 | 1.18 | 1.72 | 91 | 1.002 |
-| 8: sex x size class | 18 | 0.014 | 0.022 | 1.32 | 0.50 | 77 | 1.002 |
+| 6: sex + size class | 2 | 0.045 | 0.046 | 1.35 | 0.57 | 84 | 1.004 |
+| 7: sex + length | 6 | 0.021 | 0.023 | 1.18 | 1.87 | 91 | 1.002 |
+| 8: sex x size class | 18 | 0.014 | 0.022 | 1.32 | 0.51 | 77 | 1.002 |
 
 Each row compares MixSIARPFN’s diet posteriors with MixSIAR’s for one
 model (MixSIAR’s “long” run, three chains). For models with a continuous
 effect, the diets compared are the global diet at the average length;
 the curves along length are compared below. In total, MixSIAR took 628
-minutes of computing for the eight models; MixSIARPFN took 5.0 seconds.
+minutes of computing for the eight models; MixSIARPFN took 5.1 seconds.
 
 ## A closer look
 

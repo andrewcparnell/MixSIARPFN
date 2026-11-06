@@ -6,8 +6,9 @@ and δ¹⁵N) and four food sources (grass and three algae: Enteromorpha,
 *Ulva lactuca* and *Zostera*). Group is a fixed effect, the sources’
 elemental concentrations differ (concentration dependence), and the
 error structure is Residual only. Only the fitting call differs from
-MixSIAR’s vignette: [`run_pfn()`](../reference/run_pfn.md) in place of
-`write_JAGS_model()` and `run_model()`.
+MixSIAR’s vignette:
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -53,7 +54,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = FALSE)
 )
 fit
-#> MixSIARPFN fit (Residual only error), 4 sources, in 0.8 s
+#> MixSIARPFN fit (Residual only error), 4 sources, in 0.7 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>        source  mean    sd  2.5% 97.5%
 #>  Enteromorpha 0.176 0.119 0.008 0.440

@@ -31,9 +31,11 @@ plot_data(
 
 - mix, source, discr:
 
-  The outputs of [`load_mix_data()`](load_mix_data.md),
-  [`load_source_data()`](load_source_data.md) and
-  [`load_discr_data()`](load_discr_data.md).
+  The outputs of
+  [`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md),
+  [`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+  and
+  [`load_discr_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_discr_data.md).
 
 - return_obj:
 

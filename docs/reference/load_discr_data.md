@@ -18,7 +18,8 @@ load_discr_data(filename, mix)
 
 - mix:
 
-  The output of [`load_mix_data()`](load_mix_data.md).
+  The output of
+  [`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md).
 
 ## Value
 

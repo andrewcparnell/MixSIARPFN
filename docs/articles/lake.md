@@ -9,8 +9,8 @@ along a continuous effect, each lake’s ratio of Secchi depth to mixing
 depth (`Secchi.Mixed`), a measure of how far light reaches into the
 mixed layer. The source data are raw samples, and the error structure is
 Residual only. Only the fitting call differs from MixSIAR’s:
-[`run_pfn()`](../reference/run_pfn.md) in place of `write_JAGS_model()`
-and `run_model()`.
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -28,9 +28,9 @@ discr <- load_discr_data(
   mix)
 ```
 
-[`load_source_data()`](../reference/load_source_data.md) summarises the
-raw source samples to each source’s mean, SD and sample size, which is
-what MixSIARPFN’s networks use:
+[`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+summarises the raw source samples to each source’s mean, SD and sample
+size, which is what MixSIARPFN’s networks use:
 
 ``` r
 source$data
@@ -115,7 +115,7 @@ multipliers:
 MixSIAR 3.1.12 fitted the same model to the same data with 3 chains of
 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which took 6
 minutes (largest Gelman-Rubin diagnostic 1.048). MixSIARPFN took 0.3
-seconds, about 1,300 times faster.
+seconds, about 1,100 times faster.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance between the two
 posteriors (W1: how far, on average, one posterior’s mass has to move to

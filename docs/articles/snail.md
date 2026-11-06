@@ -6,8 +6,8 @@ two food sources, C3 and CAM plants, and no effects. Two things make it
 different from the other examples: there is only one tracer, and the
 source data are raw samples rather than means and SDs. Only the fitting
 call differs from MixSIAR’s script:
-[`run_pfn()`](../reference/run_pfn.md) in place of `write_JAGS_model()`
-and `run_model()`.
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -26,9 +26,9 @@ discr <- load_discr_data(
 ```
 
 With `data_type = "raw"`,
-[`load_source_data()`](../reference/load_source_data.md) summarises each
-source’s samples to its mean, SD and sample size, which is what
-MixSIARPFN’s networks use:
+[`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+summarises each source’s samples to its mean, SD and sample size, which
+is what MixSIARPFN’s networks use:
 
 ``` r
 source$data
@@ -102,8 +102,8 @@ blocks <- "global"
 
 MixSIAR 3.1.12 fitted the same model to the same data with 3 chains of
 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which took 2
-minutes (largest Gelman-Rubin diagnostic 1.012). MixSIARPFN took 0.2
-seconds, about 470 times faster.
+minutes (largest Gelman-Rubin diagnostic 1.012). MixSIARPFN took 0.3
+seconds, about 390 times faster.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance between the two
 posteriors (W1: how far, on average, one posterior’s mass has to move to

@@ -56,9 +56,9 @@ on all nine of MixSIAR’s isotope examples:
   MixSIAR does.
 
 The articles *How MixSIARPFN works and how well it does*
-([`vignette("performance", package = "MixSIARPFN")`](articles/performance.md))
+([`vignette("performance", package = "MixSIARPFN")`](https://andrewcparnell.github.io/MixSIARPFN/articles/performance.md))
 and *MixSIARPFN on every simulated dataset*
-([`vignette("simulations", package = "MixSIARPFN")`](articles/simulations.md))
+([`vignette("simulations", package = "MixSIARPFN")`](https://andrewcparnell.github.io/MixSIARPFN/articles/simulations.md))
 give the details, and there is a vignette for each MixSIAR example:
 killer whale, geese, wolves, alligator, lake, mantis shrimp, Palmyra,
 snail and storm petrel.
@@ -102,61 +102,73 @@ Zenodo. <https://doi.org/10.5281/zenodo.24002247>
 
 ## Load data (as MixSIAR)
 
-- [`load_mix_data()`](load_mix_data.md) : Load mixture (consumer) data
-- [`load_source_data()`](load_source_data.md) : Load source data
-- [`load_discr_data()`](load_discr_data.md) : Load discrimination (TDF)
-  data
-- [`plot_data()`](plot_data.md) : Isospace plot of the data, as
-  MixSIAR's plot_data()
+- [`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md)
+  : Load mixture (consumer) data
+- [`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+  : Load source data
+- [`load_discr_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_discr_data.md)
+  : Load discrimination (TDF) data
+- [`plot_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/plot_data.md)
+  : Isospace plot of the data, as MixSIAR's plot_data()
 
 ## Fit and summarise
 
-- [`run_pfn()`](run_pfn.md) : Fit a MixSIAR model with the prior-data
-  fitted network
-- [`output_pfn()`](output_pfn.md) : Summaries and plots of a fit, like
-  MixSIAR's output_JAGS()
-- [`summary_table()`](summary_table.md) : The summary statistics table
-  of a fit
-- [`posterior_draws()`](posterior_draws.md) : Draws from the marginal
-  posteriors
-- [`pfn_networks()`](pfn_networks.md) : Where the networks are cached,
-  and whether they are there
+- [`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+  : Fit a MixSIAR model with the prior-data fitted network
+- [`output_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/output_pfn.md)
+  : Summaries and plots of a fit, like MixSIAR's output_JAGS()
+- [`summary_table()`](https://andrewcparnell.github.io/MixSIARPFN/reference/summary_table.md)
+  : The summary statistics table of a fit
+- [`posterior_draws()`](https://andrewcparnell.github.io/MixSIARPFN/reference/posterior_draws.md)
+  : Draws from the marginal posteriors
+- [`pfn_networks()`](https://andrewcparnell.github.io/MixSIARPFN/reference/pfn_networks.md)
+  : Where the networks are cached, and whether they are there
 
 ## Compare with MixSIAR
 
-- [`mixsiar_reference()`](mixsiar_reference.md) : MixSIAR's own fits of
-  the example data
-- [`mixsiar_draws()`](mixsiar_draws.md) : Diet proportion draws from a
-  MixSIAR fit
-- [`compare_mixsiar()`](compare_mixsiar.md) : Compare a fit with
-  MixSIAR's posterior
-- [`plot_compare()`](plot_compare.md) : Plot a fit against MixSIAR's
-  posterior
-- [`plot_compare_covariate()`](plot_compare_covariate.md) : Compare
-  diets along a continuous effect with MixSIAR's
+- [`mixsiar_reference()`](https://andrewcparnell.github.io/MixSIARPFN/reference/mixsiar_reference.md)
+  : MixSIAR's own fits of the example data
+- [`mixsiar_draws()`](https://andrewcparnell.github.io/MixSIARPFN/reference/mixsiar_draws.md)
+  : Diet proportion draws from a MixSIAR fit
+- [`compare_mixsiar()`](https://andrewcparnell.github.io/MixSIARPFN/reference/compare_mixsiar.md)
+  : Compare a fit with MixSIAR's posterior
+- [`plot_compare()`](https://andrewcparnell.github.io/MixSIARPFN/reference/plot_compare.md)
+  : Plot a fit against MixSIAR's posterior
+- [`plot_compare_covariate()`](https://andrewcparnell.github.io/MixSIARPFN/reference/plot_compare_covariate.md)
+  : Compare diets along a continuous effect with MixSIAR's
 
 ## Package
 
-- [`MixSIARPFN`](MixSIARPFN-package.md)
-  [`MixSIARPFN-package`](MixSIARPFN-package.md) : MixSIARPFN: MixSIAR
-  models fitted by prior-data fitted networks
+- [`MixSIARPFN`](https://andrewcparnell.github.io/MixSIARPFN/reference/MixSIARPFN-package.md)
+  [`MixSIARPFN-package`](https://andrewcparnell.github.io/MixSIARPFN/reference/MixSIARPFN-package.md)
+  : MixSIARPFN: MixSIAR models fitted by prior-data fitted networks
 
 # Articles
 
 ### Examples from MixSIAR’s vignettes
 
-- [Killer whale: no effects](killerwhale.md):
-- [Geese: a fixed effect and concentration dependence](geese.md):
-- [Wolves: nested random effects, sources by region](wolves.md):
-- [Alligator: eight models in a few seconds](alligator.md):
-- [Lake: a continuous effect, raw source data](lake.md):
+- [Killer whale: no
+  effects](https://andrewcparnell.github.io/MixSIARPFN/articles/killerwhale.md):
+- [Geese: a fixed effect and concentration
+  dependence](https://andrewcparnell.github.io/MixSIARPFN/articles/geese.md):
+- [Wolves: nested random effects, sources by
+  region](https://andrewcparnell.github.io/MixSIARPFN/articles/wolves.md):
+- [Alligator: eight models in a few
+  seconds](https://andrewcparnell.github.io/MixSIARPFN/articles/alligator.md):
+- [Lake: a continuous effect, raw source
+  data](https://andrewcparnell.github.io/MixSIARPFN/articles/lake.md):
 - [Mantis shrimp: sources by habitat, concentrations and an informative
-  prior](mantis.md):
-- [Palmyra: a fixed effect, raw source data](palmyra.md):
-- [Snail: one tracer, raw source data](snail.md):
-- [Storm petrel: a fixed effect, raw source data](stormpetrel.md):
+  prior](https://andrewcparnell.github.io/MixSIARPFN/articles/mantis.md):
+- [Palmyra: a fixed effect, raw source
+  data](https://andrewcparnell.github.io/MixSIARPFN/articles/palmyra.md):
+- [Snail: one tracer, raw source
+  data](https://andrewcparnell.github.io/MixSIARPFN/articles/snail.md):
+- [Storm petrel: a fixed effect, raw source
+  data](https://andrewcparnell.github.io/MixSIARPFN/articles/stormpetrel.md):
 
 ### Method and accuracy
 
-- [How MixSIARPFN works and how well it does](performance.md):
-- [MixSIARPFN on every simulated dataset](simulations.md):
+- [How MixSIARPFN works and how well it
+  does](https://andrewcparnell.github.io/MixSIARPFN/articles/performance.md):
+- [MixSIARPFN on every simulated
+  dataset](https://andrewcparnell.github.io/MixSIARPFN/articles/simulations.md):

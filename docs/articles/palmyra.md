@@ -5,8 +5,8 @@ This follows MixSIAR’s Palmyra example script
 (δ¹³C and δ¹⁵N) and three sources (lagoon, pelagic and reef food webs),
 with taxon as a fixed effect. The source data are raw samples. Only the
 fitting call differs from MixSIAR’s script:
-[`run_pfn()`](../reference/run_pfn.md) in place of `write_JAGS_model()`
-and `run_model()`.
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 
@@ -24,9 +24,9 @@ discr <- load_discr_data(
   mix)
 ```
 
-[`load_source_data()`](../reference/load_source_data.md) summarises the
-raw source samples to each source’s mean, SD and sample size, which is
-what MixSIARPFN’s networks use:
+[`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+summarises the raw source samples to each source’s mean, SD and sample
+size, which is what MixSIARPFN’s networks use:
 
 ``` r
 source$data
@@ -56,7 +56,7 @@ time <- system.time(
                  resid_err = TRUE, process_err = TRUE)
 )
 fit
-#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.4 s
+#> MixSIARPFN fit (Residual * Process error), 3 sources, in 0.5 s
 #> Marginal posteriors (no joint draws). Global diet:
 #>   source  mean    sd  2.5% 97.5%
 #>   Lagoon 0.228 0.063 0.076 0.341
@@ -109,8 +109,8 @@ blocks <- "Taxa"
 
 MixSIAR 3.1.12 fitted the same model to the same data with 3 chains of
 300,000 iterations (burn-in 200,000, MixSIAR’s “long” run), which took
-58 minutes (largest Gelman-Rubin diagnostic 1.022). MixSIARPFN took 0.4
-seconds, about 8,300 times faster.
+58 minutes (largest Gelman-Rubin diagnostic 1.022). MixSIARPFN took 0.5
+seconds, about 7,300 times faster.
 
 Means, SDs, 95% intervals and the Wasserstein-1 distance between the two
 posteriors (W1: how far, on average, one posterior’s mass has to move to

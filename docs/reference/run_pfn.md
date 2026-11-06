@@ -25,9 +25,11 @@ run_pfn(
 
 - mix, source, discr:
 
-  The outputs of [`load_mix_data()`](load_mix_data.md),
-  [`load_source_data()`](load_source_data.md) and
-  [`load_discr_data()`](load_discr_data.md).
+  The outputs of
+  [`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md),
+  [`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+  and
+  [`load_discr_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_discr_data.md).
 
 - alpha.prior:
 
@@ -55,8 +57,8 @@ An object of class `pfn_fit`: `summary` (one row per diet proportion,
 with MixSIAR's quantiles and row names such as `p.global.Deer`),
 `parameters` (random-effect SDs, residual error multipliers, covariate
 slopes), the bar probabilities behind each marginal (for
-[`posterior_draws()`](posterior_draws.md)), and the model options. It
-holds only R objects, so it can be saved with
+[`posterior_draws()`](https://andrewcparnell.github.io/MixSIARPFN/reference/posterior_draws.md)),
+and the model options. It holds only R objects, so it can be saved with
 [`saveRDS()`](https://rdrr.io/r/base/readRDS.html).
 
 ## Details

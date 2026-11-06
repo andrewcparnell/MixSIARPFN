@@ -5,8 +5,8 @@ as analysed in Stock et al. 2018): 12 killer whales, two tracers (δ¹³C
 and δ¹⁵N) and five salmon prey sources, with no random, fixed or
 continuous effects. It is the simplest MixSIAR model, and a good first
 check. Only the fitting call differs from MixSIAR’s vignette:
-[`run_pfn()`](../reference/run_pfn.md) in place of `write_JAGS_model()`
-and `run_model()`.
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+in place of `write_JAGS_model()` and `run_model()`.
 
 ## The data
 

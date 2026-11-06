@@ -1,13 +1,18 @@
 # MixSIARPFN: MixSIAR models fitted by prior-data fitted networks
 
-Load data with [`load_mix_data()`](load_mix_data.md),
-[`load_source_data()`](load_source_data.md) and
-[`load_discr_data()`](load_discr_data.md) as in MixSIAR, fit with
-[`run_pfn()`](run_pfn.md) (in place of `write_JAGS_model()` and
-`run_model()`), and summarise with [`output_pfn()`](output_pfn.md) (in
-place of `output_JAGS()`). The posteriors come from networks trained on
-simulations from MixSIAR's model, one per error structure, downloaded on
-first use (see [`pfn_networks()`](pfn_networks.md)).
+Load data with
+[`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md),
+[`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+and
+[`load_discr_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_discr_data.md)
+as in MixSIAR, fit with
+[`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md)
+(in place of `write_JAGS_model()` and `run_model()`), and summarise with
+[`output_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/output_pfn.md)
+(in place of `output_JAGS()`). The posteriors come from networks trained
+on simulations from MixSIAR's model, one per error structure, downloaded
+on first use (see
+[`pfn_networks()`](https://andrewcparnell.github.io/MixSIARPFN/reference/pfn_networks.md)).
 
 ## Details
 
@@ -24,7 +29,8 @@ the killer whale, geese and wolves vignettes.
 - **Accuracy.** On data simulated from MixSIAR's model the 95% intervals
   are calibrated but 5 to 11% wider than MixSIAR's, and the posteriors a
   little less accurate (CRPS 2 to 5% higher than fully converged
-  MixSIAR; see [`vignette("performance")`](../articles/performance.md)).
+  MixSIAR; see
+  [`vignette("performance")`](https://andrewcparnell.github.io/MixSIARPFN/articles/performance.md)).
 
 - **Weakly identified sources.** Where the data cannot pin a source
   down, the network tends to put more probability near 0 than MixSIAR

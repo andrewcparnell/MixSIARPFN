@@ -30,7 +30,7 @@ mean and 95% interval and the posterior predictive p-value `ppp`;
 (data frame or `NULL`: with a continuous effect, each consumer's diet
 posterior mean and 95% interval from MixSIAR's `p.ind`, with the
 consumer's covariate and factor values; see
-[`plot_compare_covariate()`](plot_compare_covariate.md)).
+[`plot_compare_covariate()`](https://andrewcparnell.github.io/MixSIARPFN/reference/plot_compare_covariate.md)).
 
 ## Details
 

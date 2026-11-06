@@ -15,7 +15,8 @@ posterior_draws(fit, n = 3000, seed = NULL)
 
 - fit:
 
-  The output of [`run_pfn()`](run_pfn.md).
+  The output of
+  [`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md).
 
 - n:
 

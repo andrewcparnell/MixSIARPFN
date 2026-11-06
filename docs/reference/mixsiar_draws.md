@@ -2,9 +2,12 @@
 
 Turns the output of
 [`MixSIAR::run_model()`](https://rdrr.io/pkg/MixSIAR/man/run_model.html)
-into the long data frame that [`compare_mixsiar()`](compare_mixsiar.md)
-and [`plot_compare()`](plot_compare.md) take, named as in MixSIAR's
-summary statistics (`p.global.<source>`, `p.<level label>.<source>`).
+into the long data frame that
+[`compare_mixsiar()`](https://andrewcparnell.github.io/MixSIARPFN/reference/compare_mixsiar.md)
+and
+[`plot_compare()`](https://andrewcparnell.github.io/MixSIARPFN/reference/plot_compare.md)
+take, named as in MixSIAR's summary statistics (`p.global.<source>`,
+`p.<level label>.<source>`).
 
 ## Usage
 

@@ -41,7 +41,8 @@ load_source_data(filename, source_factors = NULL, conc_dep, data_type, mix)
 
 - mix:
 
-  The output of [`load_mix_data()`](load_mix_data.md).
+  The output of
+  [`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md).
 
 ## Value
 

@@ -19,13 +19,17 @@ output_pfn(fit, mix = NULL, source = NULL, output_options = list())
 
 - fit:
 
-  The output of [`run_pfn()`](run_pfn.md).
+  The output of
+  [`run_pfn()`](https://andrewcparnell.github.io/MixSIARPFN/reference/run_pfn.md).
 
 - mix, source:
 
-  The outputs of [`load_mix_data()`](load_mix_data.md) and
-  [`load_source_data()`](load_source_data.md) (accepted for
-  compatibility with `output_JAGS()`; the fit holds what is needed).
+  The outputs of
+  [`load_mix_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_mix_data.md)
+  and
+  [`load_source_data()`](https://andrewcparnell.github.io/MixSIARPFN/reference/load_source_data.md)
+  (accepted for compatibility with `output_JAGS()`; the fit holds what
+  is needed).
 
 - output_options:
 

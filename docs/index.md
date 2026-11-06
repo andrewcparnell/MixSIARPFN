@@ -56,9 +56,9 @@ on all nine of MixSIAR’s isotope examples:
   MixSIAR does.
 
 The articles *How MixSIARPFN works and how well it does*
-([`vignette("performance", package = "MixSIARPFN")`](articles/performance.md))
+([`vignette("performance", package = "MixSIARPFN")`](https://andrewcparnell.github.io/MixSIARPFN/articles/performance.md))
 and *MixSIARPFN on every simulated dataset*
-([`vignette("simulations", package = "MixSIARPFN")`](articles/simulations.md))
+([`vignette("simulations", package = "MixSIARPFN")`](https://andrewcparnell.github.io/MixSIARPFN/articles/simulations.md))
 give the details, and there is a vignette for each MixSIAR example:
 killer whale, geese, wolves, alligator, lake, mantis shrimp, Palmyra,
 snail and storm petrel.
